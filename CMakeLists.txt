@@ -15,7 +15,10 @@ set (PROJECT_DEP_DIR ${PROJECT_ROOT_DIR}/deps)
 set (game_SRCS 
   ${PROJECT_SOURCE_DIR}/main.cpp
   ${PROJECT_SOURCE_DIR}/engine/vec.cpp
-  ${PROJECT_SOURCE_DIR}/engine/renderer.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/paint_controller.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/renderer.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/paint_buffer.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/vertex.cpp
   ${PROJECT_SOURCE_DIR}/engine/engine.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
   )
@@ -65,5 +68,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	SET_TARGET_PROPERTIES(game
 		PROPERTIES COMPILE_FLAGS "-include engine/typedefs.hpp -Wall -Wpedantic -g -std=c++11")
+	SET_TARGET_PROPERTIES(game
+  PROPERTIES LINK_FLAGS "-include engine/typedefs.hpp")
 endif()
 
