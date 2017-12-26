@@ -6,5 +6,6 @@
  * interact w/ physics, etc)
  */
 class CompGameEntity {
-  Vec2 pos;
+  public:
+    Vec2 pos;
 };
