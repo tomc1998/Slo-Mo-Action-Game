@@ -15,6 +15,7 @@ set (PROJECT_DEP_DIR ${PROJECT_ROOT_DIR}/deps)
 set (game_SRCS ${PROJECT_SOURCE_DIR}/main.cpp)
 
 add_executable(game ${game_SRCS})
+target_include_directories(game PUBLIC ${PROJECT_SOURCE_DIR})
 
 #############################################
 # Dependencies

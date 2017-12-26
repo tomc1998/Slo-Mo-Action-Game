@@ -1,5 +1,6 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
+#include "engine/engine.hpp"
 
 // Initialises GLFW and sets up a GL context given a screen width and
 // height in the state pointer
