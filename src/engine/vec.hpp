@@ -1,13 +1,12 @@
 #pragma once
+#include "engine/typedefs.hpp"
 
 /** Templated vector class. */
-template <class T>
 class Vec2 {
   public:
-    T x;
-    T y;
+    f32 x;
+    f32 y;
 
-    Vec2(T _x, T _y);
-    /** Create a zero vector */
     Vec2();
+    Vec2(f32 _x, f32 _y);
 };

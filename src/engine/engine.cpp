@@ -9,5 +9,7 @@ void Engine::push_screen(Screen* screen) {
 }
 
 Screen* Engine::pop_screen() {
-  return this->screen_stack.pop_back();
+  Screen* back = screen_stack.back();
+  screen_stack.pop_back();
+  return back;
 }

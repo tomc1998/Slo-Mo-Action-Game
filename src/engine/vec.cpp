@@ -1,13 +1,11 @@
 #include "vec.hpp"
 
-template <class T>
-Vec2<T>::Vec2(T _x, T _y) {
-  this->x = x;
-  this->y = y;
+Vec2::Vec2(f32 _x, f32 _y) {
+  x = x;
+  y = y;
 }
 
-template <class T>
-Vec2<T>::Vec2() {
-  this->x = 0;
-  this->y = 0;
+Vec2::Vec2() {
+  x = 0.0;
+  y = 0.0;
 }

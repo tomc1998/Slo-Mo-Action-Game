@@ -12,7 +12,13 @@ set (PROJECT_DEP_DIR ${PROJECT_ROOT_DIR}/deps)
 ###################################
 # Set sources & add an executable
 ###################################
-set (game_SRCS ${PROJECT_SOURCE_DIR}/main.cpp)
+set (game_SRCS 
+  ${PROJECT_SOURCE_DIR}/main.cpp
+  ${PROJECT_SOURCE_DIR}/engine/vec.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer.cpp
+  ${PROJECT_SOURCE_DIR}/engine/engine.cpp
+  ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
+  )
 
 add_executable(game ${game_SRCS})
 target_include_directories(game PUBLIC ${PROJECT_SOURCE_DIR})
