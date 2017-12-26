@@ -1,9 +1,19 @@
 #include <utility>
+#include <iostream>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include "engine/input/input_manager.hpp"
 #include "ecs.hpp"
 #include "engine.hpp"
 #include "screen.hpp"
 
 Engine::Engine() {
+  glfwInit();
+  this->window = glfwCreateWindow(800, 600, "Slo-Mo Action Game", NULL, NULL);
+  glfwMakeContextCurrent(window);
+  gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
+  this->input_manager = new InputManager(this->window);
 }
 
 void Engine::push_screen(Screen* screen) {
@@ -18,11 +28,10 @@ void Engine::pop_screen() {
 }
 
 void Engine::engine_go() {
-  // TODO: Get input somehow
-  //get_input()
+  this->input_manager->update_input();
 
   // Update the state
-  this->update();
+  //this->update();
 
   //TODO: Render
   //render()
