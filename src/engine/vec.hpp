@@ -1,5 +1,4 @@
 #pragma once
-#include "engine/typedefs.hpp"
 
 /** Templated vector class. */
 class Vec2 {

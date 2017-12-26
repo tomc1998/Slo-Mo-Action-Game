@@ -15,7 +15,10 @@ set (PROJECT_DEP_DIR ${PROJECT_ROOT_DIR}/deps)
 set (game_SRCS 
   ${PROJECT_SOURCE_DIR}/main.cpp
   ${PROJECT_SOURCE_DIR}/engine/vec.cpp
-  ${PROJECT_SOURCE_DIR}/engine/renderer.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/paint_controller.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/renderer.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/paint_buffer.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/vertex.cpp
   ${PROJECT_SOURCE_DIR}/engine/engine.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
   )
@@ -30,7 +33,11 @@ target_include_directories(game PUBLIC ${PROJECT_SOURCE_DIR})
 # OpenGL ###########################################
 # For GNU Linux, should only need to link to this... windows might be a bit
 # different.
-target_link_libraries(game GL)
+if (LINUX AND NOT APPLE)
+  target_link_libraries(game GL)
+elseif (WIN32)
+  target_link_libraries(game opengl32)
+endif ()
 ####################################################
 
 # GLFW #############################################
@@ -59,11 +66,10 @@ target_include_directories(game PUBLIC ${GLAD_ROOT_DIR}/include)
 #############################################
 # COMPILER FLAGS
 #############################################
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	SET_TARGET_PROPERTIES(game
-    PROPERTIES COMPILE_FLAGS "/FI engine/typedefs.hpp /W4 /Wall")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	SET_TARGET_PROPERTIES(game
 		PROPERTIES COMPILE_FLAGS "-include engine/typedefs.hpp -Wall -Wpedantic -g -std=c++11")
+	SET_TARGET_PROPERTIES(game
+  PROPERTIES LINK_FLAGS "-include engine/typedefs.hpp")
 endif()
 
