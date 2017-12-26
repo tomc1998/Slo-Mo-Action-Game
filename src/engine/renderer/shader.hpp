@@ -5,10 +5,9 @@
 
 /** A class to represent a GLSL shader program. */
 class Shader {
-  private:
+  public:
     GLuint program_id;
 
-  public:
     /** 
      * Create a shader from the vertex shader path and the fragment shader
      * path. This will load in the GLSL files, and compile them into a Shader.

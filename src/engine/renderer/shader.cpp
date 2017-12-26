@@ -58,10 +58,16 @@ Shader::Shader(
     throw std::runtime_error(std::string("Failed to compile fragment shader: ") + err_log);
   }
 
+
   // Create the program & attach shaders
   program_id = glCreateProgram();
   glAttachShader(program_id, vert_shader);
   glAttachShader(program_id, frag_shader);
+
+  // Bind attribute locations
+  for (auto mapping : attrib_loc_bindings) {
+    glBindAttribLocation(program_id, mapping.second, mapping.first);
+  }
 
   GLint is_linked = 0;
   glGetProgramiv(program_id, GL_LINK_STATUS, (int*)&is_linked);
