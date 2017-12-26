@@ -3,6 +3,10 @@
 #include <vector>
 #include <utility>
 #include "screen.hpp"
+#include "engine/input/input_manager.hpp"
+
+//Forward delcaration
+class GLFWwindow;
 
 /** Main engine, game code accesses engine through here. Shouldn't be
  * copied, & should exist for the full lifetime of the program. This will
@@ -13,6 +17,7 @@ class Engine {
     std::vector<std::pair<ECS*, Screen*>> screen_stack;
     /** Update the current state */
     void update();
+    InputManager* input_manager;
 
   public:
     Engine();
@@ -23,5 +28,8 @@ class Engine {
     void pop_screen();
     /** Run the engine */
     void engine_go();
+    
+    GLFWwindow* window;
+
 };
 
