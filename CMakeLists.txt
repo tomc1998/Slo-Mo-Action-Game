@@ -62,10 +62,7 @@ target_include_directories(game PUBLIC ${GLAD_ROOT_DIR}/include)
 #############################################
 # COMPILER FLAGS
 #############################################
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	SET_TARGET_PROPERTIES(game
-    PROPERTIES COMPILE_FLAGS "/FI engine/typedefs.hpp /W4 /Wall")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	SET_TARGET_PROPERTIES(game
 		PROPERTIES COMPILE_FLAGS "-include engine/typedefs.hpp -Wall -Wpedantic -g -std=c++11")
 	SET_TARGET_PROPERTIES(game
