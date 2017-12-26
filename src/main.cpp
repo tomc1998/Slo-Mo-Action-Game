@@ -1,4 +1,5 @@
 #include <iostream>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "engine/engine.hpp"
 
@@ -8,6 +9,7 @@ GLFWwindow* init_glfw() {
   glfwInit();
   GLFWwindow* window = glfwCreateWindow(800, 600, "Slo-Mo Action Game", NULL, NULL);
   glfwMakeContextCurrent(window);
+gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
   return window;
 }
 

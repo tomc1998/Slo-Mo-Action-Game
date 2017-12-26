@@ -38,14 +38,26 @@ target_link_libraries(game glfw)
 target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/glfw/include)
 ####################################################
 
+# GLAD #############################################
+# Compile glad as a static library and then link it:
+set(GLAD_ROOT_DIR ${PROJECT_DEP_DIR}/glad)
+set(GLAD_SRCS
+  ${GLAD_ROOT_DIR}/src/glad.c
+	)
+add_library(glad STATIC ${GLAD_SRCS})
+target_include_directories(glad PUBLIC ${GLAD_ROOT_DIR}/include)
+target_link_libraries(game glad)
+target_include_directories(game PUBLIC ${GLAD_ROOT_DIR}/include)
+####################################################
+
 #############################################
 # COMPILER FLAGS
 #############################################
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	SET_TARGET_PROPERTIES(game
-		PROPERTIES COMPILE_FLAGS "/W4 /Wall")
+    PROPERTIES COMPILE_FLAGS "/FI engine/typedefs.hpp /W4 /Wall")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	SET_TARGET_PROPERTIES(game
-		PROPERTIES COMPILE_FLAGS "-Wall -Wpedantic -g -std=c++11")
+		PROPERTIES COMPILE_FLAGS "-include engine/typedefs.hpp -Wall -Wpedantic -g -std=c++11")
 endif()
 
