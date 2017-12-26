@@ -1,3 +1,5 @@
+#include <utility>
+#include "ecs.hpp"
 #include "engine.hpp"
 #include "screen.hpp"
 
@@ -5,11 +7,13 @@ Engine::Engine() {
 }
 
 void Engine::push_screen(Screen* screen) {
-  this->screen_stack.push_back(screen);
+  this->screen_stack.push_back(std::pair<ECS*, Screen*> (new ECS(), screen));
 }
 
 void Engine::pop_screen() {
-  Screen* back = screen_stack.back();
+  std::pair<ECS*, Screen*> back = screen_stack.back();
+  delete back.first;
+  delete back.second;
   screen_stack.pop_back();
 }
 
@@ -25,6 +29,6 @@ void Engine::engine_go() {
 }
 
 void Engine::update() {
-  current_ecs = this->screen_stack.back.first;
-  current_ecs.update();
+  ECS* current_ecs = this->screen_stack.back().first;
+  current_ecs->update();
 }
