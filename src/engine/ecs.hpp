@@ -21,9 +21,9 @@
  */
 #define ECS_DECLARE_COMPONENT(TYPE, NAME) \
   private:\
-    std::vector<TYPE> comp_NAME;\
+    std::vector<TYPE> comp_ ## NAME;\
   public:\
-    void add_comp_NAME(TYPE comp);
+    void add_comp_ ## NAME(TYPE comp);
 
 /** Macro for generating implementations of functions to add components. When
  * declaring a component of type `CompPlayerControlled`, with the name
@@ -34,8 +34,8 @@
  * ```
  */
 #define ECS_IMPL_COMPONENT(TYPE, NAME) \
-  void ECS::add_comp_NAME(TYPE comp) {\
-    this->comp_NAME.push_back(comp);\
+  void ECS::add_comp_ ## NAME(TYPE comp) {\
+    this->comp_ ## NAME.push_back(comp);\
   }
 
 /***********************/
