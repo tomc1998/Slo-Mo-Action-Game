@@ -19,6 +19,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/renderer/renderer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_buffer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/vertex.cpp
+  ${PROJECT_SOURCE_DIR}/engine/system/system_game_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/engine.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
   )
@@ -68,7 +69,7 @@ target_include_directories(game PUBLIC ${GLAD_ROOT_DIR}/include)
 #############################################
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	SET_TARGET_PROPERTIES(game
-		PROPERTIES COMPILE_FLAGS "-include engine/typedefs.hpp -Wall -Wpedantic -g -std=c++11")
+    PROPERTIES COMPILE_FLAGS "-include engine/typedefs.hpp -Wall -Wpedantic -g -std=c++11")
 	SET_TARGET_PROPERTIES(game
   PROPERTIES LINK_FLAGS "-include engine/typedefs.hpp")
 endif()

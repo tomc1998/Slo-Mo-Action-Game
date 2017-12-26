@@ -11,6 +11,8 @@
 class Engine {
   private:
     std::vector<std::pair<ECS*, Screen*>> screen_stack;
+    /** Update the current state */
+    void update();
 
   public:
     Engine();
@@ -21,7 +23,5 @@ class Engine {
     void pop_screen();
     /** Run the engine */
     void engine_go();
-    /** Update the current state */
-    void update();
 };
 
