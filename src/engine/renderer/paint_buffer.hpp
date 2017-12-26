@@ -28,5 +28,7 @@ class PaintBuffer {
      * @param[in] v_col_index The index of the colour attr in the shader
      */
     void buffer_to_gl(GLuint v_pos_index, GLuint v_col_index);
+
+    u32 size();
 };
 

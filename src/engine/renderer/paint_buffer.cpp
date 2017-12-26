@@ -37,3 +37,5 @@ void PaintBuffer::buffer_to_gl(GLuint v_pos_index, GLuint v_col_index) {
   glVertexAttribPointer(v_col_index, 3, GL_FLOAT, GL_FALSE, sizeof(v_buf[0]), col_attr_offset);
 }
 
+
+u32 PaintBuffer::size() { return v_buf.size(); }
