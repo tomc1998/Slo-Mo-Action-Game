@@ -1,5 +1,4 @@
 #pragma once
-#include "engine/typedefs.hpp"
 #include "engine/vec.hpp"
 
 /**

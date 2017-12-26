@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <vector>
 #include "comp/game_entity.hpp"
-#include "typedefs.hpp"
 
 /************/
 /** MACROS **/

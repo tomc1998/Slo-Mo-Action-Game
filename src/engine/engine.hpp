@@ -2,7 +2,6 @@
 
 #include <vector>
 #include "screen.hpp"
-#include "typedefs.hpp"
 
 /** Main engine, game code accesses engine through here. Shouldn't be
  * copied, & should exist for the full lifetime of the program. This will
