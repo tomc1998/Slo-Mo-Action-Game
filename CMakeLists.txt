@@ -1,31 +1,50 @@
 cmake_minimum_required(VERSION 3.0)
+project(game)
 
-project(GAME)
+###################################
+# Initialise directory structure
+###################################
 
 set (PROJECT_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set (PROJECT_SOURCE_DIR ${PROJECT_ROOT_DIR}/src)
+set (PROJECT_DEP_DIR ${PROJECT_ROOT_DIR}/deps)
 
-set (GAME_SRCS ${PROJECT_SOURCE_DIR}/main.cpp)
+###################################
+# Set sources & add an executable
+###################################
+set (game_SRCS ${PROJECT_SOURCE_DIR}/main.cpp)
 
-add_executable(GAME ${GAME_SRCS})
+add_executable(game ${game_SRCS})
 
-include_directories(${PROJECT_ROOT_DIR}/include)
+#############################################
+# Dependencies
+#############################################
 
-if (MSVC)
-  target_link_libraries(GAME ${PROJECT_ROOT_DIR}/lib/glfw3.lib opengl32 gdi32 user32 kernel32 shell32)
-	set (CMAKE_CXX_FLAGS "/MD /EHsc")
-endif (MSVC)
+# OpenGL ###########################################
+# For GNU Linux, should only need to link to this... windows might be a bit
+# different.
+target_link_libraries(game GL)
+####################################################
 
-if(${CMAKE_COMPILER_IS_GNUCC})
-	link_directories(/usr/local/lib)
-  link_directories(${PROJECT_ROOT_DIR}/lib)
-	target_link_libraries(GAME glfw3 GL 
-	# glfw3 library dependencies
-	glfw3 rt Xrandr Xinerama Xi Xcursor m dl Xrender drm Xdamage X11-xcb 
-		xcb-glx xcb-dri2 xcb-dri3 xcb-present xcb-sync xshmfence Xxf86vm 
-		Xfixes Xext X11 pthread xcb Xau Xdmcp
-	)
-  set (CMAKE_CXX_FLAGS "-std=c++11 -g")
+# GLFW #############################################
+# Make sure GLFW doesn't build examples / tests / docs
+add_subdirectory(${PROJECT_DEP_DIR}/glfw)
+set (GLFW_BUILD_EXAMPLES OFF)
+set (GLFW_BUILD_TESTS OFF)
+set (GLFW_BUILD_DOCS OFF)
+set (GLFW_VULKAN_STATIC OFF) # Make sure GLFW doesn't build vulkan
+target_link_libraries(game glfw)
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/glfw/include)
+####################################################
+
+#############################################
+# COMPILER FLAGS
+#############################################
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	SET_TARGET_PROPERTIES(game
+		PROPERTIES COMPILE_FLAGS "/W4 /Wall")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	SET_TARGET_PROPERTIES(game
+		PROPERTIES COMPILE_FLAGS "-Wall -Wpedantic -g -std=c++11")
 endif()
-
 
