@@ -33,7 +33,11 @@ target_include_directories(game PUBLIC ${PROJECT_SOURCE_DIR})
 # OpenGL ###########################################
 # For GNU Linux, should only need to link to this... windows might be a bit
 # different.
-target_link_libraries(game GL)
+if (LINUX AND NOT APPLE)
+  target_link_libraries(game GL)
+elseif (WIN32)
+  target_link_libraries(game opengl32)
+endif ()
 ####################################################
 
 # GLFW #############################################
