@@ -6,5 +6,4 @@ int main(int argc, char** argv) {
 
   Engine* engine = new Engine;
   engine->engine_go();
-  }
 }
