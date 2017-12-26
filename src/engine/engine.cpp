@@ -28,13 +28,21 @@ void Engine::pop_screen() {
 }
 
 void Engine::engine_go() {
-  this->input_manager->update_input();
+  while (true) {
+    this->input_manager->update_input();
 
-  // Update the state
-  //this->update();
+    // Update the state
+    //this->update();
 
-  //TODO: Render
-  //render()
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glfwSwapBuffers(this->window);
+    if (glfwWindowShouldClose(this->window)){
+      break;
+    }
+    //TODO: Render
+    //render()
+  }
 }
 
 void Engine::update() {
