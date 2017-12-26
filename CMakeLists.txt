@@ -15,10 +15,12 @@ set (PROJECT_DEP_DIR ${PROJECT_ROOT_DIR}/deps)
 set (game_SRCS 
   ${PROJECT_SOURCE_DIR}/main.cpp
   ${PROJECT_SOURCE_DIR}/engine/vec.cpp
+  ${PROJECT_SOURCE_DIR}/engine/util/io.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_controller.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/renderer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_buffer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/vertex.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/shader.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/system_game_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/engine.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
