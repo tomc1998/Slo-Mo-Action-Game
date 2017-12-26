@@ -16,6 +16,10 @@ class Engine {
     /** Push a screen to the screen stack. */
     void push_screen(Screen* screen);
     /** Pop a screen from the stack - this pointer may now be freed. */
-    Screen* pop_screen();
+    void pop_screen();
+    /** Run the engine */
+    void engine_go();
+    /** Update the current state */
+    void update();
 };
 

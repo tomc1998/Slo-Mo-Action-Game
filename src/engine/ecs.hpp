@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <vector>
 #include "comp/game_entity.hpp"
+#include "system/system.hpp"
 
 /************/
 /** MACROS **/
@@ -45,9 +46,14 @@ typedef u32 EntityId;
 
 /** Entity component system, containing lists of all the components. */
 class ECS {
+  /* The system class needs to access the components */
+  friend class System;
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
-
+  private:
+    std::vector<System*> systems;
   public:
-  EntityId gen_entity_id();
+    EntityId gen_entity_id();
+    /** Updates the ECS */
+    void update();
 };
