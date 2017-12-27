@@ -4,13 +4,11 @@
 
 class Vertex {
   public:
-  Vec2 pos;
-  /** Basically a Z coordinate */
-  f32 layer;
-  Color color;
-  Vertex(Vec2 _pos, f32 _layer, Color _color);
+    f32 pos[3];
+    f32 color[4];
+  Vertex(Vec2 _pos, f32 _layer, Color* _color);
   /** Default to layer 0 */
-  Vertex(Vec2 _pos, Color _color);
+  Vertex(Vec2 _pos, Color* _color);
 };
 
 
