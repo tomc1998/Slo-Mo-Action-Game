@@ -50,8 +50,6 @@ class PaintController;
 /** Class declaration **/
 /***********************/
 
-typedef u32 EntityId;
-
 /** Entity component system, containing lists of all the components. */
 class ECS {
   /* The system class needs to access the components */

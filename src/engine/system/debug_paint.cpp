@@ -12,7 +12,7 @@ class SystemDebugPaint: public System {
       Color red = Color(1.0, 0.0, 0.0, 1.0);
       for (u32 ii=0; ii < ecs->comp_game_entity.size(); ii++ ) {
         CompGameEntity entity = ecs->comp_game_entity[ii];
-        paint_controller.fill_rect(-1.0 + entity.pos.x/100000, 0.0 + entity.pos.y/100000, 0.5, 0.5, &red);
+        paint_controller.fill_rect(entity.pos.x, entity.pos.y, 16.0, 16.0, &red);
       }
     }
 };
