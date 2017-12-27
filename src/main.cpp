@@ -3,6 +3,6 @@
 #include "engine/engine.hpp"
 
 int main(int argc, char** argv) {
-  Engine* engine = new Engine;
-  engine->engine_go();
+  Engine engine;
+  engine.engine_go();
 }
