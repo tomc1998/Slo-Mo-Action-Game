@@ -17,6 +17,16 @@ ECS::ECS() {
   this->paint_systems.push_back(new SystemDebugPaint);
 }
 
+ECS::~ECS() {
+  for (i32 ii = 0; ii < update_systems.size(); ii ++) {
+    delete update_systems[ii];
+  }
+
+  for (i32 ii = 0; ii < paint_systems.size(); ii ++) {
+    delete paint_systems[ii];
+  }
+}
+
 EntityId ECS::gen_entity_id() {
   this->current_entity_id++;
   return this->current_entity_id;

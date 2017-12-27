@@ -65,6 +65,7 @@ private:
   std::vector<UpdateSystem *> update_systems;
   std::vector<PaintSystem *> paint_systems;
   int current_entity_id;
+  ~ECS();
 
 public:
   ECS();
