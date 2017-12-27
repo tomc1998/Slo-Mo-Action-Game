@@ -1,6 +1,7 @@
 #include "engine/ecs.hpp"
 #include "engine/engine.hpp"
 #include "engine/input/input_manager.hpp"
+#include "engine/input/input_state.hpp"
 #include "engine/screen.hpp"
 #include <chrono>
 #include <iostream>
@@ -26,6 +27,11 @@ Engine::Engine() {
 
   this->renderer = new Renderer(800.0, 600.0);
   this->input_manager = new InputManager(this->window);
+
+  this->max_updates_per_render = 10;
+  this->updates_per_render = this->max_updates_per_render;
+  this->min_updates_per_render = 1;
+  this->slomo = false;
 }
 
 void Engine::push_screen(Screen *screen) {
@@ -43,15 +49,19 @@ void Engine::pop_screen() {
 
 void Engine::engine_go() {
   while (true) {
-    this->input_manager->update_input();
+    for (i32 ii = 0; ii < this->updates_per_render; ii++) {
+      this->input_manager->update_input();
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    this->update();
+      glClear(GL_COLOR_BUFFER_BIT);
+      this->update();
+    }
 
     auto frame_time_start = std::chrono::high_resolution_clock::now();
 
+    this->paint();
     renderer->render();
     renderer->clear_paint_buffer();
+    glfwSwapBuffers(this->window);
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
         std::chrono::high_resolution_clock::now() - frame_time_start);
@@ -69,7 +79,6 @@ void Engine::engine_go() {
 #endif
     }
 
-    glfwSwapBuffers(this->window);
     if (glfwWindowShouldClose(this->window)) {
       break;
     }
@@ -77,9 +86,27 @@ void Engine::engine_go() {
 }
 
 void Engine::update() {
+  InputState *input_state = this->input_manager->get_current_input_state();
+  if (input_state->slomo_down && !input_state->slomo_down_prev) {
+    this->slomo = !this->slomo;
+  }
+
+  if (this->slomo && this->updates_per_render != this->min_updates_per_render) {
+    this->updates_per_render--;
+  }
+
+  if (!this->slomo &&
+      this->updates_per_render != this->max_updates_per_render) {
+    this->updates_per_render++;
+  }
+
+  ECS *current_ecs = this->screen_stack.back().first;
+  current_ecs->update(input_state);
+}
+
+void Engine::paint() {
   ECS *current_ecs = this->screen_stack.back().first;
   auto controller = renderer->gen_paint_controller();
-  current_ecs->update(this->input_manager->get_current_input_state());
   current_ecs->paint(this->input_manager->get_current_input_state(),
                      controller);
 }

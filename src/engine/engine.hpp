@@ -18,8 +18,14 @@ private:
   std::vector<std::pair<ECS *, Screen *>> screen_stack;
   /** Update the current state */
   void update();
+  /** Paint the current state */
+  void paint();
   InputManager *input_manager;
   static constexpr f32 FPS = 60.0;
+  int max_updates_per_render;
+  int min_updates_per_render;
+  int updates_per_render;
+  bool slomo;
 
 public:
   Engine();

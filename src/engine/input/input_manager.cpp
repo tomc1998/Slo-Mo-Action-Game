@@ -1,5 +1,5 @@
-#include "input_manager.hpp"
 #include "engine/vec.hpp"
+#include "input_manager.hpp"
 #include "input_state.hpp"
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -9,6 +9,14 @@ InputManager::InputManager(GLFWwindow *window) {
   current_input_state.move_right_keycode = GLFW_KEY_D;
   current_input_state.move_down_keycode = GLFW_KEY_S;
   current_input_state.move_left_keycode = GLFW_KEY_A;
+  current_input_state.slomo_down_keycode = GLFW_KEY_SPACE;
+
+  current_input_state.move_up = 0.0f;
+  current_input_state.move_right = 0.0f;
+  current_input_state.move_down = 0.0f;
+  current_input_state.move_left = 0.0f;
+  current_input_state.attack_down = false;
+  current_input_state.slomo_down = false;
 
   glfwSetKeyCallback(window, InputManager::key_callback);
   glfwSetMouseButtonCallback(window, InputManager::mouse_callback);
@@ -22,14 +30,6 @@ InputState *InputManager::get_current_input_state() {
 void InputManager::key_callback(GLFWwindow *window, int key, int scancode,
                                 int action, int mods) {
   InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
-
-  // Remember the previous values of each input
-  input_state->move_up_prev = input_state->move_up;
-  input_state->move_right_prev = input_state->move_right;
-  input_state->move_down_prev = input_state->move_down;
-  input_state->move_left_prev = input_state->move_left;
-  input_state->attack_down_prev = input_state->attack_down;
-  input_state->slomo_down_prev = input_state->move_up;
 
   // Key presses
   if (action == GLFW_PRESS) {
@@ -113,4 +113,13 @@ void InputManager::mouse_callback(GLFWwindow *window, int button, int action,
   }
 }
 
-void InputManager::update_input() { glfwPollEvents(); }
+void InputManager::update_input() {
+  // Remember the previous values of each input
+  current_input_state.move_up_prev = current_input_state.move_up;
+  current_input_state.move_right_prev = current_input_state.move_right;
+  current_input_state.move_down_prev = current_input_state.move_down;
+  current_input_state.move_left_prev = current_input_state.move_left;
+  current_input_state.attack_down_prev = current_input_state.attack_down;
+  current_input_state.slomo_down_prev = current_input_state.slomo_down;
+  glfwPollEvents();
+}
