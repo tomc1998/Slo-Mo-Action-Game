@@ -26,7 +26,7 @@ void Renderer::clear_paint_buffer() {
   buffer.clear();
 }
 
-PaintController* Renderer::gen_paint_controller() {
-  PaintController* p = new PaintController(&buffer);
+PaintController Renderer::gen_paint_controller() {
+  PaintController p(&buffer);
   return p;
 }
