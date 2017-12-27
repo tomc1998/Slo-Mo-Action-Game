@@ -18,11 +18,11 @@ ECS::ECS() {
 }
 
 ECS::~ECS() {
-  for (i32 ii = 0; ii < update_systems.size(); ii++) {
+  for (u32 ii = 0; ii < update_systems.size(); ii++) {
     delete update_systems[ii];
   }
 
-  for (i32 ii = 0; ii < paint_systems.size(); ii++) {
+  for (u32 ii = 0; ii < paint_systems.size(); ii++) {
     delete paint_systems[ii];
   }
 }

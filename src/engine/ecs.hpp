@@ -63,10 +63,10 @@ private:
   std::vector<UpdateSystem *> update_systems;
   std::vector<PaintSystem *> paint_systems;
   int current_entity_id;
-  ~ECS();
 
 public:
   ECS();
+  ~ECS();
   EntityId gen_entity_id();
   /** Updates the ECS */
   void update(InputState *input_state);
