@@ -2,7 +2,8 @@
 
 #include <vector>
 #include <utility>
-#include "screen.hpp"
+#include "engine/screen.hpp"
+#include "engine/renderer/renderer.hpp"
 
 /** Main engine, game code accesses engine through here. Shouldn't be
  * copied, & should exist for the full lifetime of the program. This will
@@ -10,6 +11,7 @@
  * should be removed before being freed, if they need to be freed). */
 class Engine {
   private:
+    Renderer renderer;
     std::vector<std::pair<ECS*, Screen*>> screen_stack;
     /** Update the current state */
     void update();

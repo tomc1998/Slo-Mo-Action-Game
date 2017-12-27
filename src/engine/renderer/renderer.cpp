@@ -14,11 +14,11 @@ Renderer::Renderer() {
 }
 
 void Renderer::render() {
-  glUseProgram(shader->program_id);
   glBindBuffer(GL_ARRAY_BUFFER, dyn_vbo);
-  buffer.buffer_to_gl(Renderer::V_ATTR_POS_LOC, Renderer::V_ATTR_COL_LOC);
+  glUseProgram(shader->program_id);
   glEnableVertexAttribArray(Renderer::V_ATTR_POS_LOC);
   glEnableVertexAttribArray(Renderer::V_ATTR_COL_LOC);
+  buffer.buffer_to_gl(Renderer::V_ATTR_POS_LOC, Renderer::V_ATTR_COL_LOC);
   glDrawArrays(GL_TRIANGLES, 0, buffer.size());
 }
 

@@ -69,6 +69,8 @@ Shader::Shader(
     glBindAttribLocation(program_id, mapping.second, mapping.first);
   }
 
+  glLinkProgram(program_id);
+
   GLint is_linked = 0;
   glGetProgramiv(program_id, GL_LINK_STATUS, (int*)&is_linked);
   if(is_linked == GL_FALSE) { // Handle link errors

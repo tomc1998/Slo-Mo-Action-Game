@@ -43,5 +43,5 @@ class Renderer {
     /** The location of 'position' vertex attribute */
     static const GLuint V_ATTR_POS_LOC = 0;
     /** The location of 'color' vertex attribute */
-    static const GLuint V_ATTR_COL_LOC = 0;
+    static const GLuint V_ATTR_COL_LOC = 1;
 };

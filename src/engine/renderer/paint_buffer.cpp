@@ -19,9 +19,9 @@ void PaintBuffer::buffer_to_gl(GLuint v_pos_index, GLuint v_col_index) {
 
   // Check that a buffer is actually bound
 #ifndef NDEBUG
-  GLint curr_buff;
-  glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &curr_buff);
-  assert(curr_buff != 0);
+  GLint curr_buf;
+  glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &curr_buf);
+  assert(curr_buf != 0);
 #endif
 
   // Just straight buffer the whole thing, we're going to set the attrib

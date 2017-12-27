@@ -22,10 +22,14 @@ void Engine::engine_go() {
   //get_input()
 
   // Update the state
-  this->update();
+  //this->update();
 
   //TODO: Render
-  //render()
+  Color red = Color(1.0, 0.0, 0.0, 1.0);
+  auto controller = renderer.gen_paint_controller();
+  controller->fill_rect(0.0f, 0.0f, 1.0f, 1.0f, &red);
+  renderer.render();
+  renderer.clear_paint_buffer();
 }
 
 void Engine::update() {
