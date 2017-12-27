@@ -22,7 +22,6 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_buffer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/vertex.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/shader.cpp
-  ${PROJECT_SOURCE_DIR}/engine/system/system_game_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/input/input_manager.cpp
   ${PROJECT_SOURCE_DIR}/engine/engine.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
