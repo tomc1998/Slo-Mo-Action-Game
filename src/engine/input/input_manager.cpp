@@ -1,10 +1,10 @@
+#include "input_manager.hpp"
+#include "engine/vec.hpp"
+#include "input_state.hpp"
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "engine/vec.hpp"  
-#include "input_manager.hpp"
-#include "input_state.hpp"
 
-InputManager::InputManager(GLFWwindow* window) {
+InputManager::InputManager(GLFWwindow *window) {
   current_input_state.move_up_keycode = GLFW_KEY_W;
   current_input_state.move_right_keycode = GLFW_KEY_D;
   current_input_state.move_down_keycode = GLFW_KEY_S;
@@ -13,16 +13,15 @@ InputManager::InputManager(GLFWwindow* window) {
   glfwSetKeyCallback(window, InputManager::key_callback);
   glfwSetMouseButtonCallback(window, InputManager::mouse_callback);
   glfwSetWindowUserPointer(window, &this->current_input_state);
-
 }
 
-
-InputState* InputManager::get_current_input_state() {
+InputState *InputManager::get_current_input_state() {
   return &this->current_input_state;
 }
 
-void InputManager::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-  InputState* input_state = (InputState*)glfwGetWindowUserPointer(window);
+void InputManager::key_callback(GLFWwindow *window, int key, int scancode,
+                                int action, int mods) {
+  InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
 
   // Remember the previous values of each input
   input_state->move_up_prev = input_state->move_up;
@@ -85,11 +84,11 @@ void InputManager::key_callback(GLFWwindow* window, int key, int scancode, int a
       input_state->slomo_down = false;
     }
   }
-   
 }
 
-void InputManager::mouse_callback(GLFWwindow* window, int button, int action, int mods) {
-  InputState* input_state = (InputState*)glfwGetWindowUserPointer(window);
+void InputManager::mouse_callback(GLFWwindow *window, int button, int action,
+                                  int mods) {
+  InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
   double xpos, ypos;
 
   if (action == GLFW_PRESS) {
@@ -108,14 +107,10 @@ void InputManager::mouse_callback(GLFWwindow* window, int button, int action, in
     glfwGetCursorPos(window, &xpos, &ypos);
     input_state->mouse_drag.push_back(Vec2((f32)xpos, (f32)ypos));
   }
-  //If lmb is released and the mouse_drag vector is not already empty, empty it
+  // If lmb is released and the mouse_drag vector is not already empty, empty it
   else if (not(input_state->lmb_down) && input_state->mouse_drag.size() != 0) {
     input_state->mouse_drag.clear();
   }
-  
 }
 
-void InputManager::update_input() {
-  glfwPollEvents();
-}
-
+void InputManager::update_input() { glfwPollEvents(); }

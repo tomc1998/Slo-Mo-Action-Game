@@ -1,11 +1,10 @@
 #pragma once
-#include <cstdint>
-#include <vector>
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
+#include <cstdint>
+#include <vector>
 
-
-//Forward declaration or else circular include happens
+// Forward declaration or else circular include happens
 class System;
 class SystemPlayerControlled;
 class SystemPhysics;
@@ -17,7 +16,7 @@ class PaintController;
 /** MACROS **/
 /************/
 
-/** Defining a macro for quickly generating functions to add components 
+/** Defining a macro for quickly generating functions to add components
  * # Usage
  * Given a component called 'CompPlayerControlled' which we would like to
  * generate functions like `add_comp_player_controlled(CompPlayerControlled
@@ -27,11 +26,12 @@ class PaintController;
  * ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
  * ```
  */
-#define ECS_DECLARE_COMPONENT(TYPE, NAME) \
-  private:\
-    std::vector<TYPE> comp_ ## NAME;\
-  public:\
-    void add_comp_ ## NAME(TYPE comp);
+#define ECS_DECLARE_COMPONENT(TYPE, NAME)                                      \
+private:                                                                       \
+  std::vector<TYPE> comp_##NAME;                                               \
+                                                                               \
+public:                                                                        \
+  void add_comp_##NAME(TYPE comp);
 
 /** Macro for generating implementations of functions to add components. When
  * declaring a component of type `CompPlayerControlled`, with the name
@@ -41,10 +41,8 @@ class PaintController;
  * ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
  * ```
  */
-#define ECS_IMPL_COMPONENT(TYPE, NAME) \
-  void ECS::add_comp_ ## NAME(TYPE comp) {\
-    this->comp_ ## NAME.push_back(comp);\
-  }
+#define ECS_IMPL_COMPONENT(TYPE, NAME)                                         \
+  void ECS::add_comp_##NAME(TYPE comp) { this->comp_##NAME.push_back(comp); }
 
 /***********************/
 /** Class declaration **/
@@ -59,12 +57,13 @@ class ECS {
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
-  private:
-    std::vector<System*> systems;
-    int current_entity_id;
-  public:
-    ECS();
-    EntityId gen_entity_id();
-    /** Updates the ECS */
-    void update(InputState* input_state, PaintController paint_controller);
+private:
+  std::vector<System *> systems;
+  int current_entity_id;
+
+public:
+  ECS();
+  EntityId gen_entity_id();
+  /** Updates the ECS */
+  void update(InputState *input_state, PaintController paint_controller);
 };
