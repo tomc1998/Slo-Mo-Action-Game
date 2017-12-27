@@ -72,6 +72,12 @@ target_link_libraries(game glad)
 target_include_directories(game PUBLIC ${GLAD_ROOT_DIR}/include)
 ####################################################
 
+# SparsePP #############################################
+# Header only library for sparse contiguous hash maps
+set (SPARSEPP_ROOT_DIR ${PROJECT_DEP_DIR/sparsepp})
+target_include_directories(game PUBLIC ${SPARSEPP_ROOT_DIR}/sparsepp)
+####################################################
+
 #############################################
 # COMPILER FLAGS
 #############################################
