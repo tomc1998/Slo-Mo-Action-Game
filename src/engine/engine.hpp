@@ -2,6 +2,7 @@
 
 #include "engine/input/input_manager.hpp"
 #include "engine/renderer/renderer.hpp"
+#include "engine/resource_manager.hpp"
 #include "engine/screen.hpp"
 #include <utility>
 #include <vector>
@@ -19,6 +20,7 @@ private:
   /** Update the current state */
   void update();
   InputManager *input_manager;
+  ResourceManager resource_manager;
 
 public:
   Engine();

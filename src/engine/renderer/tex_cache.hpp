@@ -4,7 +4,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "engine/resource_manager.hpp"
+#include "engine/resource.hpp"
 #include <vector>
 
 class BinTreeNode {

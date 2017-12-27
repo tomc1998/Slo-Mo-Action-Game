@@ -9,6 +9,10 @@
 
 #include <GLFW/glfw3.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+#undef STB_IMAGE_IMPLEMENTATION
+
 Engine::Engine() {
   glfwInit();
   this->window = glfwCreateWindow(800, 600, "Slo-Mo Action Game", NULL, NULL);
@@ -33,6 +37,9 @@ void Engine::pop_screen() {
 }
 
 void Engine::engine_go() {
+  // test load an image
+  resource_manager.load_texture("assets/sprites/test.png");
+
   while (true) {
     this->input_manager->update_input();
 

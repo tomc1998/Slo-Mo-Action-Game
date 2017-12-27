@@ -129,7 +129,7 @@ u64 TexCache::cache_tex(ResHandle tex, void *tex_data, u32 w, u32 h, f32* space)
     // Now that we've created the texture memory, we need to add a bin packing
     // tree
     f32 new_node_space[] = {0.0, 0.0, 1.0, 1.0};
-    bin_pack_trees.push_back(BinTreeNode(space));
+    bin_pack_trees.push_back(BinTreeNode(new_node_space));
     chosen_tree = &bin_pack_trees.back();
     chosen_ix = bin_pack_trees.size()-1;
   }
@@ -139,5 +139,8 @@ u64 TexCache::cache_tex(ResHandle tex, void *tex_data, u32 w, u32 h, f32* space)
   i32 y = (i32) (space[1] * (f32)cache_tex_w);
   glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, w, h, GL_RGBA, GL_UNSIGNED_BYTE, tex_data);
 
+  // Finally, transform 'space' so that itcontains the UVs, not the w/h
+  space[2] = space[0] + space[2];
+  space[3] = space[1] + space[3];
   return chosen_ix;
 }
