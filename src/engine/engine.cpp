@@ -13,7 +13,7 @@ Engine::Engine() {
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
-  this->renderer = new Renderer();
+  this->renderer = new Renderer(800.0, 600.0);
   this->input_manager = new InputManager(this->window);
 }
 
@@ -37,7 +37,6 @@ void Engine::engine_go() {
     glClear(GL_COLOR_BUFFER_BIT);
     this->update();
 
-    
     renderer->render();
     renderer->clear_paint_buffer();
     
