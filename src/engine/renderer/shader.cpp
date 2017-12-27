@@ -18,10 +18,10 @@ Shader::Shader(const char *vert_shader_path, const char *frag_shader_path,
   std::vector<char *> vert_shader_src = load_file_by_lines(vert_shader_path);
   std::vector<char *> frag_shader_src = load_file_by_lines(frag_shader_path);
   std::vector<GLint> vert_shader_src_line_lengths, frag_shader_src_line_lengths;
-  for (auto line : vert_shader_src) {
+  for (auto &line : vert_shader_src) {
     vert_shader_src_line_lengths.push_back(strlen(line));
   }
-  for (auto line : frag_shader_src) {
+  for (auto &line : frag_shader_src) {
     frag_shader_src_line_lengths.push_back(strlen(line));
   }
 
@@ -67,7 +67,7 @@ Shader::Shader(const char *vert_shader_path, const char *frag_shader_path,
   glAttachShader(program_id, frag_shader);
 
   // Bind attribute locations
-  for (auto mapping : attrib_loc_bindings) {
+  for (auto &mapping : attrib_loc_bindings) {
     glBindAttribLocation(program_id, mapping.second, mapping.first);
   }
 
@@ -90,7 +90,7 @@ Shader::Shader(const char *vert_shader_path, const char *frag_shader_path,
   }
 
   // Find all the uniform locations
-  for (auto loc_query : uniform_loc_queries) {
+  for (auto &loc_query : uniform_loc_queries) {
     *loc_query.second = glGetUniformLocation(program_id, loc_query.first);
     if (*loc_query.second == -1) {
       throw std::runtime_error(
