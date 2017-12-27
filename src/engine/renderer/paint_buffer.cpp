@@ -34,7 +34,7 @@ void PaintBuffer::buffer_to_gl(GLuint v_pos_index, GLuint v_col_index) {
   GLvoid* pos_attr_offset = (GLvoid*) offsetof(Vertex,pos);
   GLvoid* col_attr_offset = (GLvoid*) offsetof(Vertex,color);
   glVertexAttribPointer(v_pos_index, 3, GL_FLOAT, GL_FALSE, sizeof(v_buf[0]), pos_attr_offset);
-  glVertexAttribPointer(v_col_index, 3, GL_FLOAT, GL_FALSE, sizeof(v_buf[0]), col_attr_offset);
+  glVertexAttribPointer(v_col_index, 4, GL_FLOAT, GL_FALSE, sizeof(v_buf[0]), col_attr_offset);
 }
 
 
