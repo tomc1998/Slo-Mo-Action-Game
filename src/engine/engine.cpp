@@ -34,14 +34,9 @@ void Engine::engine_go() {
   while (true) {
     this->input_manager->update_input();
 
-    // Update the state
-    //this->update();
-
     glClear(GL_COLOR_BUFFER_BIT);
-    
-    Color red = Color(1.0, 0.0, 0.0, 1.0);
-    auto controller = renderer->gen_paint_controller();
-    controller.fill_rect(0.0f, 0.0f, 100.0f, 100.0f, &red);
+    this->update();
+
     renderer->render();
     renderer->clear_paint_buffer();
     
@@ -54,5 +49,6 @@ void Engine::engine_go() {
 
 void Engine::update() {
   ECS* current_ecs = this->screen_stack.back().first;
-  current_ecs->update(this->input_manager->get_current_input_state());
+  auto controller = renderer->gen_paint_controller();
+  current_ecs->update(this->input_manager->get_current_input_state(), controller);
 }

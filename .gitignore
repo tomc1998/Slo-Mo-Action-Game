@@ -1,5 +1,6 @@
 bin
 lib
 build.sh
+build.bat
 *~
 *.swp

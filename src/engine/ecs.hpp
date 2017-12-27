@@ -1,15 +1,17 @@
 #pragma once
-
 #include <cstdint>
 #include <vector>
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
 
+
 //Forward declaration or else circular include happens
 class System;
 class SystemPlayerControlled;
 class SystemPhysics;
+class SystemDebugPaint;
 class InputState;
+class PaintController;
 
 /************/
 /** MACROS **/
@@ -55,6 +57,7 @@ class ECS {
   /* The system class needs to access the components */
   friend class SystemPhysics;
   friend class SystemPlayerControlled;
+  friend class SystemDebugPaint;
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
@@ -65,5 +68,5 @@ class ECS {
     ECS();
     EntityId gen_entity_id();
     /** Updates the ECS */
-    void update(InputState* input_state);
+    void update(InputState* input_state, PaintController paint_controller);
 };
