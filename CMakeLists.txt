@@ -14,16 +14,21 @@ set (PROJECT_DEP_DIR ${PROJECT_ROOT_DIR}/deps)
 ###################################
 set (game_SRCS 
   ${PROJECT_SOURCE_DIR}/main.cpp
+  ${PROJECT_SOURCE_DIR}/test_screen.cpp
   ${PROJECT_SOURCE_DIR}/engine/vec.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_controller.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/renderer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_buffer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/vertex.cpp
-  ${PROJECT_SOURCE_DIR}/engine/system/system_game_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/input/input_manager.cpp
   ${PROJECT_SOURCE_DIR}/engine/engine.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
+  ${PROJECT_SOURCE_DIR}/engine/system/player_controlled.cpp
+  ${PROJECT_SOURCE_DIR}/engine/system/physics.cpp
+  ${PROJECT_SOURCE_DIR}/engine/comp/player_controlled.cpp
+  ${PROJECT_SOURCE_DIR}/engine/comp/game_entity.cpp
   )
+
 
 add_executable(game ${game_SRCS})
 target_include_directories(game PUBLIC ${PROJECT_SOURCE_DIR})

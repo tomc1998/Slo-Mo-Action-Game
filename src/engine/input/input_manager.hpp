@@ -3,7 +3,6 @@
 
 //Forward declarations
 class GLFWwindow;
-class InputState;
 
 /** Input manager class that updates input and stores it in an InputState variable*/
 class InputManager {

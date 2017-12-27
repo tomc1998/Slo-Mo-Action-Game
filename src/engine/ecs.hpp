@@ -3,7 +3,13 @@
 #include <cstdint>
 #include <vector>
 #include "comp/game_entity.hpp"
-#include "system/system.hpp"
+#include "comp/player_controlled.hpp"
+
+//Forward declaration or else circular include happens
+class System;
+class SystemPlayerControlled;
+class SystemPhysics;
+class InputState;
 
 /************/
 /** MACROS **/
@@ -47,13 +53,17 @@ typedef u32 EntityId;
 /** Entity component system, containing lists of all the components. */
 class ECS {
   /* The system class needs to access the components */
-  friend class SystemGravity;
+  friend class SystemPhysics;
+  friend class SystemPlayerControlled;
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
+  ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
   private:
     std::vector<System*> systems;
+    int current_entity_id;
   public:
+    ECS();
     EntityId gen_entity_id();
     /** Updates the ECS */
-    void update();
+    void update(InputState* input_state);
 };
