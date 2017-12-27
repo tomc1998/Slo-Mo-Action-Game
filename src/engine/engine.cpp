@@ -1,11 +1,11 @@
 #include <utility>
 #include <iostream>
+#include "engine/input/input_manager.hpp"
+#include "engine/ecs.hpp"
+#include "engine/engine.hpp"
+#include "engine/screen.hpp"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "engine/input/input_manager.hpp"
-#include "ecs.hpp"
-#include "engine.hpp"
-#include "screen.hpp"
 
 Engine::Engine() {
   glfwInit();
@@ -13,6 +13,7 @@ Engine::Engine() {
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
+  this->renderer = new Renderer();
   this->input_manager = new InputManager(this->window);
 }
 
@@ -37,13 +38,17 @@ void Engine::engine_go() {
     //this->update();
 
     glClear(GL_COLOR_BUFFER_BIT);
-
+    
+    Color red = Color(1.0, 0.0, 0.0, 1.0);
+    auto controller = renderer->gen_paint_controller();
+    controller->fill_rect(0.0f, 0.0f, 1.0f, 1.0f, &red);
+    renderer->render();
+    renderer->clear_paint_buffer();
+    
     glfwSwapBuffers(this->window);
     if (glfwWindowShouldClose(this->window)){
       break;
     }
-    //TODO: Render
-    //render()
   }
 }
 

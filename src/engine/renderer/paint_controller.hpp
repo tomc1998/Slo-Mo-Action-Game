@@ -14,4 +14,6 @@ class PaintController {
      * controllers should only be created via the gen_paint_controller method on
      * the renderer. */
     PaintController(PaintBuffer* _buffer);
+
+    void fill_rect(f32 x, f32 y, f32 w, f32 h, Color* color);
 };

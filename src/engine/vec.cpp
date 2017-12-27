@@ -1,8 +1,8 @@
 #include "vec.hpp"
 
 Vec2::Vec2(f32 _x, f32 _y) {
-  x = x;
-  y = y;
+  x = _x;
+  y = _y;
 }
 
 Vec2::Vec2() {

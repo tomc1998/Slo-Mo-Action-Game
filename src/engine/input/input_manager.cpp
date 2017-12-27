@@ -5,8 +5,8 @@
 #include "input_state.hpp"
 
 InputManager::InputManager(GLFWwindow* window) {
-  glfwSetKeyCallback(window, this->key_callback);
-  glfwSetMouseButtonCallback(window, this->mouse_callback);
+  glfwSetKeyCallback(window, InputManager::key_callback);
+  glfwSetMouseButtonCallback(window, InputManager::mouse_callback);
 
   glfwSetWindowUserPointer(window, &this->current_input_state);
 }
