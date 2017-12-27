@@ -1,9 +1,19 @@
 #include <utility>
+#include <iostream>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include "engine/input/input_manager.hpp"
 #include "ecs.hpp"
 #include "engine.hpp"
 #include "screen.hpp"
 
 Engine::Engine() {
+  glfwInit();
+  this->window = glfwCreateWindow(800, 600, "Slo-Mo Action Game", NULL, NULL);
+  glfwMakeContextCurrent(window);
+  gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
+  this->input_manager = new InputManager(this->window);
 }
 
 void Engine::push_screen(Screen* screen) {
@@ -18,18 +28,25 @@ void Engine::pop_screen() {
 }
 
 void Engine::engine_go() {
-  // TODO: Get input somehow
-  //get_input()
+  while (true) {
+    this->input_manager->update_input();
 
-  // Update the state
-  //this->update();
+    // Update the state
+    //this->update();
 
-  //TODO: Render
-  Color red = Color(1.0, 0.0, 0.0, 1.0);
-  auto controller = renderer.gen_paint_controller();
-  controller->fill_rect(0.0f, 0.0f, 1.0f, 1.0f, &red);
-  renderer.render();
-  renderer.clear_paint_buffer();
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    Color red = Color(1.0, 0.0, 0.0, 1.0);
+    auto controller = renderer.gen_paint_controller();
+    controller->fill_rect(0.0f, 0.0f, 1.0f, 1.0f, &red);
+    renderer.render();
+    renderer.clear_paint_buffer();
+    
+    glfwSwapBuffers(this->window);
+    if (glfwWindowShouldClose(this->window)){
+      break;
+    }
+  }
 }
 
 void Engine::update() {
