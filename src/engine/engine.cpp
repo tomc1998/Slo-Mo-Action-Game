@@ -9,6 +9,8 @@
 #include <unistd.h>
 #elif _WIN32
 #include <windows.h>
+#else
+#error "Platform not supported"
 #endif
 
 #include <glad/glad.h>
