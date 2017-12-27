@@ -18,7 +18,9 @@ Engine::Engine() {
 }
 
 void Engine::push_screen(Screen* screen) {
-  this->screen_stack.push_back(std::pair<ECS*, Screen*> (new ECS(), screen));
+  ECS* ecs = new ECS();
+  screen->init(ecs);
+  this->screen_stack.push_back(std::pair<ECS*, Screen*> (ecs, screen));
 }
 
 void Engine::pop_screen() {
@@ -52,5 +54,5 @@ void Engine::engine_go() {
 
 void Engine::update() {
   ECS* current_ecs = this->screen_stack.back().first;
-  current_ecs->update();
+  current_ecs->update(this->input_manager->get_current_input_state());
 }
