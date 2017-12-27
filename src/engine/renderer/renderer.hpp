@@ -38,7 +38,7 @@ class Renderer {
     void clear_paint_buffer();
 
     /** Generate a paint controller, pointing to this renderer's internal paint buffer. */
-    PaintController* gen_paint_controller();
+    PaintController gen_paint_controller();
 
     /** The location of 'position' vertex attribute */
     static const GLuint V_ATTR_POS_LOC = 0;
