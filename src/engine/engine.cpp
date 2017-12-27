@@ -22,6 +22,7 @@ Engine::Engine() {
   this->window = glfwCreateWindow(800, 600, "Slo-Mo Action Game", NULL, NULL);
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+  glfwSwapInterval(0);
 
   this->renderer = new Renderer(800.0, 600.0);
   this->input_manager = new InputManager(this->window);
@@ -52,11 +53,12 @@ void Engine::engine_go() {
     renderer->render();
     renderer->clear_paint_buffer();
 
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-        frame_time_start - std::chrono::high_resolution_clock::now());
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+        std::chrono::high_resolution_clock::now() - frame_time_start);
 
-    auto time_to_sleep_ms = 1000.0 / (this->FPS) - duration.count();
-    
+    auto time_to_sleep_ms =
+        1000.0 / (this->FPS) - ((f32)duration.count()) / 1000.0;
+
     if (time_to_sleep_ms > 0) {
 #ifdef __linux__
       usleep(time_to_sleep_ms * 1000);
@@ -66,7 +68,6 @@ void Engine::engine_go() {
 #error "Platform not supported"
 #endif
     }
-
 
     glfwSwapBuffers(this->window);
     if (glfwWindowShouldClose(this->window)) {
