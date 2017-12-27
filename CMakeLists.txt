@@ -74,8 +74,13 @@ target_include_directories(game PUBLIC ${GLAD_ROOT_DIR}/include)
 
 # SparsePP #############################################
 # Header only library for sparse contiguous hash maps
-set (SPARSEPP_ROOT_DIR ${PROJECT_DEP_DIR/sparsepp})
-target_include_directories(game PUBLIC ${SPARSEPP_ROOT_DIR}/sparsepp)
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/sparsepp)
+####################################################
+
+# stb_image #############################################
+# Header only library for loading images
+set (STBIMAGE_ROOT_DIR ${PROJECT_DEP_DIR/stb_image})
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/stb_image)
 ####################################################
 
 #############################################
