@@ -5,11 +5,17 @@
 #include "input_state.hpp"
 
 InputManager::InputManager(GLFWwindow* window) {
+  current_input_state.move_up_keycode = GLFW_KEY_W;
+  current_input_state.move_right_keycode = GLFW_KEY_D;
+  current_input_state.move_down_keycode = GLFW_KEY_S;
+  current_input_state.move_left_keycode = GLFW_KEY_A;
+
   glfwSetKeyCallback(window, InputManager::key_callback);
   glfwSetMouseButtonCallback(window, InputManager::mouse_callback);
-
   glfwSetWindowUserPointer(window, &this->current_input_state);
+
 }
+
 
 InputState* InputManager::get_current_input_state() {
   return &this->current_input_state;

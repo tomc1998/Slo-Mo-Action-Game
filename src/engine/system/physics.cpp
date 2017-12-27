@@ -1,19 +1,22 @@
 #include "system.hpp"
+#include "engine/renderer/paint_controller.hpp"
+#include "engine/comp/game_entity.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/ecs.hpp"
 
 class SystemPhysics: public System {
   public:
-    void handle_components(ECS* ecs, InputState* input_state) {
+    void handle_components(ECS* ecs, InputState* input_state, PaintController paint_controller) {
       for (u32 ii=0; ii < ecs->comp_game_entity.size(); ii++) {
-        ecs->comp_game_entity[ii].vel.x  = ecs->comp_game_entity[ii].vel.x + ecs->comp_game_entity[ii].acc.x;
-        ecs->comp_game_entity[ii].vel.y  = ecs->comp_game_entity[ii].vel.y + ecs->comp_game_entity[ii].acc.y;
+        CompGameEntity* entity = &ecs->comp_game_entity[ii];
+        entity->vel.x  = (1-entity->damping) * (entity->vel.x + entity->acc.x);
+        entity->vel.y  = (1-entity->damping) * (entity->vel.y + entity->acc.y);
 
-        ecs->comp_game_entity[ii].pos.x  = ecs->comp_game_entity[ii].pos.x + ecs->comp_game_entity[ii].vel.x;
-        ecs->comp_game_entity[ii].pos.y  = ecs->comp_game_entity[ii].pos.y + ecs->comp_game_entity[ii].vel.y;
+        entity->pos.x  = entity->pos.x + entity->vel.x;
+        entity->pos.y  = entity->pos.y + entity->vel.y;
 
-        ecs->comp_game_entity[ii].acc.x = 0.0f;
-        ecs->comp_game_entity[ii].acc.y = 0.0f;
+        entity->acc.x = 0.0f;
+        entity->acc.y = 0.0f;
       }
     }
 };
