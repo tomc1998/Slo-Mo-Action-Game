@@ -5,7 +5,8 @@
 #include <vector>
 
 // Forward declaration or else circular include happens
-class System;
+class PaintSystem;
+class UpdateSystem;
 class SystemPlayerControlled;
 class SystemPhysics;
 class SystemDebugPaint;
@@ -58,12 +59,14 @@ class ECS {
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
 private:
-  std::vector<System *> systems;
+  std::vector<UpdateSystem *> update_systems;
+  std::vector<PaintSystem *> paint_systems;
   int current_entity_id;
 
 public:
   ECS();
   EntityId gen_entity_id();
   /** Updates the ECS */
-  void update(InputState *input_state, PaintController paint_controller);
+  void update(InputState *input_state);
+  void paint(InputState *input_state, PaintController paint_controller);
 };

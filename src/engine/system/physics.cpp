@@ -2,12 +2,11 @@
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
-#include "system.hpp"
+#include "update_system.hpp"
 
-class SystemPhysics : public System {
+class SystemPhysics : public UpdateSystem {
 public:
-  void handle_components(ECS *ecs, InputState *input_state,
-                         PaintController paint_controller) {
+  void handle_components(ECS *ecs, InputState *input_state) {
     for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
       CompGameEntity *entity = &ecs->comp_game_entity[ii];
       entity->vel.x = (1 - entity->damping) * (entity->vel.x + entity->acc.x);

@@ -1,5 +1,5 @@
-#include "engine/engine.hpp"
 #include "engine/ecs.hpp"
+#include "engine/engine.hpp"
 #include "engine/input/input_manager.hpp"
 #include "engine/screen.hpp"
 #include <iostream>
@@ -52,6 +52,7 @@ void Engine::engine_go() {
 void Engine::update() {
   ECS *current_ecs = this->screen_stack.back().first;
   auto controller = renderer->gen_paint_controller();
-  current_ecs->update(this->input_manager->get_current_input_state(),
-                      controller);
+  current_ecs->update(this->input_manager->get_current_input_state());
+  current_ecs->paint(this->input_manager->get_current_input_state(),
+                     controller);
 }
