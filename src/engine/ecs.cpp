@@ -9,8 +9,8 @@ ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
 
 ECS::ECS() {
   this->current_entity_id = 0;
-  this->systems.push_back(new SystemPhysics);
   this->systems.push_back(new SystemPlayerControlled);
+  this->systems.push_back(new SystemPhysics);
 
 }
 
