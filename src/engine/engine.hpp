@@ -19,6 +19,7 @@ private:
   /** Update the current state */
   void update();
   InputManager *input_manager;
+  static constexpr f32 FPS = 60.0;
 
 public:
   Engine();

@@ -2,8 +2,14 @@
 #include "engine/engine.hpp"
 #include "engine/input/input_manager.hpp"
 #include "engine/screen.hpp"
+#include <chrono>
 #include <iostream>
 #include <utility>
+#ifdef __linux__
+#include <unistd.h>
+#elif _WIN32
+#include <windows.h>
+#endif
 
 #include <glad/glad.h>
 
@@ -39,8 +45,26 @@ void Engine::engine_go() {
     glClear(GL_COLOR_BUFFER_BIT);
     this->update();
 
+    auto frame_time_start = std::chrono::high_resolution_clock::now();
+
     renderer->render();
     renderer->clear_paint_buffer();
+
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+        frame_time_start - std::chrono::high_resolution_clock::now());
+
+    auto time_to_sleep_ms = 1000.0 / (this->FPS) - duration.count();
+    
+    if (time_to_sleep_ms > 0) {
+#ifdef __linux__
+      usleep(time_to_sleep_ms * 1000);
+#elif _WIN32
+      Sleep(time_to_sleep_ms);
+#else
+#error "Platform not supported"
+#endif
+    }
+
 
     glfwSwapBuffers(this->window);
     if (glfwWindowShouldClose(this->window)) {
