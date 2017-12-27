@@ -46,7 +46,6 @@ public:                                                                        \
 #define ECS_IMPL_COMPONENT(TYPE, NAME)                                         \
   void ECS::add_comp_##NAME(TYPE comp) { this->comp_##NAME.push_back(comp); }
 
-
 /***********************/
 /** Class declaration **/
 /***********************/
@@ -57,7 +56,6 @@ class ECS {
   friend class SystemPhysics;
   friend class SystemPlayerControlled;
   friend class SystemDebugPaint;
-  /* Limit FPS */
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)

@@ -22,10 +22,10 @@ private:
   void paint();
   InputManager *input_manager;
   static constexpr f32 FPS = 60.0;
-  i32 max_updates_per_render;
-  i32 min_updates_per_render;
-  f32 updates_per_render;
-  bool slomo;
+  i32 max_updates_per_render = 10;
+  i32 min_updates_per_render = 1;
+  f32 updates_per_render = 10.0;
+  bool slomo = false;
 
 public:
   Engine();

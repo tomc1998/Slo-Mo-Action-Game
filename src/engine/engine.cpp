@@ -27,11 +27,6 @@ Engine::Engine() {
 
   this->renderer = new Renderer(800.0, 600.0);
   this->input_manager = new InputManager(this->window);
-
-  this->max_updates_per_render = 10;
-  this->updates_per_render = (f32)this->max_updates_per_render;
-  this->min_updates_per_render = 1;
-  this->slomo = false;
 }
 
 void Engine::push_screen(Screen *screen) {
@@ -92,12 +87,12 @@ void Engine::update() {
   }
 
   if (this->slomo &&
-      this->updates_per_render != (f32)this->min_updates_per_render) {
+      this->updates_per_render > (f32)this->min_updates_per_render) {
     this->updates_per_render -= 0.5;
   }
 
   if (!this->slomo &&
-      this->updates_per_render != (f32)this->max_updates_per_render) {
+      this->updates_per_render < (f32)this->max_updates_per_render) {
     this->updates_per_render += 0.5;
   }
 
