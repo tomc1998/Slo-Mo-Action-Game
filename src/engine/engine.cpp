@@ -29,7 +29,7 @@ Engine::Engine() {
   this->input_manager = new InputManager(this->window);
 
   this->max_updates_per_render = 10;
-  this->updates_per_render = this->max_updates_per_render;
+  this->updates_per_render = (f32)this->max_updates_per_render;
   this->min_updates_per_render = 1;
   this->slomo = false;
 }
@@ -49,7 +49,7 @@ void Engine::pop_screen() {
 
 void Engine::engine_go() {
   while (true) {
-    for (i32 ii = 0; ii < this->updates_per_render; ii++) {
+    for (i32 ii = 0; ii < (int)this->updates_per_render; ii++) {
       this->input_manager->update_input();
 
       glClear(GL_COLOR_BUFFER_BIT);
@@ -91,13 +91,14 @@ void Engine::update() {
     this->slomo = !this->slomo;
   }
 
-  if (this->slomo && this->updates_per_render != this->min_updates_per_render) {
-    this->updates_per_render--;
+  if (this->slomo &&
+      this->updates_per_render != (f32)this->min_updates_per_render) {
+    this->updates_per_render -= 0.5;
   }
 
   if (!this->slomo &&
-      this->updates_per_render != this->max_updates_per_render) {
-    this->updates_per_render++;
+      this->updates_per_render != (f32)this->max_updates_per_render) {
+    this->updates_per_render += 0.5;
   }
 
   ECS *current_ecs = this->screen_stack.back().first;
