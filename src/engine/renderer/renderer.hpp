@@ -20,10 +20,18 @@ class Renderer {
      * rebuffered every frame (hence the name 'dynamic vbo'). */
     GLuint dyn_vbo;
     PaintBuffer buffer;
+
+    /* Shader + uniform locations */
     Shader* shader;
+    GLint proj_mat_uniform_loc;
+
+    f32 proj_mat[16];
+
+    void setup_uniforms();
 
   public:
-    Renderer();
+    /** Initialise the renderer at the given viewport w / h */
+    Renderer(f32 w, f32 h);
 
     /** 
      * Render the internal paint buffer 

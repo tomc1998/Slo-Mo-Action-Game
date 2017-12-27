@@ -13,7 +13,7 @@ Engine::Engine() {
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
-  this->renderer = new Renderer();
+  this->renderer = new Renderer(800.0, 600.0);
   this->input_manager = new InputManager(this->window);
 }
 
@@ -41,7 +41,7 @@ void Engine::engine_go() {
     
     Color red = Color(1.0, 0.0, 0.0, 1.0);
     auto controller = renderer->gen_paint_controller();
-    controller.fill_rect(0.0f, 0.0f, 1.0f, 1.0f, &red);
+    controller.fill_rect(0.0f, 0.0f, 100.0f, 100.0f, &red);
     renderer->render();
     renderer->clear_paint_buffer();
     

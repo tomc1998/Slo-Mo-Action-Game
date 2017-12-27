@@ -4,13 +4,15 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include <map>
 #include "engine/renderer/shader.hpp"
 #include "engine/util/io.hpp"
 
 Shader::Shader(
     const char* vert_shader_path, 
     const char* frag_shader_path, 
-    std::map<const GLchar*, GLuint> attrib_loc_bindings) {
+    std::map<const GLchar*, GLuint> attrib_loc_bindings,
+    std::map<const GLchar*, GLint*> uniform_loc_queries) {
 
   // Read the shader src, calculate line lengths
   std::vector<char*> vert_shader_src = load_file_by_lines(vert_shader_path);
@@ -22,7 +24,6 @@ Shader::Shader(
   for (auto line : frag_shader_src) {
     frag_shader_src_line_lengths.push_back(strlen(line));
   }
-
 
   // Create shaders + attach source
   GLuint vert_shader, frag_shader;
@@ -58,7 +59,6 @@ Shader::Shader(
     throw std::runtime_error(std::string("Failed to compile fragment shader: ") + err_log);
   }
 
-
   // Create the program & attach shaders
   program_id = glCreateProgram();
   glAttachShader(program_id, vert_shader);
@@ -84,6 +84,17 @@ Shader::Shader(
     glDeleteShader(frag_shader);
 
     throw std::runtime_error(std::string("Failed to link shader program: ") + err_log);
+  }
+
+  // Find all the uniform locations
+  for (auto loc_query : uniform_loc_queries) {
+    *loc_query.second = glGetUniformLocation(program_id, loc_query.first);
+    if (*loc_query.second == -1) {
+      throw std::runtime_error(std::string("Uniform with name '") + loc_query.first 
+          + "' not found in shader "
+          + "(vertex shader: '" + vert_shader_path 
+          + "', fragment shader: '" + frag_shader_path + "').");
+    }
   }
 
   // Finally, detach the shaders before returning.
