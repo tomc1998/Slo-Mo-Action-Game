@@ -9,9 +9,6 @@
 ResourceManager::ResourceManager() {
   unsigned char white_data[] = {
       255, 255, 255, 255,
-      255, 255, 255, 255,
-      255, 255, 255, 255,
-      255, 255, 255, 255,
   };
 
   // Cache this data & store in t
