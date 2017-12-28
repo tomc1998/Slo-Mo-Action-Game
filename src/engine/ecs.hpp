@@ -74,5 +74,5 @@ public:
   EntityId gen_entity_id();
   /** Updates the ECS */
   void update(InputState *input_state);
-  void paint(InputState *input_state, PaintController paint_controller);
+  void paint(InputState *input_state, PaintController* paint_controller);
 };

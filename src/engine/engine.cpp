@@ -18,6 +18,10 @@
 
 #include <GLFW/glfw3.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+#undef STB_IMAGE_IMPLEMENTATION
+
 Engine::Engine() {
   glfwInit();
   this->window = glfwCreateWindow(800, 600, "Slo-Mo Action Game", NULL, NULL);
@@ -25,6 +29,7 @@ Engine::Engine() {
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   glfwSwapInterval(0);
 
+  this->resource_manager = new ResourceManager();
   this->renderer = new Renderer(800.0, 600.0);
   this->input_manager = new InputManager(this->window);
 }
@@ -54,7 +59,7 @@ void Engine::engine_go() {
     auto frame_time_start = std::chrono::high_resolution_clock::now();
 
     this->paint();
-    renderer->render();
+    renderer->render(resource_manager);
     renderer->clear_paint_buffer();
     glfwSwapBuffers(this->window);
 
@@ -102,7 +107,8 @@ void Engine::update() {
 
 void Engine::paint() {
   ECS *current_ecs = this->screen_stack.back().first;
-  auto controller = renderer->gen_paint_controller();
-  current_ecs->paint(this->input_manager->get_current_input_state(),
-                     controller);
+  current_ecs->update(this->input_manager->get_current_input_state());
+  auto controller = renderer->gen_paint_controller(resource_manager, resource_manager->get_white());
+  current_ecs->paint(this->input_manager->get_current_input_state(), &controller);
+  controller.flush();
 }

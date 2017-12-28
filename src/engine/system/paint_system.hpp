@@ -8,5 +8,6 @@
 class PaintSystem {
 public:
   virtual void handle_components(ECS *ecs, InputState *input_state,
-                                 PaintController paint_controller) = 0;
+                                 PaintController* paint_controller) = 0;
+  virtual ~PaintSystem() {};
 };

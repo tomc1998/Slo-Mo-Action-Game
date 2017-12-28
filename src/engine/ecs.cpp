@@ -43,7 +43,7 @@ void ECS::update(InputState *input_state) {
   }
 }
 
-void ECS::paint(InputState *input_state, PaintController paint_controller) {
+void ECS::paint(InputState *input_state, PaintController* paint_controller) {
   for (u32 ii = 0; ii < this->paint_systems.size(); ii++) {
     this->paint_systems[ii]->handle_components(this, input_state,
                                                paint_controller);

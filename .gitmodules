@@ -1,3 +1,6 @@
 [submodule "deps/glfw"]
 	path = deps/glfw
 	url = https://github.com/glfw/glfw
+[submodule "deps/sparsepp"]
+	path = deps/sparsepp
+	url = https://github.com/greg7mdp/sparsepp.git

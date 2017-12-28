@@ -21,9 +21,13 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/renderer/renderer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_buffer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/vertex.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/batch.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/shader.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/tex_cache.cpp
   ${PROJECT_SOURCE_DIR}/engine/input/input_manager.cpp
   ${PROJECT_SOURCE_DIR}/engine/engine.cpp
+  ${PROJECT_SOURCE_DIR}/engine/resource_manager.cpp
+  ${PROJECT_SOURCE_DIR}/engine/resource.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/player_controlled.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/physics.cpp
@@ -72,6 +76,17 @@ add_library(glad STATIC ${GLAD_SRCS})
 target_include_directories(glad PUBLIC ${GLAD_ROOT_DIR}/include)
 target_link_libraries(game glad)
 target_include_directories(game PUBLIC ${GLAD_ROOT_DIR}/include)
+####################################################
+
+# SparsePP #############################################
+# Header only library for sparse contiguous hash maps
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/sparsepp)
+####################################################
+
+# stb_image #############################################
+# Header only library for loading images
+set (STBIMAGE_ROOT_DIR ${PROJECT_DEP_DIR/stb_image})
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/stb_image)
 ####################################################
 
 #############################################

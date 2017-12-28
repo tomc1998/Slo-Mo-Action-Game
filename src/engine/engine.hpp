@@ -2,6 +2,7 @@
 
 #include "engine/input/input_manager.hpp"
 #include "engine/renderer/renderer.hpp"
+#include "engine/resource_manager.hpp"
 #include "engine/screen.hpp"
 #include <utility>
 #include <vector>
@@ -21,6 +22,8 @@ private:
   /** Paint the current state */
   void paint();
   InputManager *input_manager;
+  ResourceManager *resource_manager;
+
   static constexpr f32 FPS = 60.0;
   i32 max_updates_per_render = 10;
   i32 min_updates_per_render = 1;
