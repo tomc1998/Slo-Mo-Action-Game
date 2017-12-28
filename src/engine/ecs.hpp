@@ -1,6 +1,7 @@
 #pragma once
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
+#include "comp/wall.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
@@ -11,6 +12,7 @@ class UpdateSystem;
 class SystemPlayerControlled;
 class SystemPhysics;
 class SystemDebugPaint;
+class SystemWallCollision;
 class InputState;
 class PaintController;
 
@@ -55,10 +57,12 @@ class ECS {
   /* The system class needs to access the components */
   friend class SystemPhysics;
   friend class SystemPlayerControlled;
+  friend class SystemWallCollision;
   friend class SystemDebugPaint;
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
+  ECS_DECLARE_COMPONENT(CompWall, wall)
 private:
   std::vector<UpdateSystem *> update_systems;
   std::vector<PaintSystem *> paint_systems;

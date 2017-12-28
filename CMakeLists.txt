@@ -27,8 +27,10 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/player_controlled.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/physics.cpp
+  ${PROJECT_SOURCE_DIR}/engine/system/wall_collision.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/player_controlled.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/game_entity.cpp
+  ${PROJECT_SOURCE_DIR}/engine/comp/wall.cpp
   )
 
 

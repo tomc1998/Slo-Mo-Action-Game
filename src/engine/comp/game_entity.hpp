@@ -9,12 +9,14 @@
 class CompGameEntity {
 public:
   /** Damping between 0 and 1 */
-  CompGameEntity(EntityId entity_id, f32 mass, f32 damping);
+  CompGameEntity(EntityId entity_id, f32 mass, f32 damping,
+                 bool collides_with_walls);
 
   EntityId entity_id;
   f32 mass;
   f32 damping;
-  Vec2 acc;
-  Vec2 vel;
-  Vec2 pos;
+  Vec2 acc = Vec2(0.0, 0.0);
+  Vec2 vel = Vec2(0.0, 0.0);
+  Vec2 pos = Vec2(0.0, 0.0);
+  bool collides_with_walls;
 };
