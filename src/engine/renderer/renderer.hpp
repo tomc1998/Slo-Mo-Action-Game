@@ -11,6 +11,8 @@
 #include "engine/vec.hpp"
 #include <vector>
 
+class ResourceManager;
+
 /** Since this class will be alive for the existence of the engine, there is no
  * destructor cleanup, so creating this class effectively leaks memory.
  *
@@ -26,6 +28,7 @@ private:
   /* Shader + uniform locations */
   Shader *shader;
   GLint proj_mat_uniform_loc;
+  GLint tex_uniform_loc;
 
   f32 proj_mat[16];
 
@@ -42,17 +45,23 @@ public:
    * buffer will be rebuffered to the VBO (with glbufferdata). If false, the
    * vbo will simply be re-rendered.
    */
-  void render();
+  void render(ResourceManager* res_manager);
 
   /** Clear the internal paint buffer */
   void clear_paint_buffer();
 
   /** Generate a paint controller, pointing to this renderer's internal paint
-   * buffer. */
-  PaintController gen_paint_controller();
+   * buffer. Provide a texture to use for coloured (non-textured) drawing -
+   * this should be a white square for normal results.*/
+  PaintController gen_paint_controller(ResourceManager *rm, ResHandle white);
 
   /** The location of 'position' vertex attribute */
   static const GLuint V_ATTR_POS_LOC = 0;
   /** The location of 'color' vertex attribute */
   static const GLuint V_ATTR_COL_LOC = 1;
+  /** The location of 'uv' vertex attribute */
+  static const GLuint V_ATTR_UV_LOC = 2;
+
+  /** The location of the 'tex' sampler uniform */
+  static const GLuint V_ATTR_TEX_LOC = 0;
 };

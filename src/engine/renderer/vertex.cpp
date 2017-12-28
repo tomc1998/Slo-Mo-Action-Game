@@ -1,6 +1,6 @@
 #include "engine/renderer/vertex.hpp"
 
-Vertex::Vertex(Vec2 _pos, f32 _layer, Color *_color) {
+Vertex::Vertex(Vec2 _pos, f32 _layer, Color *_color, Vec2 _uv) {
   this->pos[0] = _pos.x;
   this->pos[1] = _pos.y;
   this->pos[2] = _layer;
@@ -8,9 +8,11 @@ Vertex::Vertex(Vec2 _pos, f32 _layer, Color *_color) {
   this->color[1] = _color->g;
   this->color[2] = _color->b;
   this->color[3] = _color->a;
+  this->uv[0] = _uv.x;
+  this->uv[1] = _uv.y;
 }
 
-Vertex::Vertex(Vec2 _pos, Color *_color) {
+Vertex::Vertex(Vec2 _pos, Color *_color, Vec2 _uv) {
   this->pos[0] = _pos.x;
   this->pos[1] = _pos.y;
   this->pos[2] = 0.0;
@@ -18,4 +20,6 @@ Vertex::Vertex(Vec2 _pos, Color *_color) {
   this->color[1] = _color->g;
   this->color[2] = _color->b;
   this->color[3] = _color->a;
+  this->uv[0] = _uv.x;
+  this->uv[1] = _uv.y;
 }
