@@ -7,4 +7,5 @@
 class UpdateSystem {
 public:
   virtual void handle_components(ECS *ecs, InputState *input_state) = 0;
+  virtual ~UpdateSystem() {};
 };
