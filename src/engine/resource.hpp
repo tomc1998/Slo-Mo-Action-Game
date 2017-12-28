@@ -8,7 +8,7 @@ typedef i32 ResHandle;
 enum ResourceType { TEXTURE };
 
 class Texture {
-  friend class ResourceManager;
+public:
   /** The index of the cache texture */
   u64 cache_tex_ix;
   /** The uvs of the top left & bottom right of the texture in the cache */

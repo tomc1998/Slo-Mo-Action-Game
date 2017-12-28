@@ -14,7 +14,7 @@ public:
   /** The space (X,Y,W,H) used up by this bin packing binary tree node */
   f32 space[4];
   /** The texture stored in this node, or -1 if this node is currently empty */
-  ResHandle tex_handle;
+  ResHandle tex_handle = -1;
 
   BinTreeNode(f32 _space[4]);
   ~BinTreeNode();

@@ -21,6 +21,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/renderer/renderer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_buffer.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/vertex.cpp
+  ${PROJECT_SOURCE_DIR}/engine/renderer/batch.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/shader.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/tex_cache.cpp
   ${PROJECT_SOURCE_DIR}/engine/input/input_manager.cpp

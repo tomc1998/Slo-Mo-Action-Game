@@ -50,13 +50,13 @@ Shader::Shader(const char *vert_shader_path, const char *frag_shader_path,
 
   glCompileShader(frag_shader);
   success = 0;
-  glGetShaderiv(vert_shader, GL_COMPILE_STATUS, &success);
+  glGetShaderiv(frag_shader, GL_COMPILE_STATUS, &success);
   if (success == GL_FALSE) { // Handle frag shader compilation errors
     GLint max_len = 0;
-    glGetShaderiv(vert_shader, GL_INFO_LOG_LENGTH, &max_len);
+    glGetShaderiv(frag_shader, GL_INFO_LOG_LENGTH, &max_len);
     GLchar *err_log = new GLchar[max_len];
     glGetShaderInfoLog(frag_shader, max_len, &max_len, &err_log[0]);
-    glDeleteShader(vert_shader);
+    glDeleteShader(frag_shader);
     throw std::runtime_error(
         std::string("Failed to compile fragment shader: ") + err_log);
   }

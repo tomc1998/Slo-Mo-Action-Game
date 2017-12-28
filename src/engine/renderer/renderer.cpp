@@ -4,6 +4,7 @@
 
 #include "engine/renderer/renderer.hpp"
 #include "engine/vec.hpp"
+#include "engine/resource_manager.hpp"
 #include <cassert>
 #include <map>
 
@@ -34,6 +35,7 @@ void gen_ortho_proj_mat(f32 *dest, f32 l, f32 r, f32 t, f32 b, f32 n, f32 f) {
 void Renderer::setup_uniforms() {
   glUseProgram(shader->program_id);
   glUniformMatrix4fv(proj_mat_uniform_loc, 1, true, proj_mat);
+  glUniform1i(tex_uniform_loc, 0); // Bind tex to texture unit 0
 }
 
 Renderer::Renderer(f32 w, f32 h) {
@@ -43,8 +45,10 @@ Renderer::Renderer(f32 w, f32 h) {
   std::map<const GLchar *, GLuint> attrib_loc_bindings;
   attrib_loc_bindings["pos"] = Renderer::V_ATTR_POS_LOC;
   attrib_loc_bindings["col"] = Renderer::V_ATTR_COL_LOC;
+  attrib_loc_bindings["uv"] = Renderer::V_ATTR_UV_LOC;
   std::map<const GLchar *, GLint *> uniform_loc_queries;
   uniform_loc_queries["proj_mat"] = &this->proj_mat_uniform_loc;
+  uniform_loc_queries["tex"] = &this->tex_uniform_loc;
   shader = new Shader("assets/glsl/vert.glsl", "assets/glsl/frag.glsl",
                       attrib_loc_bindings, uniform_loc_queries);
 
@@ -56,18 +60,27 @@ Renderer::Renderer(f32 w, f32 h) {
   this->setup_uniforms();
 }
 
-void Renderer::render() {
+void Renderer::render(ResourceManager* res_manager) {
   glBindBuffer(GL_ARRAY_BUFFER, dyn_vbo);
+  glActiveTexture(GL_TEXTURE0 + 0);
   glUseProgram(shader->program_id);
   glEnableVertexAttribArray(Renderer::V_ATTR_POS_LOC);
   glEnableVertexAttribArray(Renderer::V_ATTR_COL_LOC);
-  buffer.buffer_to_gl(Renderer::V_ATTR_POS_LOC, Renderer::V_ATTR_COL_LOC);
-  glDrawArrays(GL_TRIANGLES, 0, buffer.size());
+  glEnableVertexAttribArray(Renderer::V_ATTR_UV_LOC);
+  buffer.buffer_to_gl(Renderer::V_ATTR_POS_LOC, Renderer::V_ATTR_COL_LOC, Renderer::V_ATTR_UV_LOC);
+
+  // Loop through the triangles, and bind the right textures.
+  u64 curr_ix = 0;
+  for (const auto& b : buffer.b_buf) {
+    res_manager->bind_cache_tex(b.tex);
+    glDrawArrays(GL_TRIANGLES, curr_ix, b.size());
+    curr_ix += b.size();
+  }
 }
 
 void Renderer::clear_paint_buffer() { buffer.clear(); }
 
-PaintController Renderer::gen_paint_controller() {
-  PaintController p(&buffer);
+PaintController Renderer::gen_paint_controller(ResourceManager *rm, ResHandle white) {
+  PaintController p(&buffer, rm, white);
   return p;
 }

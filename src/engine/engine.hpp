@@ -20,7 +20,7 @@ private:
   /** Update the current state */
   void update();
   InputManager *input_manager;
-  ResourceManager resource_manager;
+  ResourceManager *resource_manager;
 
 public:
   Engine();

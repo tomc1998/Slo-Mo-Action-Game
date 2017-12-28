@@ -21,7 +21,7 @@ EntityId ECS::gen_entity_id() {
   return this->current_entity_id;
 }
 
-void ECS::update(InputState *input_state, PaintController paint_controller) {
+void ECS::update(InputState *input_state, PaintController* paint_controller) {
   for (u32 ii = 0; ii < this->systems.size(); ii++) {
     this->systems[ii]->handle_components(this, input_state, paint_controller);
   }

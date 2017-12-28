@@ -19,6 +19,7 @@ Engine::Engine() {
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
+  this->resource_manager = new ResourceManager();
   this->renderer = new Renderer(800.0, 600.0);
   this->input_manager = new InputManager(this->window);
 }
@@ -37,16 +38,13 @@ void Engine::pop_screen() {
 }
 
 void Engine::engine_go() {
-  // test load an image
-  resource_manager.load_texture("assets/sprites/test.png");
-
   while (true) {
     this->input_manager->update_input();
 
     glClear(GL_COLOR_BUFFER_BIT);
     this->update();
 
-    renderer->render();
+    renderer->render(resource_manager);
     renderer->clear_paint_buffer();
 
     glfwSwapBuffers(this->window);
@@ -58,7 +56,8 @@ void Engine::engine_go() {
 
 void Engine::update() {
   ECS *current_ecs = this->screen_stack.back().first;
-  auto controller = renderer->gen_paint_controller();
+  auto controller = renderer->gen_paint_controller(resource_manager, resource_manager->get_white());
   current_ecs->update(this->input_manager->get_current_input_state(),
-                      controller);
+                      &controller);
+  controller.flush();
 }

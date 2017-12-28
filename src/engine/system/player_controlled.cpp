@@ -6,7 +6,7 @@
 class SystemPlayerControlled : public System {
 public:
   void handle_components(ECS *ecs, InputState *input_state,
-                         PaintController paint_controller) {
+                         PaintController* paint_controller) {
     for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
       for (u32 jj = 0; jj < ecs->comp_player_controlled.size(); ii++) {
         if (ecs->comp_player_controlled[jj].entity_id !=
