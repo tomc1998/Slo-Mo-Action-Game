@@ -133,7 +133,7 @@ u64 TexCache::cache_tex(ResHandle tex, void *tex_data, u32 w, u32 h,
     bin_pack_trees.push_back(BinTreeNode(new_node_space));
     chosen_tree = &bin_pack_trees.back();
     chosen_ix = bin_pack_trees.size() - 1;
-    chosen_tree->pack_rect(tex, w, h, space);
+    chosen_tree->pack_rect(tex, (w/(f32)cache_tex_w), (h/(f32)cache_tex_h), space);
   }
 
   // Now buffer the texture
@@ -143,7 +143,7 @@ u64 TexCache::cache_tex(ResHandle tex, void *tex_data, u32 w, u32 h,
                   tex_data);
 
   // Finally, transform 'space' so that itcontains the UVs, not the w/h
-  space[2] = space[0] + (space[2]/(f32)cache_tex_w);
-  space[3] = space[1] + (space[3]/(f32)cache_tex_h);
+  space[2] = space[0] + space[2];
+  space[3] = space[1] + space[3];
   return chosen_ix;
 }

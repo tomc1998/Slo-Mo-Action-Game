@@ -3,9 +3,9 @@
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
-#include "system.hpp"
+#include "paint_system.hpp"
 
-class SystemDebugPaint : public System {
+class SystemDebugPaint : public PaintSystem {
 
 public:
   void handle_components(ECS *ecs, InputState *input_state,
