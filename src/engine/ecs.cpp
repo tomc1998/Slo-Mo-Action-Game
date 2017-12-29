@@ -10,7 +10,7 @@
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
-ECS_IMPL_COMPONENT(CompWall, wall);
+ECS_IMPL_COMPONENT(CompWall, wall)
 
 
 ECS::ECS() {
