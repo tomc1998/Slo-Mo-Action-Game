@@ -33,35 +33,31 @@ public:
 
           f64 u = (((centre.x - v1.x) * (v2.x - v1.x) +
                     (centre.y - v1.y) * (v2.y - v1.y)) /
-                   v2.subtract(v1).modulus_squared());
-          //This means the collision does not fall within the line segment
+                   v2.sub(v1).modulus_squared());
+
+          // This means the collision does not fall within the line segment
           if (u <= 0 || u > 1) {
             continue;
           }
 
-          Vec2 point_of_intersection =
-              Vec2(v1.x + u * (v2.x - v1.x), v1.y + u * (v2.y - v1.y));
+          Vec2 point_of_intersection = (v2.sub(v1)).scl(u).add(v1);
 
-          Vec2 centre_to_wall_v = point_of_intersection.subtract(centre);
+          Vec2 centre_to_wall_v = point_of_intersection.sub(centre);
           f32 distance_to_wall = centre_to_wall_v.modulus_squared();
           if (std::pow((f64)radius, 2) > distance_to_wall) {
-            // TODO: Handle collisions
             f64 actual_distance_to_wall = std::sqrt(distance_to_wall);
 
             f64 collision_depth = (f64)radius - actual_distance_to_wall;
-            // https://www.opengl.org/discussion_boards/showthread.php/159717-Closest-point-on-a-Vector-to-a-point
-            // In our case, P2 = centre, P1 = v1, and v = v2
 
+            // This is just normalising the vector and then scaling it. I didn#t
+            // use the norm() method beause I had already calculated the modulus
+            // so there was no point in wasting time doing that
             Vec2 radius_v =
-                Vec2(radius * centre_to_wall_v.x / actual_distance_to_wall,
-                     radius * centre_to_wall_v.y / actual_distance_to_wall);
+                centre_to_wall_v.scl(radius / actual_distance_to_wall);
 
-            Vec2 to_push_back =
-                Vec2(radius_v.x * collision_depth / (f64)radius,
-                     radius_v.y * collision_depth / (f64)radius);
+            Vec2 to_push_back = Vec2(radius_v.scl(collision_depth / radius));
 
-            e->pos.x -= to_push_back.x;
-            e->pos.y -= to_push_back.y;
+            e->pos = e->pos.sub(to_push_back);
           }
         }
       }
