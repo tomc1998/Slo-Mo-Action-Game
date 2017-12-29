@@ -16,6 +16,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/main.cpp
   ${PROJECT_SOURCE_DIR}/test_screen.cpp
   ${PROJECT_SOURCE_DIR}/engine/vec.cpp
+  ${PROJECT_SOURCE_DIR}/engine/matrix.cpp
   ${PROJECT_SOURCE_DIR}/engine/util/io.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/paint_controller.cpp
   ${PROJECT_SOURCE_DIR}/engine/renderer/renderer.cpp

@@ -27,7 +27,6 @@ ResHandle ResourceManager::load_texture(const char *path) {
   Texture t;
   ResHandle th = next_res_handle++;
   t.cache_tex_ix = tex_cache.cache_tex(th, data, w, h, t.uvs);
-  std::cout << path << std::endl;
 
   handle_map[th] = Resource(t);
 
