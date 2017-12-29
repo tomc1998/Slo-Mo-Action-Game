@@ -1,6 +1,5 @@
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
-#include "engine/renderer/paint_controller.hpp"
 #include "update_system.hpp"
 
 class SystemPlayerControlled : public UpdateSystem {
