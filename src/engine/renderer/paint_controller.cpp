@@ -1,4 +1,5 @@
 #include "engine/renderer/paint_controller.hpp"
+#include <cassert>
 
 PaintController::PaintController(PaintBuffer *_buffer,
                                  ResourceManager *_res_manager,
@@ -34,5 +35,24 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
                 Vertex(Vec2(x, y), color, Vec2(uvs[0], uvs[1])),
                 Vertex(Vec2(x, y + h), color, Vec2(uvs[0], uvs[3])),
                 Vertex(Vec2(x + w, y + h), color, Vec2(uvs[2], uvs[3]))};
+  curr_batch.buffer(v, 6);
+}
+
+void PaintController::draw_image(ResHandle th, f32 x, f32 y, f32 w, f32 h, f32 rotation, Color *tint) {
+  //We don't want a null resource handle
+  assert(th==-1);
+
+  Texture* tex = this->res_manager->lookup_tex(th);
+
+  this->flush_if_batch_tex_not(tex->cache_tex_ix);
+  f32 *uvs = tex->uvs;
+
+  Vertex v[] = {Vertex(Vec2(x, y), tint, Vec2(uvs[0], uvs[1])),
+                Vertex(Vec2(x + w, y), tint, Vec2(uvs[2], uvs[1])),
+                Vertex(Vec2(x + w, y + h), tint, Vec2(uvs[2], uvs[3])),
+
+                Vertex(Vec2(x, y), tint, Vec2(uvs[0], uvs[1])),
+                Vertex(Vec2(x, y + h), tint, Vec2(uvs[0], uvs[3])),
+                Vertex(Vec2(x + w, y + h), tint, Vec2(uvs[2], uvs[3]))};
   curr_batch.buffer(v, 6);
 }

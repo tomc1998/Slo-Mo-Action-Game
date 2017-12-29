@@ -1,5 +1,6 @@
 #include "engine/color.hpp"
 #include "engine/comp/game_entity.hpp"
+#include "engine/comp/sprite.hpp"
 #include "engine/ecs.hpp"
 #include "engine/vec.hpp"
 #include "engine/input/input_state.hpp"
@@ -15,7 +16,15 @@ public:
     Color red = Color(1.0, 0.0, 0.0, 1.0);
     for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
       CompGameEntity entity = ecs->comp_game_entity[ii];
-      paint_controller->fill_rect(entity.pos.x, entity.pos.y, 16.0, 16.0, &red);
+      //paint_controller->fill_rect(entity.pos.x, entity.pos.y, 16.0, 16.0, &red);
+      for (u32 jj = 0; jj < ecs->comp_sprite.size(); jj++) {
+        if (entity.entity_id != ecs->comp_sprite[jj].entity_id) {
+          continue;
+        }
+
+        paint_controller->draw_image(ecs->comp_sprite[jj].th, entity.pos.x, entity.pos.y, 16.0, 16.0, 0.0, &red);
+        break;
+      }
     }
     for (u32 ii = 0; ii < ecs->comp_wall.size(); ii++) {
       for (u32 jj = 0; jj < ecs->comp_wall[ii].vertices.size(); jj++) {

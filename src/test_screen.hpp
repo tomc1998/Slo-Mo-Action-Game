@@ -2,6 +2,6 @@
 
 class TestScreen : public Screen {
 public:
-  void init(ECS *ecs);
+  void init(ECS *ecs, ResourceManager *res_manager);
   ~TestScreen();
 };

@@ -35,6 +35,7 @@ public:
   PaintController(PaintBuffer *_buffer, ResourceManager* r, ResHandle _white);
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
+  void draw_image(ResHandle th, f32 x, f32 y, f32 w, f32 h, f32 rotation, Color *tint);
 
   /** Flush the current batch if there's any vertices there, set the next batch
    * to have the same cache texture ix */
