@@ -106,7 +106,7 @@ u64 TexCache::cache_tex(ResHandle tex, void *tex_data, u32 w, u32 h,
   u64 chosen_ix = 9999;
   BinTreeNode *chosen_tree = NULL;
   for (u32 ii = 0; ii < bin_pack_trees.size(); ++ii) {
-    auto tree = bin_pack_trees[0];
+    auto& tree = bin_pack_trees[0];
     if (tree.pack_rect(tex, w, h, space)) {
       chosen_tree = &tree;
       chosen_ix = ii;
