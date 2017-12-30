@@ -6,10 +6,14 @@
 #include "engine/resource_manager.hpp"
 #include "stb_image.h"
 #include <iostream>
+#include <sparsepp/spp.h>
 
 ResourceManager::ResourceManager() {
   unsigned char white_data[] = {
-      255, 255, 255, 255,
+      255,
+      255,
+      255,
+      255,
   };
 
   // Cache this data & store in t

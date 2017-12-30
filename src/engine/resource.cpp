@@ -31,15 +31,22 @@ f32 Animation::get_interpolated_value(i32 updates, i32 keyframe_type) {
     return this->linear_interpolation(s.value, e.value, s.updates, e.updates,
                                       updates);
   }
+}
 
-  Resource::Resource(Texture t) {
-    type = ResourceType::TEXTURE;
-    data.texture = t;
-  }
+Resource::Resource(Texture t) {
+  type = ResourceType::TEXTURE;
+  data.texture = t;
+}
 
-  Resource::Resource(Animation a) {
-    type = ResourceType::ANIMATION;
-    data.animation = a;
-  }
+Resource::Resource(Animation a) {
+  type = ResourceType::ANIMATION;
+  data.animation = a;
+}
 
-  Resource::Resource() {}
+Resource::Resource() {}
+Resource::~Resource() {}
+Resource& Resource::operator=(const Resource& other) {
+  this->data = other.data;
+  this->type = other.type;
+  return *this;
+}

@@ -8,7 +8,6 @@ class ResourceManager;
 typedef i32 ResHandle;
 
 enum ResourceType { TEXTURE, ANIMATION };
-
 enum InterpolationType { LINEAR };
 
 class Texture {
@@ -61,4 +60,6 @@ public:
   Resource(Texture t);
   Resource(Animation a);
   Resource();
+  ~Resource();
+  Resource& operator=(const Resource& other);
 };

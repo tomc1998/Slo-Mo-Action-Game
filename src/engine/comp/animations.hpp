@@ -1,8 +1,10 @@
 #pragma once
 #include "engine/entity_id.hpp"
-#include "engine/resource.hpp"
 #include "engine/vec.hpp"
+#include <vector>
 
+class Animation;
+typedef i32 ResHandle;
 /**
  * A component which stores a vector of pointers to animation resources */
 
