@@ -2,6 +2,7 @@
 #include "engine/renderer/paint_controller.hpp"
 #include <cassert>
 #include <cmath>
+#include <iostream>
 
 PaintController::PaintController(PaintBuffer *_buffer,
                                  ResourceManager *_res_manager,
@@ -43,7 +44,7 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
 void PaintController::draw_image(ResHandle th, f32 x, f32 y, f32 w, f32 h,
                                  f32 rotation, Color *tint) {
   // We don't want a null resource handle
-  assert(th == -1);
+  assert(th != -1);
 
   Texture *tex = this->res_manager->lookup_tex(th);
 
@@ -59,6 +60,7 @@ void PaintController::draw_image(ResHandle th, f32 x, f32 y, f32 w, f32 h,
       rot_matrix.multiply_by_vec(translated.add(Vec2(w, 0.0))).add(centre),
       rot_matrix.multiply_by_vec(translated.add(Vec2(0.0, h))).add(centre),
       rot_matrix.multiply_by_vec(translated.add(Vec2(w, h))).add(centre)};
+
 
   Vertex v[] = {Vertex(newPoints[0], tint, Vec2(uvs[0], uvs[1])),
                 Vertex(newPoints[1], tint, Vec2(uvs[2], uvs[1])),

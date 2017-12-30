@@ -20,7 +20,7 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
 
   std::vector<Vec2> vertices;
   vertices.push_back(Vec2(100.0f, 100.0f));
-  vertices.push_back(Vec2(200.0f, 100.0f));
+  vertices.push_back(Vec2(150.0f, 100.0f));
   vertices.push_back(Vec2(200.0f, 200.0f));
   vertices.push_back(Vec2(100.0f, 200.0f));
 
