@@ -94,7 +94,7 @@ target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/stb_image)
 #############################################
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	SET_TARGET_PROPERTIES(game
-    PROPERTIES COMPILE_FLAGS "-include engine/typedefs.hpp -Wall -Wpedantic -g -std=c++11")
+    PROPERTIES COMPILE_FLAGS "-include engine/typedefs.hpp -Wall -Wpedantic -g -std=c++11 -fdiagnostics-color")
 	SET_TARGET_PROPERTIES(game
   PROPERTIES LINK_FLAGS "-include engine/typedefs.hpp")
 endif()
