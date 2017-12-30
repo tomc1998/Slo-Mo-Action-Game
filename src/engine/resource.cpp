@@ -11,8 +11,8 @@ f32 Animation::linear_interpolation(f32 start_value, f32 end_value,
 
 f32 Animation::get_interpolated_value(i32 updates, i32 keyframe_type) {
 
-  // There should only be 4 keyframe types
-  assert(keyframe_type >= 0 && keyframe_type <= 3);
+  // There should only be a certain amount of keyframe types
+  assert(keyframe_type >= 0 && keyframe_type < this->keyframes.size());
 
   i32 keyframe_ix = -1;
   for (i32 ii = 0; ii < this->keyframes[keyframe_type].size(); ii++) {

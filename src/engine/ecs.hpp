@@ -2,7 +2,7 @@
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
 #include "comp/wall.hpp"
-#include "comp/sprite.hpp"
+#include "comp/animations.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
@@ -64,7 +64,7 @@ class ECS {
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
   ECS_DECLARE_COMPONENT(CompWall, wall)
-  ECS_DECLARE_COMPONENT(CompSprite, sprite)
+  ECS_DECLARE_COMPONENT(CompAnimations, animations)
 private:
   std::vector<UpdateSystem *> update_systems;
   std::vector<PaintSystem *> paint_systems;
