@@ -53,7 +53,7 @@ public:
   /** Generate a paint controller, pointing to this renderer's internal paint
    * buffer. Provide a texture to use for coloured (non-textured) drawing -
    * this should be a white square for normal results.*/
-  PaintController gen_paint_controller(ResourceManager *rm, ResHandle white);
+  PaintController gen_paint_controller(ResourceManager *rm, TexHandle white);
 
   /** The location of 'position' vertex attribute */
   static const GLuint V_ATTR_POS_LOC = 0;

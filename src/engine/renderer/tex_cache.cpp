@@ -21,7 +21,7 @@ BinTreeNode::~BinTreeNode() {
   }
 }
 
-bool BinTreeNode::rect_for(ResHandle tex, f32 *rect) {
+bool BinTreeNode::rect_for(TexHandle tex, f32 *rect) {
   if (tex_handle == tex) {
     memcpy(rect, space, 4 * sizeof(f32));
     return true;
@@ -33,7 +33,7 @@ bool BinTreeNode::rect_for(ResHandle tex, f32 *rect) {
   return false;
 }
 
-bool BinTreeNode::pack_rect(ResHandle tex, f32 w, f32 h, f32 *dest) {
+bool BinTreeNode::pack_rect(TexHandle tex, f32 w, f32 h, f32 *dest) {
   if (!is_leaf()) {
     assert(l_child && r_child &&
            "Node in bin pack tree has a tex, but no children??");
@@ -75,7 +75,7 @@ bool BinTreeNode::pack_rect(ResHandle tex, f32 w, f32 h, f32 *dest) {
 
 bool BinTreeNode::is_leaf() { return (tex_handle == -1); }
 
-bool TexCache::rect_for(ResHandle tex, f32 *rect) {
+bool TexCache::rect_for(TexHandle tex, f32 *rect) {
   for (auto &tree : bin_pack_trees) {
     if (tree.rect_for(tex, rect)) {
       return true;
@@ -84,7 +84,7 @@ bool TexCache::rect_for(ResHandle tex, f32 *rect) {
   return false;
 }
 
-u64 TexCache::cache_tex(ResHandle tex, void *tex_data, u32 w, u32 h,
+u64 TexCache::cache_tex(TexHandle tex, void *tex_data, u32 w, u32 h,
                         f32 *space) {
 #ifndef NDEBUG
   // Check if cache textures will be big enough

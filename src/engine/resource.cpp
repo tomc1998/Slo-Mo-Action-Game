@@ -90,20 +90,3 @@ AnimFrame Animation::get_anim_frame(i32 updates) {
   return frame;
 }
 
-Resource::Resource(Texture t) {
-  type = ResourceType::TEXTURE;
-  data.texture = t;
-}
-
-Resource::Resource(Animation a) {
-  type = ResourceType::ANIMATION;
-  data.animation = a;
-}
-
-Resource::Resource() {}
-Resource::~Resource() {}
-Resource &Resource::operator=(const Resource &other) {
-  this->data = other.data;
-  this->type = other.type;
-  return *this;
-}

@@ -17,7 +17,7 @@ class PaintController {
 private:
   PaintBuffer *buffer;
   ResourceManager *res_manager;
-  ResHandle white;
+  TexHandle white;
   /** The cache tex index for white - this is just to prevent unnecessary
    * lookups. */
   Texture* white_cache_tex;
@@ -32,10 +32,10 @@ public:
   /** Create a new paint controller. See the Renderer class - paint
    * controllers should only be created via the gen_paint_controller method on
    * the renderer. */
-  PaintController(PaintBuffer *_buffer, ResourceManager* r, ResHandle _white);
+  PaintController(PaintBuffer *_buffer, ResourceManager* r, TexHandle _white);
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
-  void draw_image(ResHandle th, f32 x, f32 y, f32 w, f32 h, f32 rotation, Color *tint);
+  void draw_image(TexHandle th, f32 x, f32 y, f32 w, f32 h, f32 rotation, Color *tint);
 
   /** Flush the current batch if there's any vertices there, set the next batch
    * to have the same cache texture ix */

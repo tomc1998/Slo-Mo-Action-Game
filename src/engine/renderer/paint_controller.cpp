@@ -6,7 +6,7 @@
 
 PaintController::PaintController(PaintBuffer *_buffer,
                                  ResourceManager *_res_manager,
-                                 ResHandle _white)
+                                 TexHandle _white)
     : buffer(_buffer), res_manager(_res_manager), white(_white),
       white_cache_tex(_res_manager->lookup_tex(_white)),
       curr_batch(Batch(white_cache_tex->cache_tex_ix)) {}
@@ -41,7 +41,7 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
   curr_batch.buffer(v, 6);
 }
 
-void PaintController::draw_image(ResHandle th, f32 x, f32 y, f32 w, f32 h,
+void PaintController::draw_image(TexHandle th, f32 x, f32 y, f32 w, f32 h,
                                  f32 rotation, Color *tint) {
   // We don't want a null resource handle
   assert(th != -1);
