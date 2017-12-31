@@ -3,7 +3,5 @@
 #include "wall.hpp"
 #include <vector>
 
-CompWall::CompWall(EntityId entity_id, std::vector<Vec2> vertices) {
-  this->entity_id = entity_id;
-  this->vertices = vertices;
-}
+CompWall::CompWall(EntityId entity_id, std::vector<Vec2> vertices, ResHandle edge_tex)
+    : entity_id(entity_id), vertices(vertices), edge_tex(edge_tex) {}
