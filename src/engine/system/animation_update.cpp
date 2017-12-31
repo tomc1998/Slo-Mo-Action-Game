@@ -7,6 +7,9 @@ class SystemAnimationUpdate : public UpdateSystem {
 public:
   void handle_components(ECS *ecs, InputState *input_state) {
     for (u32 ii = 0; ii < ecs->comp_animations.size(); ii++) {
+      if (ecs->comp_animations[ii].animation_to_play == -1) {
+        continue;
+      }
       ecs->comp_animations[ii].updates++;
     }
   }

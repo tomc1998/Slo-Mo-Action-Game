@@ -26,7 +26,8 @@ public:
         }
         CompAnimations *as = &ecs->comp_animations[jj];
 
-        std::cout << as->animation_to_play << std::endl;
+        assert(as->animation_to_play >= -1 &&
+               as->animation_to_play < (i32)as->animations.size());
 
         if (as->animation_to_play == -1) {
           paint_controller->draw_image(as->th, entity.pos.x, entity.pos.y, 16.0,
@@ -36,11 +37,8 @@ public:
         Animation *a = as->animations[as->animation_to_play];
         AnimFrame frame = a->get_anim_frame(as->updates);
         paint_controller->draw_image(
-            a->th, entity.pos.x + frame.posx,
-            entity.pos.y + frame.posy,
-            16.0 * frame.scale,
-            16.0 * frame.scale,
-            0.0 + frame.rot, &white);
+            a->th, entity.pos.x + frame.posx, entity.pos.y + frame.posy,
+            16.0 * frame.scale, 16.0 * frame.scale, 0.0 + frame.rot, &white);
         break;
       }
     }
