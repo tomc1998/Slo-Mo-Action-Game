@@ -1,25 +1,13 @@
 #pragma once
 #include "anim_frame.hpp"
 #include "keyframe.hpp"
+#include "resource_defs.hpp"
 #include <cstring>
+#include <sparsepp/spp.h>
 #include <utility>
 #include <vector>
 
 class ResourceManager;
-
-/** -1 indicates a 'null' resource handle */
-typedef i32 TexHandle;
-typedef i32 AnimHandle;
-
-enum InterpolationType { LINEAR };
-
-class Texture {
-public:
-  /** The index of the cache texture */
-  u64 cache_tex_ix;
-  /** The uvs of the top left & bottom right of the texture in the cache */
-  f32 uvs[4];
-};
 
 /** Animation class that stores the animation of only 1 sprite, multiple
  * animations will be stored in the actual animation component */
@@ -28,10 +16,10 @@ private:
   /** Linearly interpolate between two values */
   f32 lerp(f32 start_value, f32 end_value, i32 start_updates, i32 end_updates,
            i32 curr_updates);
+  spp::sparse_hash_map<u32, TexHandle> part_id_map;
 
 public:
-  /** The texture handle of the sprite of the animation */
-  TexHandle th;
+  /** Map of part IDs to their corresponding tex handle */
 
   /** Vectors of keyframes of the animation */
   std::vector<Keyframe> posx_keys;
@@ -39,13 +27,14 @@ public:
   std::vector<Keyframe> scale_keys;
   std::vector<Keyframe> rot_keys;
 
-  /** Vectors of interpolation types for the corresponding keyframes */
-  std::vector<InterpolationType> posx_interps;
-  std::vector<InterpolationType> posy_interps;
-  std::vector<InterpolationType> scale_interps;
-  std::vector<InterpolationType> rot_interps;
+  u32 get_part_count();
 
   /** Returns an AnimFrame from the current timestamp */
-  AnimFrame get_anim_frame(i32 updates);
-};
+  /** frames should be a pointer to the start of memory where there is exactly
+   * enough memory allocated for x AnimFrames, where x is the number of parts in
+   * the animation */
+  void get_anim_frames(u32 updates, AnimFrame frames[]);
 
+  Animation();
+  Animation(std::vector<TexHandle> ths);
+};

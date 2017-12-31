@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/renderer/tex_cache.hpp"
-#include "engine/resource.hpp"
+#include "engine/texture.hpp"
+#include "engine/animation.hpp"
 #include "engine/typedefs.hpp"
 #include <sparsepp/spp.h>
 
@@ -21,7 +22,13 @@ public:
 
   /** Lookup a texture, returning a pointer to it if it exists, or null
    * otherwise. Will assert if res is not a texture. */
-  Texture* lookup_tex(TexHandle r);
+  Texture *lookup_tex(TexHandle r);
+
+  AnimHandle load_test_animation();
+
+  /** Lookup an animation, returning a pointer to it if it exists, or null
+   * otherwise. Will assert if res is not an animation */
+  Animation *lookup_anim(AnimHandle a);
 
   /** Get a handle for the 'white' texture, a 1x1 texture which contains just
    * white and is used for coloured drawing. */

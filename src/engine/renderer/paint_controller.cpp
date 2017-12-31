@@ -41,6 +41,22 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
   curr_batch.buffer(v, 6);
 }
 
+void PaintController::draw_animation(AnimHandle ah, u32 updates,
+                                     f32 x, f32 y, f32 w, f32 h, f32 rot, Color *tint) {
+  assert(ah != -1);
+
+  Animation *anim = this->res_manager->lookup_anim(ah);
+  AnimFrame *frames = new AnimFrame[anim->get_part_count()];
+  anim->get_anim_frames(updates, frames);
+
+  for (u32 ii = 0; ii < anim->get_part_count(); ii++) {
+    this->draw_image(frames[ii].th, x + frames[ii].posx, y + frames[ii].posy,
+                     w * frames[ii].scale, h * frames[ii].scale,
+                     rot + frames[ii].rot, tint);
+  }
+  delete[] frames;
+}
+
 void PaintController::draw_image(TexHandle th, f32 x, f32 y, f32 w, f32 h,
                                  f32 rotation, Color *tint) {
   // We don't want a null resource handle
@@ -60,7 +76,6 @@ void PaintController::draw_image(TexHandle th, f32 x, f32 y, f32 w, f32 h,
       rot_matrix.multiply_by_vec(translated.add(Vec2(w, 0.0))).add(centre),
       rot_matrix.multiply_by_vec(translated.add(Vec2(0.0, h))).add(centre),
       rot_matrix.multiply_by_vec(translated.add(Vec2(w, h))).add(centre)};
-
 
   Vertex v[] = {Vertex(newPoints[0], tint, Vec2(uvs[0], uvs[1])),
                 Vertex(newPoints[1], tint, Vec2(uvs[2], uvs[1])),

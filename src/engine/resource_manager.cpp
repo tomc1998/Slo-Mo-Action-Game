@@ -2,7 +2,8 @@
 
 #include <GLFW/glfw3.h>
 
-#include "engine/resource.hpp"
+#include "engine/texture.hpp"
+#include "engine/animation.hpp"
 #include "engine/resource_manager.hpp"
 #include "stb_image.h"
 #include <iostream>
@@ -37,8 +38,28 @@ TexHandle ResourceManager::load_texture(const char *path) {
   return th;
 }
 
+AnimHandle ResourceManager::load_test_animation() {
+  TexHandle th = this->load_texture("assets/res/player.png");
+
+  std::vector<TexHandle> ths = {th, th};
+  Animation a = Animation(ths);
+  AnimHandle ah = next_res_handle++;
+
+  anim_handle_map[ah] = a;
+
+  return ah;
+}
+
 Texture *ResourceManager::lookup_tex(TexHandle handle) {
   auto r_it = tex_handle_map.find(handle);
+  if (r_it == tex_handle_map.end()) {
+    return NULL;
+  }
+  return &r_it->second;
+}
+
+Animation *ResourceManager::lookup_anim(AnimHandle a) {
+  auto r_it = anim_handle_map.find(a);
   if (r_it == tex_handle_map.end()) {
     return NULL;
   }

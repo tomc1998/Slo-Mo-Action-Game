@@ -2,7 +2,8 @@
 
 #include "engine/renderer/paint_buffer.hpp"
 #include "engine/renderer/batch.hpp"
-#include "engine/resource.hpp"
+#include "engine/animation.hpp"
+#include "engine/texture.hpp"
 #include "engine/resource_manager.hpp"
 
 /**
@@ -35,7 +36,9 @@ public:
   PaintController(PaintBuffer *_buffer, ResourceManager* r, TexHandle _white);
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
+  void draw_animation(AnimHandle ah, u32 updates, f32 x, f32 y, f32 w, f32 h, f32 rot, Color *tint);
   void draw_image(TexHandle th, f32 x, f32 y, f32 w, f32 h, f32 rotation, Color *tint);
+
 
   /** Flush the current batch if there's any vertices there, set the next batch
    * to have the same cache texture ix */

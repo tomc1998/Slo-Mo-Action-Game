@@ -28,7 +28,9 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/input/input_manager.cpp
   ${PROJECT_SOURCE_DIR}/engine/engine.cpp
   ${PROJECT_SOURCE_DIR}/engine/resource_manager.cpp
-  ${PROJECT_SOURCE_DIR}/engine/resource.cpp
+  ${PROJECT_SOURCE_DIR}/engine/animation.cpp
+  ${PROJECT_SOURCE_DIR}/engine/anim_frame.cpp
+  ${PROJECT_SOURCE_DIR}/engine/keyframe.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/player_controlled.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/physics.cpp
@@ -37,7 +39,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/comp/player_controlled.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/game_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/wall.cpp
-  ${PROJECT_SOURCE_DIR}/engine/comp/animations.cpp
+  ${PROJECT_SOURCE_DIR}/engine/comp/animation.cpp
   )
 
 
