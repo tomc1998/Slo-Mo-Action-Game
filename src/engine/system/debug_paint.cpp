@@ -1,6 +1,7 @@
+#include "engine/anim_frame.hpp"
 #include "engine/color.hpp"
+#include "engine/comp/animations.hpp"
 #include "engine/comp/game_entity.hpp"
-#include "engine/comp/sprite.hpp"
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
@@ -25,20 +26,21 @@ public:
         }
         CompAnimations *as = &ecs->comp_animations[jj];
 
-        assert(as->animation_to_play >= -1 &&
-               as->animation_to_play < as->animations.size());
+        std::cout << as->animation_to_play << std::endl;
+
         if (as->animation_to_play == -1) {
           paint_controller->draw_image(as->th, entity.pos.x, entity.pos.y, 16.0,
                                        16.0, 0.0, &white);
           break;
         }
-        Animation *a = &as->animations[animation_to_play];
+        Animation *a = as->animations[as->animation_to_play];
+        AnimFrame frame = a->get_anim_frame(as->updates);
         paint_controller->draw_image(
-            a->th, entity.pos.x + a->get_interpolated_value(as->updates, 0),
-            entity.pos.y + a->get_interpolated_value(as->updates, 1),
-            16.0 * a->get_interpolated_value(as->updates, 2),
-            16.0 * a->get_inter_polated_value(as->updates, 2),
-            0.0 + a->get_interpolated_value(as->updates, 3), &white);
+            a->th, entity.pos.x + frame.posx,
+            entity.pos.y + frame.posy,
+            16.0 * frame.scale,
+            16.0 * frame.scale,
+            0.0 + frame.rot, &white);
         break;
       }
     }

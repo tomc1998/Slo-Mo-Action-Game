@@ -1,3 +1,4 @@
+#pragma once
 class Keyframe {
 public:
   f32 value;

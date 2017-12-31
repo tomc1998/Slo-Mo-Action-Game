@@ -9,5 +9,5 @@ CompAnimations::CompAnimations(EntityId entity_id,
   this->animations = animations;
   this->animation_to_play = -1;
   this->updates = 0;
-  this->th = th
+  this->th = th;
 }

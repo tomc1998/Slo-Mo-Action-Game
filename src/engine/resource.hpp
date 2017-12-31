@@ -1,5 +1,8 @@
 #pragma once
+#include "anim_frame.hpp"
 #include "keyframe.hpp"
+#include <cstring>
+#include <utility>
 #include <vector>
 
 class ResourceManager;
@@ -18,10 +21,12 @@ public:
   f32 uvs[4];
 };
 
+/** Animation class that stores the animation of only 1 sprite, multiple
+ * animations will be stored in the actual animation component */
 class Animation {
 private:
-  f32 linear_interpolation(f32 start_value, f32 end_value, i32 start_updates,
-                           i32 end_updates, i32 curr_updates);
+  f32 lerp(f32 start_value, f32 end_value, i32 start_updates, i32 end_updates,
+          i32 curr_updates);
 
 public:
   /** The texture handle of the sprite of the animation */
@@ -29,22 +34,20 @@ public:
 
   /** Vector of keyframes of the animation */
 
-  /*
-   * [0] = pos x
-   * [1] = pos y
-   * [2] = scale
-   * [3] = rotation
-   *
-   * */
-  std::vector<std::vector<Keyframe>> keyframes;
+  
+  std::vector<Keyframe> posx_keys;
+  std::vector<Keyframe> posy_keys;
+  std::vector<Keyframe> scale_keys;
+  std::vector<Keyframe> rot_keys;
 
-  std::vector<std::vector<InterpolationType>> interpolations;
+  std::vector<InterpolationType> posx_interps;
+  std::vector<InterpolationType> posy_interps;
+  std::vector<InterpolationType> scale_interps;
+  std::vector<InterpolationType> rot_interps;
+  
+  AnimFrame get_anim_frame(i32 updates);
 
-  /** Gets the value of a certain attribute based on the amount of updates
-   * through the animation you are
-   * keyframe_type should be an integer from 0 to 3 representing the index in
-   * the keyframes vector of the type of keyframe (e.g. 1 for pos y) */
-  f32 get_interpolated_value(i32 updates, i32 keyframe_type);
+  /** Gets an animation frame based on the update timestamp */
 };
 
 /** A resource, containing data about a resource type. Has an enum of the type,
@@ -52,7 +55,7 @@ public:
 class Resource {
 public:
   ResourceType type;
-  union ResourceData {
+  struct ResourceData {
     Texture texture;     /** type == TEXTURE */
     Animation animation; /** type == ANIMATION */
   } data;
@@ -61,5 +64,5 @@ public:
   Resource(Animation a);
   Resource();
   ~Resource();
-  Resource& operator=(const Resource& other);
+  Resource &operator=(const Resource &other);
 };
