@@ -8,9 +8,9 @@
 class ResourceManager;
 
 /** -1 indicates a 'null' resource handle */
-typedef i32 ResHandle;
+typedef i32 TexHandle;
+typedef i32 AnimHandle;
 
-enum ResourceType { TEXTURE, ANIMATION };
 enum InterpolationType { LINEAR };
 
 class Texture {
@@ -31,7 +31,7 @@ private:
 
 public:
   /** The texture handle of the sprite of the animation */
-  ResHandle th;
+  TexHandle th;
 
   /** Vectors of keyframes of the animation */
   std::vector<Keyframe> posx_keys;
@@ -49,19 +49,3 @@ public:
   AnimFrame get_anim_frame(i32 updates);
 };
 
-/** A resource, containing data about a resource type. Has an enum of the type,
- * then a union to contain this resource's actual data.*/
-class Resource {
-public:
-  ResourceType type;
-  struct ResourceData {
-    Texture texture;     /** type == TEXTURE */
-    Animation animation; /** type == ANIMATION */
-  } data;
-
-  Resource(Texture t);
-  Resource(Animation a);
-  Resource();
-  ~Resource();
-  Resource &operator=(const Resource &other);
-};
