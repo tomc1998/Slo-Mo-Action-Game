@@ -115,13 +115,15 @@ Animation::Animation(std::vector<TexHandle> ths) {
   for (const auto &th : ths) {
     this->part_id_map[it] = th;
     if (it == 0) {
-      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(6.28, 100, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(0.0, 200, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(5.0, 100, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(0.0, 200, LINEAR, it));
     } else {
-      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(-6.28, 100, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(0.0, 200, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(2.0, 50, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(0.0, 100, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(2.0, 150, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(0.0, 200, LINEAR, it));
     }
     it++;
   }

@@ -41,8 +41,8 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
   curr_batch.buffer(v, 6);
 }
 
-void PaintController::draw_animation(AnimHandle ah, u32 updates,
-                                     f32 x, f32 y, f32 w, f32 h, f32 rot, Color *tint) {
+void PaintController::draw_animation(AnimHandle ah, u32 updates, f32 x, f32 y,
+                                     f32 w, f32 h, f32 rot, Color *tint) {
   assert(ah != -1);
 
   Animation *anim = this->res_manager->lookup_anim(ah);
@@ -50,9 +50,10 @@ void PaintController::draw_animation(AnimHandle ah, u32 updates,
   anim->get_anim_frames(updates, frames);
 
   for (u32 ii = 0; ii < anim->get_part_count(); ii++) {
-    this->draw_image(frames[ii].th, x + frames[ii].posx, y + frames[ii].posy,
-                     w * frames[ii].scale, h * frames[ii].scale,
-                     rot + frames[ii].rot, tint);
+    this->draw_image(
+        frames[ii].th, x + frames[ii].posx - (frames[ii].scale - 1) * w/2,
+        y + frames[ii].posy - (frames[ii].scale - 1) * h/2, w * frames[ii].scale,
+        h * frames[ii].scale, rot + frames[ii].rot, tint);
   }
   delete[] frames;
 }
