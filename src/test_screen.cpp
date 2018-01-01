@@ -10,7 +10,7 @@
 #include <vector>
 
 void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
-  ResHandle wall_tex = res_manager->load_texture("assets/sprites/test.png");
+  ResHandle wall_tex = res_manager->load_texture("assets/sprites/test_wall.png");
 
   EntityId entity_id = ecs->gen_entity_id();
   ecs->add_comp_player_controlled(CompPlayerControlled(entity_id, 600.0f));
@@ -19,10 +19,10 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   EntityId wall_id = ecs->gen_entity_id();
 
   std::vector<Vec2> vertices;
-  vertices.push_back(Vec2(100.0f, 100.0f));
+  vertices.push_back(Vec2(120.0f, 100.0f));
   vertices.push_back(Vec2(200.0f, 100.0f));
-  vertices.push_back(Vec2(200.0f, 200.0f));
-  vertices.push_back(Vec2(100.0f, 200.0f));
+  vertices.push_back(Vec2(220.0f, 200.0f));
+  vertices.push_back(Vec2(80.0f, 200.0f));
 
   ecs->add_comp_wall(CompWall(wall_id, vertices, wall_tex));
 }
