@@ -39,7 +39,7 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
 
 void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
                                  ResHandle tex) {
-  flush_if_batch_tex_not(res_manager->lookup_tex(tex)->cache_tex_ix);
+  flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix);
   std::vector<Vertex> vertices;
   vertices.reserve(num_quads * 6);
   ;
