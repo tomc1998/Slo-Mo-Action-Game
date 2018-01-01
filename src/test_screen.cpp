@@ -18,7 +18,7 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   ecs->add_comp_player_controlled(CompPlayerControlled(entity_id, 600.0f));
   ecs->add_comp_game_entity(CompGameEntity(entity_id, 10.0f, 0.02f, true));
   AnimHandle ah = res_manager->load_test_animation();
-  ecs->add_comp_animation(CompAnimation(entity_id, ah, 200));
+  ecs->add_comp_animation(CompAnimation(entity_id, ah, 1000));
 
   EntityId wall_id = ecs->gen_entity_id();
 

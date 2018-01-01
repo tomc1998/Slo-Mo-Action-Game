@@ -13,25 +13,25 @@ f32 Animation::lerp(f32 start_value, f32 end_value, i32 start_updates,
 
 u32 Animation::get_part_count() { return this->part_id_map.size(); }
 
-void Animation::get_anim_frames(u32 updates, AnimFrame frames[]) {
+void Animation::get_anim_frames(u32 updates, AnimFrame* frames) {
 
   if (this->posx_keys.size() == 0 && this->posy_keys.size() == 0 &&
       this->scale_keys.size() == 0 && this->rot_keys.size() == 0) {
-    u32 it = 0;
+    u32 index = 0;
     for (auto element : this->part_id_map) {
-      frames[it] = AnimFrame(element.second);
-      it++;
+      frames[index] = AnimFrame(element.second);
+      index++;
     }
     return;
   }
 
-  u32 it = 0;
+  u32 index = 0;
   for (auto element : this->part_id_map) {
     u32 p_id = element.first;
-    TexHandle th = element.second;
+    TexHandle tex = element.second;
 
     AnimFrame frame;
-    frame.th = th;
+    frame.tex = tex;
 
     for (u32 ii = 0; ii < this->posx_keys.size(); ii++) {
       if (this->posx_keys[ii].part_id == p_id &&
@@ -97,8 +97,8 @@ void Animation::get_anim_frames(u32 updates, AnimFrame frames[]) {
       }
     }
 
-    frames[it] = frame;
-    it++;
+    frames[index] = frame;
+    index++;
   }
 }
 
@@ -115,15 +115,43 @@ Animation::Animation(std::vector<TexHandle> ths) {
   for (const auto &th : ths) {
     this->part_id_map[it] = th;
     if (it == 0) {
-      this->scale_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(5.0, 100, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(0.0, 200, LINEAR, it));
+      this->posx_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
+      this->posx_keys.push_back(Keyframe(15.0, 500, LINEAR, it));
+      this->posx_keys.push_back(Keyframe(0.0, 1000, LINEAR, it));
+
+      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
+      this->posy_keys.push_back(Keyframe(10.0, 333, LINEAR, it));
+      this->posy_keys.push_back(Keyframe(-10.0, 666, LINEAR, it));
+      this->posy_keys.push_back(Keyframe(0.0, 1000, LINEAR, it));
+
+      this->scale_keys.push_back(Keyframe(1.0, 0, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(2.0, 100, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(1.0, 200, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(1.0, 800, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(2.0, 900, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(1.0, 1000, LINEAR, it));
+
+      this->rot_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
+      this->rot_keys.push_back(Keyframe(-6.28, 1000, LINEAR, it));
     } else {
-      this->scale_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(2.0, 50, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(0.0, 100, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(2.0, 150, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(0.0, 200, LINEAR, it));
+      this->posx_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
+      this->posx_keys.push_back(Keyframe(-15.0, 500, LINEAR, it));
+      this->posx_keys.push_back(Keyframe(0.0, 1000, LINEAR, it));
+
+      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
+      this->posy_keys.push_back(Keyframe(-10.0, 333, LINEAR, it));
+      this->posy_keys.push_back(Keyframe(10.0, 666, LINEAR, it));
+      this->posy_keys.push_back(Keyframe(0.0, 1000, LINEAR, it));
+
+      this->scale_keys.push_back(Keyframe(1.0, 0, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(2.0, 100, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(1.0, 200, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(1.0, 800, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(2.0, 900, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(1.0, 1000, LINEAR, it));
+
+      this->rot_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
+      this->rot_keys.push_back(Keyframe(6.28, 1000, LINEAR, it));
     }
     it++;
   }

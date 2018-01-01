@@ -41,32 +41,32 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
   curr_batch.buffer(v, 6);
 }
 
-void PaintController::draw_animation(AnimHandle ah, u32 updates, f32 x, f32 y,
+void PaintController::draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y,
                                      f32 w, f32 h, f32 rot, Color *tint) {
-  assert(ah != -1);
+  assert(anim != -1);
 
-  Animation *anim = this->res_manager->lookup_anim(ah);
-  AnimFrame *frames = new AnimFrame[anim->get_part_count()];
-  anim->get_anim_frames(updates, frames);
+  Animation *animation = this->res_manager->lookup_anim(anim);
+  AnimFrame *frames = new AnimFrame[animation->get_part_count()];
+  animation->get_anim_frames(updates, frames);
 
-  for (u32 ii = 0; ii < anim->get_part_count(); ii++) {
+  for (u32 ii = 0; ii < animation->get_part_count(); ii++) {
     this->draw_image(
-        frames[ii].th, x + frames[ii].posx - (frames[ii].scale - 1) * w/2,
-        y + frames[ii].posy - (frames[ii].scale - 1) * h/2, w * frames[ii].scale,
-        h * frames[ii].scale, rot + frames[ii].rot, tint);
+        frames[ii].tex, x + frames[ii].posx - (frames[ii].scale - 1) * w / 2,
+        y + frames[ii].posy - (frames[ii].scale - 1) * h / 2,
+        w * frames[ii].scale, h * frames[ii].scale, rot + frames[ii].rot, tint);
   }
   delete[] frames;
 }
 
-void PaintController::draw_image(TexHandle th, f32 x, f32 y, f32 w, f32 h,
+void PaintController::draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h,
                                  f32 rotation, Color *tint) {
   // We don't want a null resource handle
-  assert(th != -1);
+  assert(tex != -1);
 
-  Texture *tex = this->res_manager->lookup_tex(th);
+  Texture *texture = this->res_manager->lookup_tex(tex);
 
-  this->flush_if_batch_tex_not(tex->cache_tex_ix);
-  f32 *uvs = tex->uvs;
+  this->flush_if_batch_tex_not(texture->cache_tex_ix);
+  f32 *uvs = texture->uvs;
   Vec2 centre = Vec2(x + w / 2, y + h / 2);
   Vec2 translated = Vec2(x - centre.x, y - centre.y);
   Matrix2x2 rot_matrix(std::cos(rotation), -1 * std::sin(rotation),

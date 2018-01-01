@@ -33,7 +33,7 @@ public:
   /** frames should be a pointer to the start of memory where there is exactly
    * enough memory allocated for x AnimFrames, where x is the number of parts in
    * the animation */
-  void get_anim_frames(u32 updates, AnimFrame frames[]);
+  void get_anim_frames(u32 updates, AnimFrame* frames);
 
   Animation();
   Animation(std::vector<TexHandle> ths);
