@@ -15,6 +15,6 @@ Matrix2x2::Matrix2x2() {
   el[3] = 0.0;
 }
 
-Vec2 Matrix2x2::multiply_by_vec(Vec2 v) {
+Vec2 Matrix2x2::mul(Vec2 v) {
   return Vec2(el[0]*v.x + el[1]*v.y, el[2]*v.x + el[3]*v.y);
 }
