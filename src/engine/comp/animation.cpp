@@ -3,9 +3,9 @@
 #include "engine/animation.hpp"
 #include "engine/vec.hpp"
 
-CompAnimation::CompAnimation(EntityId entity_id, AnimHandle ah, i32 length) {
+CompAnimation::CompAnimation(EntityId entity_id, AnimHandle anim, u32 length) {
   this->entity_id = entity_id;
-  this->ah = ah;
+  this->anim = anim;
   this->length = length;
   this->updates = 0;
 }

@@ -10,13 +10,13 @@ class Animation;
 
 class CompAnimation {
 public:
-  CompAnimation(EntityId entity_id, AnimHandle ah, i32 length);
+  CompAnimation(EntityId entity_id, AnimHandle anim, u32 length);
 
   EntityId entity_id;
-  AnimHandle ah;
-  i32 length;
+  AnimHandle anim;
+  u32 length;
 
   /** Stores the current timestamp of this animation */
-  i32 updates;
+  u32 updates;
 
 };

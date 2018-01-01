@@ -29,12 +29,13 @@ public:
 
   u32 get_part_count();
 
-  /** Returns an AnimFrame from the current timestamp */
-  /** frames should be a pointer to the start of memory where there is exactly
-   * enough memory allocated for x AnimFrames, where x is the number of parts in
-   * the animation */
-  void get_anim_frames(u32 updates, AnimFrame* frames);
+  /** Returns an AnimFrame from the current timestamp
+   *
+   * @param[out] frames This should be a pointer to the start of enough allocated memory for all AnimFrames
+   *
+   * */
+  void get_anim_frames(u32 updates, AnimFrame *frames);
 
   Animation();
-  Animation(std::vector<TexHandle> ths);
+  Animation(std::vector<TexHandle> texs);
 };

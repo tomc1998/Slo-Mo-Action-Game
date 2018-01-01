@@ -28,7 +28,7 @@ public:
 
 
 
-        paint_controller->draw_animation(a.ah, a.updates, entity.pos.x, entity.pos.y, 16.0, 16.0, 0.0, &white);
+        paint_controller->draw_animation(a.anim, a.updates, entity.pos.x, entity.pos.y, 16.0, 16.0, 0.0, &white);
         break;
       }
     }

@@ -30,8 +30,8 @@ void Animation::get_anim_frames(u32 updates, AnimFrame* frames) {
     u32 p_id = element.first;
     TexHandle tex = element.second;
 
-    AnimFrame frame;
-    frame.tex = tex;
+    AnimFrame* frame = new AnimFrame;
+    frame->tex = tex;
 
     for (u32 ii = 0; ii < this->posx_keys.size(); ii++) {
       if (this->posx_keys[ii].part_id == p_id &&
@@ -41,11 +41,11 @@ void Animation::get_anim_frames(u32 updates, AnimFrame* frames) {
         Keyframe e = this->posx_keys[ii + 1];
 
         if (s.interpolation_type == LINEAR) {
-          frame.posx = lerp(s.value, e.value, s.updates, e.updates, updates);
+          frame->posx = lerp(s.value, e.value, s.updates, e.updates, updates);
         }
         break;
       } else {
-        frame.posx = 0.0;
+        frame->posx = 0.0;
       }
     }
 
@@ -57,11 +57,11 @@ void Animation::get_anim_frames(u32 updates, AnimFrame* frames) {
         Keyframe e = this->posy_keys[ii + 1];
 
         if (s.interpolation_type == LINEAR) {
-          frame.posy = lerp(s.value, e.value, s.updates, e.updates, updates);
+          frame->posy = lerp(s.value, e.value, s.updates, e.updates, updates);
         }
         break;
       } else {
-        frame.posy = 0.0;
+        frame->posy = 0.0;
       }
     }
 
@@ -73,11 +73,11 @@ void Animation::get_anim_frames(u32 updates, AnimFrame* frames) {
         Keyframe e = this->scale_keys[ii + 1];
 
         if (s.interpolation_type == LINEAR) {
-          frame.scale = lerp(s.value, e.value, s.updates, e.updates, updates);
+          frame->scale = lerp(s.value, e.value, s.updates, e.updates, updates);
         }
         break;
       } else {
-        frame.scale = 1.0;
+        frame->scale = 1.0;
       }
     }
 
@@ -89,15 +89,15 @@ void Animation::get_anim_frames(u32 updates, AnimFrame* frames) {
         Keyframe e = this->rot_keys[ii + 1];
 
         if (s.interpolation_type == LINEAR) {
-          frame.rot = lerp(s.value, e.value, s.updates, e.updates, updates);
+          frame->rot = lerp(s.value, e.value, s.updates, e.updates, updates);
         }
         break;
       } else {
-        frame.rot = 0.0;
+        frame->rot = 0.0;
       }
     }
 
-    frames[index] = frame;
+    frames[index] = *frame;
     index++;
   }
 }
@@ -110,49 +110,49 @@ Animation::Animation() {
   this->rot_keys.clear();
 }
 
-Animation::Animation(std::vector<TexHandle> ths) {
-  u32 it = 0;
-  for (const auto &th : ths) {
-    this->part_id_map[it] = th;
-    if (it == 0) {
-      this->posx_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->posx_keys.push_back(Keyframe(15.0, 500, LINEAR, it));
-      this->posx_keys.push_back(Keyframe(0.0, 1000, LINEAR, it));
+Animation::Animation(std::vector<TexHandle> texs) {
+  u32 index = 0;
+  for (const auto &tex : texs) {
+    this->part_id_map[index] = tex;
+    if (index == 0) {
+      this->posx_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
+      this->posx_keys.push_back(Keyframe(15.0, 500, LINEAR, index));
+      this->posx_keys.push_back(Keyframe(0.0, 1000, LINEAR, index));
 
-      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(10.0, 333, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(-10.0, 666, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(0.0, 1000, LINEAR, it));
+      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
+      this->posy_keys.push_back(Keyframe(10.0, 333, LINEAR, index));
+      this->posy_keys.push_back(Keyframe(-10.0, 666, LINEAR, index));
+      this->posy_keys.push_back(Keyframe(0.0, 1000, LINEAR, index));
 
-      this->scale_keys.push_back(Keyframe(1.0, 0, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(2.0, 100, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(1.0, 200, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(1.0, 800, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(2.0, 900, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(1.0, 1000, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(1.0, 0, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(2.0, 100, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(1.0, 200, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(1.0, 800, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(2.0, 900, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(1.0, 1000, LINEAR, index));
 
-      this->rot_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->rot_keys.push_back(Keyframe(-6.28, 1000, LINEAR, it));
+      this->rot_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
+      this->rot_keys.push_back(Keyframe(-6.28, 1000, LINEAR, index));
     } else {
-      this->posx_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->posx_keys.push_back(Keyframe(-15.0, 500, LINEAR, it));
-      this->posx_keys.push_back(Keyframe(0.0, 1000, LINEAR, it));
+      this->posx_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
+      this->posx_keys.push_back(Keyframe(-15.0, 500, LINEAR, index));
+      this->posx_keys.push_back(Keyframe(0.0, 1000, LINEAR, index));
 
-      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(-10.0, 333, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(10.0, 666, LINEAR, it));
-      this->posy_keys.push_back(Keyframe(0.0, 1000, LINEAR, it));
+      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
+      this->posy_keys.push_back(Keyframe(-10.0, 333, LINEAR, index));
+      this->posy_keys.push_back(Keyframe(10.0, 666, LINEAR, index));
+      this->posy_keys.push_back(Keyframe(0.0, 1000, LINEAR, index));
 
-      this->scale_keys.push_back(Keyframe(1.0, 0, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(2.0, 100, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(1.0, 200, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(1.0, 800, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(2.0, 900, LINEAR, it));
-      this->scale_keys.push_back(Keyframe(1.0, 1000, LINEAR, it));
+      this->scale_keys.push_back(Keyframe(1.0, 0, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(2.0, 100, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(1.0, 200, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(1.0, 800, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(2.0, 900, LINEAR, index));
+      this->scale_keys.push_back(Keyframe(1.0, 1000, LINEAR, index));
 
-      this->rot_keys.push_back(Keyframe(0.0, 0, LINEAR, it));
-      this->rot_keys.push_back(Keyframe(6.28, 1000, LINEAR, it));
+      this->rot_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
+      this->rot_keys.push_back(Keyframe(6.28, 1000, LINEAR, index));
     }
-    it++;
+    index++;
   }
 }
