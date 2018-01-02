@@ -8,6 +8,7 @@
 #include "system/physics.cpp"
 #include "system/player_controlled.cpp"
 #include "system/wall_collision.cpp"
+#include "system/wall_renderer.cpp"
 #include "system/animation_update.cpp"
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
@@ -24,6 +25,7 @@ ECS::ECS() {
   this->update_systems.push_back(new SystemWallCollision);
   this->update_systems.push_back(new SystemAnimationUpdate);
 
+  this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemDebugPaint);
 }
 

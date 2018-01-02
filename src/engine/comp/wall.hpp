@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/entity_id.hpp"
 #include "engine/vec.hpp"
+#include "engine/resource.hpp"
 #include <vector>
 
 /**
@@ -9,8 +10,9 @@
 
 class CompWall {
 public:
-  CompWall(EntityId entity_id, std::vector<Vec2> vertices);
+  CompWall(EntityId entity_id, std::vector<Vec2> vertices, ResHandle edge_tex);
 
   EntityId entity_id;
   std::vector<Vec2> vertices;
+  ResHandle edge_tex;
 };

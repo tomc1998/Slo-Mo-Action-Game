@@ -17,7 +17,6 @@ public:
   void handle_components(ECS *ecs, InputState *input_state,
                          PaintController *paint_controller) {
     Color white = Color(1.0, 1.0, 1.0, 1.0);
-    Color red = Color(1.0, 0.0, 0.0, 1.0);
     for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
       CompGameEntity entity = ecs->comp_game_entity[ii];
       for (u32 jj = 0; jj < ecs->comp_animation.size(); jj++) {
@@ -25,17 +24,8 @@ public:
           continue;
         }
         CompAnimation a = ecs->comp_animation[jj];
-
-
-
         paint_controller->draw_animation(a.anim, a.updates, entity.pos.x, entity.pos.y, 16.0, 16.0, 0.0, &white);
         break;
-      }
-    }
-    for (u32 ii = 0; ii < ecs->comp_wall.size(); ii++) {
-      for (u32 jj = 0; jj < ecs->comp_wall[ii].vertices.size(); jj++) {
-        Vec2 vertex = ecs->comp_wall[ii].vertices[jj];
-        paint_controller->fill_rect(vertex.x, vertex.y, 1.0, 1.0, &red);
       }
     }
   }

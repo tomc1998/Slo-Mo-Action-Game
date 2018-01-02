@@ -6,6 +6,7 @@
 #include "engine/vec.hpp"
 #include "engine/resource_manager.hpp"
 #include <cassert>
+#include <iostream>
 #include <map>
 
 /** Create an orthographic projection matrix, and store it in the given

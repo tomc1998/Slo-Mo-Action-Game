@@ -40,6 +40,14 @@ public:
   void draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h, f32 rotation, Color *tint);
 
 
+  /** Draw some quads with the given vertices. This function will transform the
+   * quads into 2 tris each. */
+  void draw_quads(Vertex* v_buf, size_t num_quads, ResHandle tex);
+
+  /** Convenience method for getting a texture from a resource handle. Useful
+   * for when you need to know UVs, like with draw_quads. */
+  Texture* get_tex_for_handle(ResHandle r);
+
   /** Flush the current batch if there's any vertices there, set the next batch
    * to have the same cache texture ix */
   void flush();

@@ -62,6 +62,8 @@ class ECS {
   friend class SystemWallCollision;
   friend class SystemAnimationUpdate;
   friend class SystemDebugPaint;
+  friend class SystemWallRenderer;
+
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
