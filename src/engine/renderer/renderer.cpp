@@ -81,7 +81,7 @@ void Renderer::render(ResourceManager* res_manager) {
 
 void Renderer::clear_paint_buffer() { buffer.clear(); }
 
-PaintController Renderer::gen_paint_controller(ResourceManager *rm, ResHandle white) {
+PaintController Renderer::gen_paint_controller(ResourceManager *rm, TexHandle white) {
   PaintController p(&buffer, rm, white);
   return p;
 }

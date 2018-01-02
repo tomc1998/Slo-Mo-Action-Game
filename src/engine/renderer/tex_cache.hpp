@@ -4,7 +4,8 @@
 
 #include <GLFW/glfw3.h>
 
-#include "engine/resource.hpp"
+#include "engine/texture.hpp"
+#include "engine/animation.hpp"
 #include <vector>
 
 class BinTreeNode {
@@ -14,7 +15,7 @@ public:
   /** The space (X,Y,W,H) used up by this bin packing binary tree node */
   f32 space[4];
   /** The texture stored in this node, or -1 if this node is currently empty */
-  ResHandle tex_handle = -1;
+  TexHandle tex_handle = -1;
 
   BinTreeNode(f32 _space[4]);
   ~BinTreeNode();
@@ -23,14 +24,14 @@ public:
    * @param[out] rect The output rectangle found
    * @return true if a rectangle was fonud, false otherwise
    */
-  bool rect_for(ResHandle tex, f32 *rect);
+  bool rect_for(TexHandle tex, f32 *rect);
 
   /** Pack a rectangle into this tree. Returns true if the rectangle was
    * successfully packed.
    * @param[out] dest If there was enough space, this will contain the location
    * of the texture as UV coordinates, X, Y, W, H.
    */
-  bool pack_rect(ResHandle tex, f32 w, f32 h, f32 *dest);
+  bool pack_rect(TexHandle tex, f32 w, f32 h, f32 *dest);
 
   /** Returns true if this node is a leaf node */
   bool is_leaf();
@@ -69,11 +70,11 @@ public:
    * @param[out] space The UV rectangle this was cached into
    * @return The index of the cache texture this was cached into
    */
-  u64 cache_tex(ResHandle t, void *tex_data, u32 w, u32 h, f32 *space);
+  u64 cache_tex(TexHandle t, void *tex_data, u32 w, u32 h, f32 *space);
 
   /**
    * @param[out] rect The output rectangle found
    * @return true if a rectangle was found, false otherwise
    */
-  bool rect_for(ResHandle tex, f32 *rect);
+  bool rect_for(TexHandle tex, f32 *rect);
 };

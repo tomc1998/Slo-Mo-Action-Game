@@ -1,6 +1,7 @@
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
 #include "comp/wall.hpp"
+#include "comp/animation.hpp"
 #include "ecs.hpp"
 #include "renderer/paint_controller.hpp"
 #include "system/debug_paint.cpp"
@@ -8,10 +9,13 @@
 #include "system/player_controlled.cpp"
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
+#include "system/animation_update.cpp"
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
 ECS_IMPL_COMPONENT(CompWall, wall)
+ECS_IMPL_COMPONENT(CompAnimation, animation)
+
 
 
 ECS::ECS() {
@@ -19,6 +23,7 @@ ECS::ECS() {
   this->update_systems.push_back(new SystemPlayerControlled);
   this->update_systems.push_back(new SystemPhysics);
   this->update_systems.push_back(new SystemWallCollision);
+  this->update_systems.push_back(new SystemAnimationUpdate);
 
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemDebugPaint);

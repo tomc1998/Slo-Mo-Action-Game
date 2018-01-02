@@ -9,6 +9,7 @@ InputManager::InputManager(GLFWwindow *window) {
   current_input_state.move_right_keycode = GLFW_KEY_D;
   current_input_state.move_down_keycode = GLFW_KEY_S;
   current_input_state.move_left_keycode = GLFW_KEY_A;
+  current_input_state.attack_down_keycode = -1;
   current_input_state.slomo_down_keycode = GLFW_KEY_SPACE;
 
   current_input_state.move_up = 0.0f;
