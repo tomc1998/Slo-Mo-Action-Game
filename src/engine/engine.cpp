@@ -36,7 +36,7 @@ Engine::Engine() {
 
 void Engine::push_screen(Screen *screen) {
   ECS *ecs = new ECS();
-  screen->init(ecs);
+  screen->init(ecs, resource_manager);
   this->screen_stack.push_back(std::pair<ECS *, Screen *>(ecs, screen));
 }
 

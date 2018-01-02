@@ -2,6 +2,7 @@
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
 #include "comp/wall.hpp"
+#include "comp/animation.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
@@ -13,6 +14,7 @@ class SystemPlayerControlled;
 class SystemPhysics;
 class SystemDebugPaint;
 class SystemWallCollision;
+class SystemAnimationUpdate;
 class InputState;
 class PaintController;
 
@@ -58,11 +60,13 @@ class ECS {
   friend class SystemPhysics;
   friend class SystemPlayerControlled;
   friend class SystemWallCollision;
+  friend class SystemAnimationUpdate;
   friend class SystemDebugPaint;
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
   ECS_DECLARE_COMPONENT(CompWall, wall)
+  ECS_DECLARE_COMPONENT(CompAnimation, animation)
 private:
   std::vector<UpdateSystem *> update_systems;
   std::vector<PaintSystem *> paint_systems;
