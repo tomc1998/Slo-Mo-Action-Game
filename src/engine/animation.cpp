@@ -2,6 +2,7 @@
 #include "animation.hpp"
 #include "keyframe.hpp"
 #include <cassert>
+#include <functional>
 #include <iostream>
 
 f32 Animation::lerp(f32 start_value, f32 end_value, i32 start_updates,
@@ -13,7 +14,7 @@ f32 Animation::lerp(f32 start_value, f32 end_value, i32 start_updates,
 
 u32 Animation::get_part_count() { return this->part_id_map.size(); }
 
-void Animation::get_anim_frames(u32 updates, AnimFrame* frames) {
+void Animation::get_anim_frames(u32 updates, AnimFrame *frames) {
 
   if (this->posx_keys.size() == 0 && this->posy_keys.size() == 0 &&
       this->scale_keys.size() == 0 && this->rot_keys.size() == 0) {
@@ -30,74 +31,31 @@ void Animation::get_anim_frames(u32 updates, AnimFrame* frames) {
     u32 p_id = element.first;
     TexHandle tex = element.second;
 
-    AnimFrame* frame = new AnimFrame;
-    frame->tex = tex;
+    AnimFrame frame;
+    frame.tex = tex;
 
-    for (u32 ii = 0; ii < this->posx_keys.size(); ii++) {
-      if (this->posx_keys[ii].part_id == p_id &&
-          this->posx_keys[ii].updates <= updates &&
-          this->posx_keys[ii + 1].updates > updates) {
-        Keyframe s = this->posx_keys[ii];
-        Keyframe e = this->posx_keys[ii + 1];
+    std::reference_wrapper<f32> frame_val_refs[] = {frame.posx, frame.posy,
+                                                    frame.scale, frame.rot};
+    std::reference_wrapper<std::vector<Keyframe>> keys_refs[] = {
+        posx_keys, posy_keys, scale_keys, rot_keys};
 
-        if (s.interpolation_type == LINEAR) {
-          frame->posx = lerp(s.value, e.value, s.updates, e.updates, updates);
+    for (u32 ii = 0; ii < sizeof(keys_refs) / sizeof(keys_refs[0]); ii++) {
+      std::vector<Keyframe> &keys = keys_refs[ii];
+      for (u32 jj = 0; jj < keys.size(); jj++) {
+        if (keys[jj].part_id == p_id && keys[jj].updates <= updates &&
+            keys[jj + 1].updates > updates) {
+          Keyframe s = keys[jj];
+          Keyframe e = keys[jj + 1];
+
+          if (s.interpolation_type == LINEAR) {
+            f32 &frame_val_ref = frame_val_refs[ii];
+            frame_val_ref =
+                lerp(s.value, e.value, s.updates, e.updates, updates);
+          }
         }
-        break;
-      } else {
-        frame->posx = 0.0;
       }
     }
-
-    for (u32 ii = 0; ii < this->posy_keys.size(); ii++) {
-      if (this->posy_keys[ii].part_id == p_id &&
-          this->posy_keys[ii].updates <= updates &&
-          this->posy_keys[ii + 1].updates > updates) {
-        Keyframe s = this->posy_keys[ii];
-        Keyframe e = this->posy_keys[ii + 1];
-
-        if (s.interpolation_type == LINEAR) {
-          frame->posy = lerp(s.value, e.value, s.updates, e.updates, updates);
-        }
-        break;
-      } else {
-        frame->posy = 0.0;
-      }
-    }
-
-    for (u32 ii = 0; ii < this->scale_keys.size(); ii++) {
-      if (this->scale_keys[ii].part_id == p_id &&
-          this->scale_keys[ii].updates <= updates &&
-          this->scale_keys[ii + 1].updates > updates) {
-        Keyframe s = this->scale_keys[ii];
-        Keyframe e = this->scale_keys[ii + 1];
-
-        if (s.interpolation_type == LINEAR) {
-          frame->scale = lerp(s.value, e.value, s.updates, e.updates, updates);
-        }
-        break;
-      } else {
-        frame->scale = 1.0;
-      }
-    }
-
-    for (u32 ii = 0; ii < this->rot_keys.size(); ii++) {
-      if (this->rot_keys[ii].part_id == p_id &&
-          this->rot_keys[ii].updates <= updates &&
-          this->rot_keys[ii + 1].updates > updates) {
-        Keyframe s = this->rot_keys[ii];
-        Keyframe e = this->rot_keys[ii + 1];
-
-        if (s.interpolation_type == LINEAR) {
-          frame->rot = lerp(s.value, e.value, s.updates, e.updates, updates);
-        }
-        break;
-      } else {
-        frame->rot = 0.0;
-      }
-    }
-
-    frames[index] = *frame;
+    frames[index] = frame;
     index++;
   }
 }
