@@ -1,7 +1,15 @@
 #pragma once
 #include "vec.hpp"
 
-/** Template 2row x 2col matrix class */
+/** Template 2 x 2 matrix class 
+ *
+ * Matrix2x2(a, b, c, d) gives a matrix like this:
+ *  [a, b]
+ *  [c, d]
+ *
+ * */
+
+
 class Matrix2x2 {
 public:
   f32 el[4];
