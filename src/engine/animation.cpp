@@ -34,23 +34,22 @@ void Animation::get_anim_frames(u32 updates, AnimFrame *frames) {
     AnimFrame frame;
     frame.tex = tex;
 
-    std::reference_wrapper<f32> frame_val_refs[] = {frame.posx, frame.posy,
-                                                    frame.scale, frame.rot};
-    std::reference_wrapper<std::vector<Keyframe>> keys_refs[] = {
-        posx_keys, posy_keys, scale_keys, rot_keys};
+    f32 *frame_val_refs[] = {&frame.posx, &frame.posy, &frame.scale,
+                             &frame.rot};
+
+    std::vector<Keyframe> *keys_refs[] = {&posx_keys, &posy_keys, &scale_keys,
+                                          &rot_keys};
 
     for (u32 ii = 0; ii < sizeof(keys_refs) / sizeof(keys_refs[0]); ii++) {
-      std::vector<Keyframe> &keys = keys_refs[ii];
-      for (u32 jj = 0; jj < keys.size(); jj++) {
-        if (keys[jj].part_id == p_id && keys[jj].updates <= updates &&
-            keys[jj + 1].updates > updates) {
-          Keyframe s = keys[jj];
-          Keyframe e = keys[jj + 1];
+      std::vector<Keyframe> *keys = keys_refs[ii];
+      for (u32 jj = 0; jj < keys->size(); jj++) {
+        if ((*keys)[jj].part_id == p_id && (*keys)[jj].updates <= updates &&
+            (*keys)[jj + 1].updates > updates) {
+          Keyframe s = (*keys)[jj];
+          Keyframe e = (*keys)[jj + 1];
 
           if (s.interpolation_type == LINEAR) {
-            f32 &frame_val_ref = frame_val_refs[ii];
-            frame_val_ref =
-                lerp(s.value, e.value, s.updates, e.updates, updates);
+            *frame_val_refs[ii] = lerp(s.value, e.value, s.updates, e.updates, updates);
           }
         }
       }
