@@ -10,7 +10,7 @@
 #include "engine/vec.hpp"
 #include "test_screen.hpp"
 #include "engine/resource_manager.hpp"
-#include "engine/resource.hpp"
+#include "engine/texture.hpp"
 #include <vector>
 
 void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
@@ -20,7 +20,7 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   AnimHandle ah = res_manager->load_test_animation();
   ecs->add_comp_animation(CompAnimation(entity_id, ah, 1000));
 
-  ResHandle wall_tex = res_manager->load_texture("assets/sprites/test_wall.png");
+  TexHandle wall_tex = res_manager->load_texture("assets/sprites/test_wall.png");
   EntityId wall_id = ecs->gen_entity_id();
 
   std::vector<Vec2> vertices;

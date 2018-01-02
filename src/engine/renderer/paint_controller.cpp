@@ -42,7 +42,7 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
 }
 
 void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
-                                 ResHandle tex) {
+                                 TexHandle tex) {
   flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix);
   std::vector<Vertex> vertices;
   vertices.reserve(num_quads * 6);
@@ -55,7 +55,7 @@ void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
   curr_batch.buffer(&(vertices[0]), vertices.size());
 }
 
-Texture* PaintController::get_tex_for_handle(ResHandle r) {
+Texture* PaintController::get_tex_for_handle(TexHandle r) {
   return res_manager->lookup_tex(r);
 }
 

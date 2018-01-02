@@ -18,7 +18,7 @@ public:
     const f32 SEG_LEN = 16.0;
     Color white = Color(1.0, 1.0, 1.0, 1.0);
     for (const auto &w : ecs->comp_wall) {
-      ResHandle edge_tex = w.edge_tex;
+      TexHandle edge_tex = w.edge_tex;
       const auto &t = paint_controller->get_tex_for_handle(edge_tex);
 
       // For this wall, calculate all the 'inner vertices'
