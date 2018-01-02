@@ -94,6 +94,12 @@ set (STBIMAGE_ROOT_DIR ${PROJECT_DEP_DIR/stb_image})
 target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/stb_image)
 ####################################################
 
+# json #############################################
+# Header only library for parsing json
+set (STBIMAGE_ROOT_DIR ${PROJECT_DEP_DIR/json})
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/json)
+####################################################
+
 #############################################
 # COMPILER FLAGS
 #############################################

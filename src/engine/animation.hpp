@@ -37,5 +37,6 @@ public:
   void get_anim_frames(u32 updates, AnimFrame *frames);
 
   Animation();
-  Animation(std::vector<TexHandle> texs);
+
+  void assign_parts(std::vector<TexHandle> &texs);
 };

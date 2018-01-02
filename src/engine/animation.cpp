@@ -67,49 +67,11 @@ Animation::Animation() {
   this->rot_keys.clear();
 }
 
-Animation::Animation(std::vector<TexHandle> texs) {
+
+void Animation::assign_parts(std::vector<TexHandle> &texs) {
   u32 index = 0;
   for (const auto &tex : texs) {
     this->part_id_map[index] = tex;
-    if (index == 0) {
-      this->posx_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
-      this->posx_keys.push_back(Keyframe(15.0, 500, LINEAR, index));
-      this->posx_keys.push_back(Keyframe(0.0, 1000, LINEAR, index));
-
-      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
-      this->posy_keys.push_back(Keyframe(10.0, 333, LINEAR, index));
-      this->posy_keys.push_back(Keyframe(-10.0, 666, LINEAR, index));
-      this->posy_keys.push_back(Keyframe(0.0, 1000, LINEAR, index));
-
-      this->scale_keys.push_back(Keyframe(1.0, 0, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(2.0, 100, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(1.0, 200, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(1.0, 800, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(2.0, 900, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(1.0, 1000, LINEAR, index));
-
-      this->rot_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
-      this->rot_keys.push_back(Keyframe(-6.28, 1000, LINEAR, index));
-    } else {
-      this->posx_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
-      this->posx_keys.push_back(Keyframe(-15.0, 500, LINEAR, index));
-      this->posx_keys.push_back(Keyframe(0.0, 1000, LINEAR, index));
-
-      this->posy_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
-      this->posy_keys.push_back(Keyframe(-10.0, 333, LINEAR, index));
-      this->posy_keys.push_back(Keyframe(10.0, 666, LINEAR, index));
-      this->posy_keys.push_back(Keyframe(0.0, 1000, LINEAR, index));
-
-      this->scale_keys.push_back(Keyframe(1.0, 0, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(2.0, 100, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(1.0, 200, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(1.0, 800, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(2.0, 900, LINEAR, index));
-      this->scale_keys.push_back(Keyframe(1.0, 1000, LINEAR, index));
-
-      this->rot_keys.push_back(Keyframe(0.0, 0, LINEAR, index));
-      this->rot_keys.push_back(Keyframe(6.28, 1000, LINEAR, index));
-    }
     index++;
   }
 }
