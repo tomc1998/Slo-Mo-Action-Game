@@ -30,6 +30,8 @@ public:
         if (input_state->move_left >= 0) {
           acc->x = acc->x - force_to_apply / mass * input_state->move_left;
         }
+
+        camera->set_target_pos(ecs->comp_game_entity[ii].pos);
         break;
       }
     }
