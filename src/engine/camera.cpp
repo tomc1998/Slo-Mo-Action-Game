@@ -35,6 +35,13 @@ void Camera::gen_ortho_proj_mat(f32 *dest) {
 
 }
 
+void Camera::update() {
+  this->pos += (this->target_pos - this->pos) * 0.01f;
+
+  this->w += (this->target_w - this->w) * 0.01f
+
+}
+
 Camera::Camera(Vec2 pos, f32 w, f32 aspect_ratio) {
   this->pos = pos;
   this->w = w;
