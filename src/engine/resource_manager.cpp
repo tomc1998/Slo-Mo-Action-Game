@@ -5,15 +5,12 @@
 #include "engine/animation.hpp"
 #include "engine/resource_manager.hpp"
 #include "engine/texture.hpp"
-#include "read_json.hpp"
 #include "stb_image.h"
-
 #include "json.hpp"
-using json = nlohmann::json;
-
 #include <fstream>
 #include <iostream>
 #include <sparsepp/spp.h>
+using json = nlohmann::json;
 
 ResourceManager::ResourceManager() {
   unsigned char white_data[] = {

@@ -6,6 +6,8 @@
 #include <sparsepp/spp.h>
 #include <utility>
 #include <vector>
+#include "json.hpp"
+using json = nlohmann::json;
 
 class ResourceManager;
 
@@ -40,3 +42,5 @@ public:
 
   void assign_parts(std::vector<TexHandle> &texs);
 };
+
+void from_json(const json &j, Animation &a);
