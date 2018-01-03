@@ -53,10 +53,10 @@ void Engine::engine_go() {
     for (i32 ii = 0; ii < (int)this->updates_per_render; ii++) {
       this->input_manager->update_input();
 
-      glClear(GL_COLOR_BUFFER_BIT);
       this->update();
     }
 
+    glClear(GL_COLOR_BUFFER_BIT);
     auto frame_time_start = std::chrono::high_resolution_clock::now();
 
     this->paint();
