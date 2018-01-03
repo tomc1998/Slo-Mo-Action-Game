@@ -1,4 +1,5 @@
 #pragma once
+#include "engine/camera.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
 
@@ -6,6 +7,7 @@
  * ECS */
 class UpdateSystem {
 public:
-  virtual void handle_components(ECS *ecs, InputState *input_state) = 0;
-  virtual ~UpdateSystem() {};
+  virtual void handle_components(ECS *ecs, InputState *input_state,
+                                 Camera *camera) = 0;
+  virtual ~UpdateSystem(){};
 };

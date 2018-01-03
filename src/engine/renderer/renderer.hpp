@@ -32,8 +32,6 @@ private:
 
   f32 proj_mat[16];
 
-  void setup_uniforms();
-
 public:
   /** Initialise the renderer at the given viewport w / h */
   Renderer(f32 w, f32 h);
@@ -45,7 +43,7 @@ public:
    * buffer will be rebuffered to the VBO (with glbufferdata). If false, the
    * vbo will simply be re-rendered.
    */
-  void render(ResourceManager* res_manager);
+  void render(ResourceManager *res_manager, Camera *camera);
 
   /** Clear the internal paint buffer */
   void clear_paint_buffer();

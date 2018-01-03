@@ -29,8 +29,9 @@ Engine::Engine() {
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   glfwSwapInterval(0);
 
-  this->resource_manager = new ResourceManager();
   this->renderer = new Renderer(800.0, 600.0);
+  this->camera = new Camera(Vec2(400.0, 300.0), 800.0, 800.0 / 600.0);
+  this->resource_manager = new ResourceManager();
   this->input_manager = new InputManager(this->window);
 }
 
@@ -59,7 +60,7 @@ void Engine::engine_go() {
     auto frame_time_start = std::chrono::high_resolution_clock::now();
 
     this->paint();
-    renderer->render(resource_manager);
+    renderer->render(resource_manager, camera);
     renderer->clear_paint_buffer();
     glfwSwapBuffers(this->window);
 
@@ -102,13 +103,14 @@ void Engine::update() {
   }
 
   ECS *current_ecs = this->screen_stack.back().first;
-  current_ecs->update(input_state);
+  current_ecs->update(input_state, camera);
 }
 
 void Engine::paint() {
   ECS *current_ecs = this->screen_stack.back().first;
-  current_ecs->update(this->input_manager->get_current_input_state());
-  auto controller = renderer->gen_paint_controller(resource_manager, resource_manager->get_white());
-  current_ecs->paint(this->input_manager->get_current_input_state(), &controller);
+  auto controller = renderer->gen_paint_controller(
+      resource_manager, resource_manager->get_white());
+  current_ecs->paint(this->input_manager->get_current_input_state(),
+                     &controller, camera);
   controller.flush();
 }

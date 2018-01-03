@@ -1,5 +1,6 @@
 #pragma once
 
+#include "engine/camera.hpp"
 #include "engine/input/input_manager.hpp"
 #include "engine/renderer/renderer.hpp"
 #include "engine/resource_manager.hpp"
@@ -16,6 +17,7 @@ class GLFWwindow;
 class Engine {
 private:
   Renderer *renderer;
+  Camera *camera;
   std::vector<std::pair<ECS *, Screen *>> screen_stack;
   /** Update the current state */
   void update();
@@ -23,6 +25,7 @@ private:
   void paint();
   InputManager *input_manager;
   ResourceManager *resource_manager;
+
 
   static constexpr f32 FPS = 60.0;
   i32 max_updates_per_render = 10;

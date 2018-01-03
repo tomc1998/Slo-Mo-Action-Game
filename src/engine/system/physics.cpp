@@ -1,6 +1,7 @@
 #include "engine/comp/game_entity.hpp"
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
+#include "engine/camera.hpp"
 #include "engine/renderer/paint_controller.hpp"
 #include "update_system.hpp"
 #include <iostream>
@@ -9,7 +10,7 @@ class SystemPhysics : public UpdateSystem {
   static constexpr f32 T = 0.016;
 
 public:
-  void handle_components(ECS *ecs, InputState *input_state) {
+  void handle_components(ECS *ecs, InputState *input_state, Camera *camera) {
     for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
       CompGameEntity *e = &ecs->comp_game_entity[ii];
 
