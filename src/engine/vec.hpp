@@ -16,4 +16,12 @@ public:
   f32 len() const;
   f32 len2() const;
   Vec2 nor() const;
+  Vec2 operator+(Vec2 other) const;
+  Vec2 operator+=(Vec2 other);
+  Vec2 operator-(Vec2 other) const;
+  Vec2 operator-=(Vec2 other);
+  Vec2 operator*(f32 other) const;
+  Vec2 operator*=(f32 other);
+  Vec2 operator/(f32 other) const;
+  Vec2 operator/=(f32 other);
 };

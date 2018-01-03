@@ -38,17 +38,16 @@ public:
         // Finding these allows us to find the coordinates of the intersection,
         // which is the inner corner. We only need either one, so just split it
         // out into 2 equations in x & y, then solve for B via substitution:
-        Vec2 a = curr_v.sub(prev_v);
+        Vec2 a = curr_v - prev_v;
         f32 a_len = a.len();
-        Vec2 b = next_v.sub(curr_v);
+        Vec2 b = next_v - curr_v;
         f32 b_len = b.len();
         Vec2 a_normal = Vec2(a.y, -a.x);
         Vec2 b_normal = Vec2(-b.y, b.x);
 
         f32 B = (EDGE_W * (a.dot(b) / b_len - a_len)) / b.dot(a_normal);
 
-        inner_verts.push_back(
-            curr_v.add(b.scl(B).add(b_normal.nor().scl(EDGE_W))));
+        inner_verts.push_back(curr_v + (b * B) + (b_normal.nor() * EDGE_W));
       }
 
       for (u32 ii = 0; ii < n_verts; ++ii) {
@@ -56,19 +55,19 @@ public:
         Vec2 curr_v_in = inner_verts[ii]; // inner
         Vec2 next_v = w.vertices[(ii + 1) % n_verts];
         Vec2 next_v_in = inner_verts[(ii + 1) % n_verts]; // inner
-        Vec2 outer_vec = next_v.sub(curr_v);
+        Vec2 outer_vec = next_v - curr_v;
         f32 outer_vec_len = outer_vec.len(); // Side length
 
         // These 4 form a trapezium, which has 2 'caps' (triangles)
 
         // Find the start & end points of the outer line which are vertices
         // forming the cap
-        Vec2 start_cap =
-            curr_v.add(outer_vec.scl((curr_v_in.sub(curr_v)).dot(outer_vec) /
-                                     (outer_vec_len * outer_vec_len)));
-        Vec2 end_cap =
-            next_v.sub(outer_vec.scl(-(next_v_in.sub(next_v)).dot(outer_vec) /
-                                     (outer_vec_len * outer_vec_len)));
+        Vec2 start_cap = curr_v +
+                         outer_vec * ((curr_v_in - curr_v).dot(outer_vec) /
+                             (outer_vec_len * outer_vec_len));
+        Vec2 end_cap = next_v -
+                       outer_vec * ((next_v - next_v_in).dot(outer_vec) /
+                           (outer_vec_len * outer_vec_len));
 
         // Draw the start and end 'cap' for the trapezium - since this method
         // draws quads just fudge it for now with a malformed quad, but should
@@ -86,27 +85,27 @@ public:
         };
 
         // Now add the segment quads
-        f32 middle_len = end_cap.sub(start_cap).len();
+        f32 middle_len = (end_cap - start_cap).len();
         Vec2 curr_seg_vec = start_cap; // Keep track of the pos of the current
         Vec2 curr_seg_vec_in = curr_v_in; // segment
         // The direction to progress in each loop iter:
-        Vec2 prog_vec = outer_vec.nor().scl(SEG_LEN); 
+        Vec2 prog_vec = outer_vec.nor() * SEG_LEN;
 
         for (f32 ff = 0.0; ff < middle_len; ff += SEG_LEN) {
-          Vec2 next_seg_vec = curr_seg_vec.add(prog_vec);
-          Vec2 next_seg_vec_in = curr_seg_vec_in.add(prog_vec);
+          Vec2 next_seg_vec = curr_seg_vec + prog_vec;
+          Vec2 next_seg_vec_in = curr_seg_vec_in + prog_vec;
           Vertex quad[] = {
-            Vertex(curr_seg_vec, &white, Vec2(t->uvs[0], t->uvs[1])),
-            Vertex(next_seg_vec, &white, Vec2(t->uvs[2], t->uvs[1])),
-            Vertex(next_seg_vec_in, &white, Vec2(t->uvs[2], t->uvs[3])),
-            Vertex(curr_seg_vec_in, &white, Vec2(t->uvs[0], t->uvs[3])),
+              Vertex(curr_seg_vec, &white, Vec2(t->uvs[0], t->uvs[1])),
+              Vertex(next_seg_vec, &white, Vec2(t->uvs[2], t->uvs[1])),
+              Vertex(next_seg_vec_in, &white, Vec2(t->uvs[2], t->uvs[3])),
+              Vertex(curr_seg_vec_in, &white, Vec2(t->uvs[0], t->uvs[3])),
           };
           quads.insert(quads.end(), quad, quad + 4);
           curr_seg_vec = next_seg_vec;
           curr_seg_vec_in = next_seg_vec_in;
         }
 
-        paint_controller->draw_quads(&(quads[0]), quads.size()/4, edge_tex);
+        paint_controller->draw_quads(&(quads[0]), quads.size() / 4, edge_tex);
       }
     }
   }

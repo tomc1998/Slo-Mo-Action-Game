@@ -33,16 +33,16 @@ public:
 
           f64 u = (((centre.x - v1.x) * (v2.x - v1.x) +
                     (centre.y - v1.y) * (v2.y - v1.y)) /
-                   v2.sub(v1).len2());
+                   (v2-v1).len2());
 
           // This means the collision does not fall within the line segment
           if (u <= 0 || u > 1) {
             continue;
           }
 
-          Vec2 point_of_intersection = (v2.sub(v1)).scl(u).add(v1);
+          Vec2 point_of_intersection = (v2-v1)*u + v1;
 
-          Vec2 centre_to_wall_v = point_of_intersection.sub(centre);
+          Vec2 centre_to_wall_v = point_of_intersection - centre;
           f32 distance_to_wall = centre_to_wall_v.len2();
           if (std::pow((f64)radius, 2) > distance_to_wall) {
             f64 actual_distance_to_wall = std::sqrt(distance_to_wall);
@@ -53,11 +53,11 @@ public:
             // use the norm() method beause I had already calculated the len
             // so there was no point in wasting time doing that
             Vec2 radius_v =
-                centre_to_wall_v.scl(radius / actual_distance_to_wall);
+                centre_to_wall_v * (radius / actual_distance_to_wall);
 
-            Vec2 to_push_back = Vec2(radius_v.scl(collision_depth / radius));
+            Vec2 to_push_back = radius_v * (collision_depth / radius);
 
-            e->pos = e->pos.sub(to_push_back);
+            e->pos -= to_push_back;
           }
         }
       }
