@@ -1,13 +1,14 @@
 #include "camera.hpp"
+#include "vec.hpp"
 
 void Camera::gen_ortho_proj_mat(f32 *dest) {
 
-  f32 l = this->x - this->w/2;
-  f32 r = this->x + this->w/2;
+  f32 l = this->pos.x - this->w/2;
+  f32 r = this->pos.x + this->w/2;
 
   f32 h = this->w/this->aspect_ratio;
-  f32 t = this->y - h/2;
-  f32 b = this->y + h/2;
+  f32 t = this->pos.y - h/2;
+  f32 b = this->pos.y + h/2;
 
   f32 n = -1.0;
   f32 f = 1.0;
@@ -34,9 +35,8 @@ void Camera::gen_ortho_proj_mat(f32 *dest) {
 
 }
 
-Camera::Camera(f32 x, f32 y, f32 w, f32 aspect_ratio) {
-  this->x = x;
-  this->y = y;
+Camera::Camera(Vec2 pos, f32 w, f32 aspect_ratio) {
+  this->pos = pos;
   this->w = w;
   this->aspect_ratio = aspect_ratio;
 }

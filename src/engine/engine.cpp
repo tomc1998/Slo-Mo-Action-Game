@@ -30,7 +30,7 @@ Engine::Engine() {
   glfwSwapInterval(0);
 
   this->renderer = new Renderer(800.0, 600.0);
-  this->camera = new Camera(400.0, 300.0, 800.0, 800.0 / 600.0);
+  this->camera = new Camera(Vec2(400.0, 300.0), 800.0, 800.0 / 600.0);
   this->resource_manager = new ResourceManager();
   this->input_manager = new InputManager(this->window);
 }

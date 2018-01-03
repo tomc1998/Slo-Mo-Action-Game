@@ -14,8 +14,8 @@ public:
           continue;
         }
 
-        camera->x += 0.01*((ecs->comp_game_entity[ii].pos.x + 8.0) - camera->x);
-        camera->y += 0.01*((ecs->comp_game_entity[ii].pos.y + 8.0) - camera->y);
+        camera->pos.x += 0.01*((ecs->comp_game_entity[ii].pos.x + 8.0) - camera->pos.x);
+        camera->pos.y += 0.01*((ecs->comp_game_entity[ii].pos.y + 8.0) - camera->pos.y);
 
       }
     }
