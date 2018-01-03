@@ -2,6 +2,7 @@
 #include "engine/color.hpp"
 #include "engine/comp/animation.hpp"
 #include "engine/comp/game_entity.hpp"
+#include "engine/camera.hpp"
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
@@ -15,7 +16,7 @@ class SystemDebugPaint : public PaintSystem {
 
 public:
   void handle_components(ECS *ecs, InputState *input_state,
-                         PaintController *paint_controller) {
+                         PaintController *paint_controller, Camera *camera) {
     Color white = Color(1.0, 1.0, 1.0, 1.0);
     for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
       CompGameEntity entity = ecs->comp_game_entity[ii];

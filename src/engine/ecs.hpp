@@ -1,8 +1,9 @@
 #pragma once
+#include "comp/animation.hpp"
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
 #include "comp/wall.hpp"
-#include "comp/animation.hpp"
+#include "engine/camera.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
@@ -15,6 +16,7 @@ class SystemPhysics;
 class SystemDebugPaint;
 class SystemWallCollision;
 class SystemAnimationUpdate;
+class SystemCameraUpdate;
 class InputState;
 class PaintController;
 
@@ -63,6 +65,7 @@ class ECS {
   friend class SystemAnimationUpdate;
   friend class SystemDebugPaint;
   friend class SystemWallRenderer;
+  friend class SystemCameraUpdate;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
@@ -79,6 +82,7 @@ public:
   ~ECS();
   EntityId gen_entity_id();
   /** Updates the ECS */
-  void update(InputState *input_state);
-  void paint(InputState *input_state, PaintController* paint_controller);
+  void update(InputState *input_state, Camera *camera);
+  void paint(InputState *input_state, PaintController *paint_controller,
+             Camera *camera);
 };

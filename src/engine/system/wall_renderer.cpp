@@ -1,5 +1,6 @@
 #include "engine/color.hpp"
 #include "engine/comp/game_entity.hpp"
+#include "engine/camera.hpp"
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
@@ -13,7 +14,7 @@ class SystemWallRenderer : public PaintSystem {
 
 public:
   void handle_components(ECS *ecs, InputState *input_state,
-                         PaintController *paint_controller) {
+                         PaintController *paint_controller, Camera *camera) {
     const f32 EDGE_W = 16.0;
     const f32 SEG_LEN = 16.0;
     Color white = Color(1.0, 1.0, 1.0, 1.0);
