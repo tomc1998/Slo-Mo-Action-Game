@@ -2,6 +2,26 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
+/* Example json format
+{
+  "0": {
+    "posy": [
+      {
+        "value": 0.0,
+        "timestamp": 0,
+        "interpolation": "LINEAR"
+      },
+      {
+        "value": 20.0,
+        "timestamp": 100,
+        "interpolation": "LINEAR"
+      },
+      {
+        "value": 0.0,
+        "timestamp": 200,
+        "interpolation": "LINEAR"
+*/        
+
 void from_json(const json &j, Animation &a) {
 
   spp::sparse_hash_map<std::string, InterpolationType> interp_map =
