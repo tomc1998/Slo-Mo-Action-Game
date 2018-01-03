@@ -53,3 +53,11 @@ Vec2 Vec2::operator/=(f32 other) {
   y = res.y;
   return res;
 }
+
+bool Vec2::operator==(Vec2 other) const { 
+  return (this->x == other.x && this->y == other.y);
+}
+
+bool Vec2::operator!=(Vec2 other) const { 
+  return (this->x != other.x || this->y != other.y);
+}

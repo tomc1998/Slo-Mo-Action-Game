@@ -24,4 +24,6 @@ public:
   Vec2 operator*=(f32 other);
   Vec2 operator/(f32 other) const;
   Vec2 operator/=(f32 other);
+  bool operator==(Vec2 other) const;
+  bool operator!=(Vec2 other) const;
 };

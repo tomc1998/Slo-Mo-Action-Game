@@ -34,4 +34,7 @@ public:
    *
    */
   Camera(Vec2 pos, f32 w, f32 aspect_ratio);
+
+  void set_target_pos(Vec2 pos);
+  void set_target_width(f32 w);
 };

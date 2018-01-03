@@ -10,7 +10,6 @@
 #include "system/player_controlled.cpp"
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
-#include "system/camera_update.cpp"
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
@@ -23,7 +22,6 @@ ECS::ECS() {
   this->update_systems.push_back(new SystemPhysics);
   this->update_systems.push_back(new SystemWallCollision);
   this->update_systems.push_back(new SystemAnimationUpdate);
-  this->update_systems.push_back(new SystemCameraUpdate);
 
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemDebugPaint);

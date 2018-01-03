@@ -16,7 +16,6 @@ class SystemPhysics;
 class SystemDebugPaint;
 class SystemWallCollision;
 class SystemAnimationUpdate;
-class SystemCameraUpdate;
 class InputState;
 class PaintController;
 
@@ -65,7 +64,6 @@ class ECS {
   friend class SystemAnimationUpdate;
   friend class SystemDebugPaint;
   friend class SystemWallRenderer;
-  friend class SystemCameraUpdate;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)

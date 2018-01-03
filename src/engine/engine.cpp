@@ -90,6 +90,12 @@ void Engine::update() {
   InputState *input_state = this->input_manager->get_current_input_state();
   if (input_state->slomo_down && !input_state->slomo_down_prev) {
     this->slomo = !this->slomo;
+    if (this->slomo) {
+      this->camera->set_target_width(400.0f);
+    }
+    else {
+      this->camera->set_target_width(800.0f);
+    }
   }
 
   if (this->slomo &&
@@ -104,6 +110,7 @@ void Engine::update() {
 
   ECS *current_ecs = this->screen_stack.back().first;
   current_ecs->update(input_state, camera);
+  this->camera->update();
 }
 
 void Engine::paint() {
