@@ -1,11 +1,13 @@
 #pragma once
 #include "anim_frame.hpp"
+#include "json.hpp"
 #include "keyframe.hpp"
 #include "resource_defs.hpp"
 #include <cstring>
 #include <sparsepp/spp.h>
 #include <utility>
 #include <vector>
+using json = nlohmann::json;
 
 class ResourceManager;
 
@@ -31,11 +33,15 @@ public:
 
   /** Returns an AnimFrame from the current timestamp
    *
-   * @param[out] frames This should be a pointer to the start of enough allocated memory for all AnimFrames
+   * @param[out] frames This should be a pointer to the start of enough
+   * allocated memory for all AnimFrames
    *
    * */
   void get_anim_frames(u32 updates, AnimFrame *frames);
 
   Animation();
-  Animation(std::vector<TexHandle> texs);
+
+  void assign_parts(std::vector<TexHandle> &texs);
 };
+
+void from_json(const json &j, Animation &a);

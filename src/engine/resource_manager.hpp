@@ -1,7 +1,7 @@
 #pragma once
+#include "engine/animation.hpp"
 #include "engine/renderer/tex_cache.hpp"
 #include "engine/texture.hpp"
-#include "engine/animation.hpp"
 #include "engine/typedefs.hpp"
 #include <sparsepp/spp.h>
 
@@ -24,7 +24,7 @@ public:
    * otherwise. Will assert if res is not a texture. */
   Texture *lookup_tex(TexHandle r);
 
-  AnimHandle load_test_animation();
+  AnimHandle load_animation(const char *path, std::vector<TexHandle> &texs);
 
   /** Lookup an animation, returning a pointer to it if it exists, or null
    * otherwise. Will assert if res is not an animation */

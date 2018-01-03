@@ -92,8 +92,12 @@ target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/sparsepp)
 
 # stb_image #############################################
 # Header only library for loading images
-set (STBIMAGE_ROOT_DIR ${PROJECT_DEP_DIR/stb_image})
 target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/stb_image)
+####################################################
+
+# json #############################################
+# Header only library for parsing json
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/json)
 ####################################################
 
 #############################################
