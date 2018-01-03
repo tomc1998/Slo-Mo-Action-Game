@@ -39,16 +39,16 @@ public:
         // which is the inner corner. We only need either one, so just split it
         // out into 2 equations in x & y, then solve for B via substitution:
         Vec2 a = curr_v.sub(prev_v);
-        f32 a_len = a.modulus();
+        f32 a_len = a.len();
         Vec2 b = next_v.sub(curr_v);
-        f32 b_len = b.modulus();
+        f32 b_len = b.len();
         Vec2 a_normal = Vec2(a.y, -a.x);
         Vec2 b_normal = Vec2(-b.y, b.x);
 
-        f32 B = (EDGE_W * (a.dp(b) / b_len - a_len)) / b.dp(a_normal);
+        f32 B = (EDGE_W * (a.dot(b) / b_len - a_len)) / b.dot(a_normal);
 
         inner_verts.push_back(
-            curr_v.add(b.scl(B).add(b_normal.norm().scl(EDGE_W))));
+            curr_v.add(b.scl(B).add(b_normal.nor().scl(EDGE_W))));
       }
 
       for (u32 ii = 0; ii < n_verts; ++ii) {
@@ -57,17 +57,17 @@ public:
         Vec2 next_v = w.vertices[(ii + 1) % n_verts];
         Vec2 next_v_in = inner_verts[(ii + 1) % n_verts]; // inner
         Vec2 outer_vec = next_v.sub(curr_v);
-        f32 outer_vec_len = outer_vec.modulus(); // Side length
+        f32 outer_vec_len = outer_vec.len(); // Side length
 
         // These 4 form a trapezium, which has 2 'caps' (triangles)
 
         // Find the start & end points of the outer line which are vertices
         // forming the cap
         Vec2 start_cap =
-            curr_v.add(outer_vec.scl((curr_v_in.sub(curr_v)).dp(outer_vec) /
+            curr_v.add(outer_vec.scl((curr_v_in.sub(curr_v)).dot(outer_vec) /
                                      (outer_vec_len * outer_vec_len)));
         Vec2 end_cap =
-            next_v.sub(outer_vec.scl(-(next_v_in.sub(next_v)).dp(outer_vec) /
+            next_v.sub(outer_vec.scl(-(next_v_in.sub(next_v)).dot(outer_vec) /
                                      (outer_vec_len * outer_vec_len)));
 
         // Draw the start and end 'cap' for the trapezium - since this method
@@ -86,11 +86,11 @@ public:
         };
 
         // Now add the segment quads
-        f32 middle_len = end_cap.sub(start_cap).modulus();
+        f32 middle_len = end_cap.sub(start_cap).len();
         Vec2 curr_seg_vec = start_cap; // Keep track of the pos of the current
         Vec2 curr_seg_vec_in = curr_v_in; // segment
         // The direction to progress in each loop iter:
-        Vec2 prog_vec = outer_vec.norm().scl(SEG_LEN); 
+        Vec2 prog_vec = outer_vec.nor().scl(SEG_LEN); 
 
         for (f32 ff = 0.0; ff < middle_len; ff += SEG_LEN) {
           Vec2 next_seg_vec = curr_seg_vec.add(prog_vec);
