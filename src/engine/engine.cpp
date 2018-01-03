@@ -91,7 +91,7 @@ void Engine::update() {
   if (input_state->slomo_down && !input_state->slomo_down_prev) {
     this->slomo = !this->slomo;
     if (this->slomo) {
-      this->camera->set_target_width(400.0f);
+      this->camera->set_target_width(720.0f);
     }
     else {
       this->camera->set_target_width(800.0f);
