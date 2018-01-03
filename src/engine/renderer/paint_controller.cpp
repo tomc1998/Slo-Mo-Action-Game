@@ -91,10 +91,10 @@ void PaintController::draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h,
                        std::sin(rotation), std::cos(rotation));
 
   Vec2 newPoints[4] = {
-      rot_matrix.mul(translated).add(centre),
-      rot_matrix.mul(translated.add(Vec2(w, 0.0))).add(centre),
-      rot_matrix.mul(translated.add(Vec2(0.0, h))).add(centre),
-      rot_matrix.mul(translated.add(Vec2(w, h))).add(centre)};
+      rot_matrix.mul(translated) + centre,
+      rot_matrix.mul(translated + Vec2(w, 0.0)) + centre,
+      rot_matrix.mul(translated + Vec2(0.0, h)) + centre,
+      rot_matrix.mul(translated + Vec2(w, h)) + centre};
 
   Vertex v[] = {Vertex(newPoints[0], tint, Vec2(uvs[0], uvs[1])),
                 Vertex(newPoints[1], tint, Vec2(uvs[2], uvs[1])),
