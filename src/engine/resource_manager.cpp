@@ -44,6 +44,14 @@ TexHandle ResourceManager::load_texture(const char *path) {
   return th;
 }
 
+Texture *ResourceManager::lookup_tex(TexHandle handle) {
+  auto r_it = tex_handle_map.find(handle);
+  if (r_it == tex_handle_map.end()) {
+    return NULL;
+  }
+  return &r_it->second;
+}
+
 /** Takes a path to a json file which contains keyframes exported by the python
  * blender exporter. Also takes in a reference to a vector of TexHandles to
  * store in the animation. Returns an animation handle */
@@ -64,13 +72,6 @@ AnimHandle ResourceManager::load_animation(const char *path,
   return anim;
 }
 
-Texture *ResourceManager::lookup_tex(TexHandle handle) {
-  auto r_it = tex_handle_map.find(handle);
-  if (r_it == tex_handle_map.end()) {
-    return NULL;
-  }
-  return &r_it->second;
-}
 
 Animation *ResourceManager::lookup_anim(AnimHandle a) {
   auto r_it = anim_handle_map.find(a);
