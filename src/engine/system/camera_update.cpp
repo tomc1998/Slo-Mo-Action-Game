@@ -14,8 +14,8 @@ public:
           continue;
         }
 
-        camera->pos.x += 0.01*((ecs->comp_game_entity[ii].pos.x + 8.0) - camera->pos.x);
-        camera->pos.y += 0.01*((ecs->comp_game_entity[ii].pos.y + 8.0) - camera->pos.y);
+        /* Tweens the camera pos to the players centre */
+        camera->pos += (ecs->comp_game_entity[ii].pos + Vec2(8.0, 8.0) - camera->pos)*0.01f;
 
       }
     }
