@@ -17,5 +17,12 @@ public:
   /* Aspect ratio of width/height (e.g.16/9) */
   f32 aspect_ratio;
 
+  /**
+   *
+   * @param[in] pos The initial position of the camera 
+   * @param[in] w The initial width of the camera's view 
+   * @param[in] aspect_ratio The initial aspect ratio of the camera (width/height) 
+   *
+   */
   Camera(Vec2 pos, f32 w, f32 aspect_ratio);
 };
