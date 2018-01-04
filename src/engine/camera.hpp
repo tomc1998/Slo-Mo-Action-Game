@@ -5,14 +5,16 @@
  * units, and an aspect ratio */
 class Camera {
 private:
-  /* x and y of the CENTRE of what the camera is focusing on */
+  /** x and y of the CENTRE of what the camera is focusing on */
   Vec2 pos;
 
+  /** The position the camera will move towards */
   Vec2 target_pos;
 
   /** width in units, not pixels */
   f32 w;
 
+  /** The view width the camera will zoom towards */
   f32 target_w;
 
   /* Aspect ratio of width/height (e.g.16/9) */
@@ -23,7 +25,10 @@ public:
   /* fills 16 f32s based on the current x, y, width, and aspect ratio */
   void gen_ortho_proj_mat(f32 *dest);
   
+  /** Moves the camera a percentage of the distance to the target pos */
   void update_pos();
+
+  /** Changes the width of the camera a percentage of the distance to the target width */
   void update_width();
 
   /**
@@ -36,6 +41,9 @@ public:
    */
   Camera(Vec2 pos, f32 w, f32 aspect_ratio);
 
+  /** Sets the target pos */
   void set_target_pos(Vec2 pos);
+
+  /** Sets the target width */
   void set_target_width(f32 w);
 };
