@@ -1,8 +1,10 @@
 #include "engine/matrix.hpp"
 #include "engine/renderer/paint_controller.hpp"
+#include "engine/comp/tilemap.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 PaintController::PaintController(PaintBuffer *_buffer,
                                  ResourceManager *_res_manager,
@@ -41,6 +43,35 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
   curr_batch.buffer(v, 6);
 }
 
+void PaintController::draw_tilemap(CompTilemap const &tilemap, Color *tint) {
+  // Create a vector and reserve the right amount of space for all the vertices
+  std::vector<Vertex> v_buf;
+  v_buf.reserve(tilemap.w * tilemap.h * 6);
+  Tileset* tileset = res_manager->lookup_tileset(tilemap.tileset);
+  for (u32 ii = 0; ii < tilemap.w; ++ii) {
+    for (u32 jj = 0; jj < tilemap.h; ++jj) {
+      u32 ix = ii+jj*tilemap.w;
+      // Find the upper left & lower right positions of the tile
+      Vec2 pos0(tilemap.pos.x + (tilemap.tile_size.x * ii),
+               tilemap.pos.y + (tilemap.tile_size.y * jj));
+      Vec2 pos1 = pos0 + tilemap.tile_size;
+      // Find uvs
+      f32 uvs[4];
+      tileset->get_uv(uvs, tilemap.tiles[ix]);
+      v_buf.push_back(Vertex(pos0,                 tint, Vec2(uvs[0], uvs[1])));
+      v_buf.push_back(Vertex(Vec2(pos1.x, pos0.y), tint, Vec2(uvs[2], uvs[1])));
+      v_buf.push_back(Vertex(pos1,            tint, Vec2(uvs[2], uvs[3])));
+
+      v_buf.push_back(Vertex(pos0,                 tint, Vec2(uvs[0], uvs[1])));
+      v_buf.push_back(Vertex(Vec2(pos0.x, pos1.y), tint, Vec2(uvs[0], uvs[3])));
+      v_buf.push_back(Vertex(pos1,            tint, Vec2(uvs[2], uvs[3])));
+    }
+  }
+
+  flush_if_batch_tex_not(tileset->get_cache_tex());
+  curr_batch.buffer(&v_buf[0], v_buf.size());
+}
+
 void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
                                  TexHandle tex) {
   flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix);
@@ -55,7 +86,7 @@ void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
   curr_batch.buffer(&(vertices[0]), vertices.size());
 }
 
-Texture* PaintController::get_tex_for_handle(TexHandle r) {
+Texture *PaintController::get_tex_for_handle(TexHandle r) {
   return res_manager->lookup_tex(r);
 }
 
@@ -90,11 +121,10 @@ void PaintController::draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h,
   Matrix2x2 rot_matrix(std::cos(rotation), -1 * std::sin(rotation),
                        std::sin(rotation), std::cos(rotation));
 
-  Vec2 newPoints[4] = {
-      rot_matrix.mul(translated) + centre,
-      rot_matrix.mul(translated + Vec2(w, 0.0)) + centre,
-      rot_matrix.mul(translated + Vec2(0.0, h)) + centre,
-      rot_matrix.mul(translated + Vec2(w, h)) + centre};
+  Vec2 newPoints[4] = {rot_matrix.mul(translated) + centre,
+                       rot_matrix.mul(translated + Vec2(w, 0.0)) + centre,
+                       rot_matrix.mul(translated + Vec2(0.0, h)) + centre,
+                       rot_matrix.mul(translated + Vec2(w, h)) + centre};
 
   Vertex v[] = {Vertex(newPoints[0], tint, Vec2(uvs[0], uvs[1])),
                 Vertex(newPoints[1], tint, Vec2(uvs[2], uvs[1])),

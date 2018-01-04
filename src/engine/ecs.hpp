@@ -3,6 +3,7 @@
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
 #include "comp/wall.hpp"
+#include "comp/tilemap.hpp"
 #include "engine/camera.hpp"
 #include <chrono>
 #include <cstdint>
@@ -16,6 +17,7 @@ class SystemPhysics;
 class SystemDebugPaint;
 class SystemWallCollision;
 class SystemAnimationUpdate;
+class SystemTilemapRenderer;
 class InputState;
 class PaintController;
 
@@ -64,12 +66,15 @@ class ECS {
   friend class SystemAnimationUpdate;
   friend class SystemDebugPaint;
   friend class SystemWallRenderer;
+  friend class SystemTilemapRenderer;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
   ECS_DECLARE_COMPONENT(CompWall, wall)
   ECS_DECLARE_COMPONENT(CompAnimation, animation)
+  ECS_DECLARE_COMPONENT(CompTilemap, tilemap)
+
 private:
   std::vector<UpdateSystem *> update_systems;
   std::vector<PaintSystem *> paint_systems;

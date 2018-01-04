@@ -2,6 +2,8 @@
 
 #include "ecs.hpp"
 
+class ResourceManager;
+
 class Screen {
 public:
   /** Populate the given ECS with entities. */

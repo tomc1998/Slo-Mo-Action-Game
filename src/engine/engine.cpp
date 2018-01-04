@@ -51,7 +51,8 @@ void Engine::pop_screen() {
 void Engine::engine_go() {
   while (true) {
     for (i32 ii = 0; ii < (int)this->max_updates_per_render; ii++) {
-      if (ii % (i32)(this->max_updates_per_render / this->updates_per_render) == 0) {
+      if (ii % (i32)(this->max_updates_per_render / this->updates_per_render) ==
+          0) {
         this->input_manager->update_input();
 
         this->update();
@@ -103,12 +104,12 @@ void Engine::update() {
   }
 
   if (this->slomo &&
-      this->updates_per_render > (f32)this->min_updates_per_render) {
+      this->updates_per_render > (f32) this->min_updates_per_render) {
     this->updates_per_render -= 0.5;
   }
 
   if (!this->slomo &&
-      this->updates_per_render < (f32)this->max_updates_per_render) {
+      this->updates_per_render < (f32) this->max_updates_per_render) {
     this->updates_per_render += 0.5;
   }
 

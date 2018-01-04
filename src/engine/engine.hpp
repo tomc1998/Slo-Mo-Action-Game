@@ -26,7 +26,6 @@ private:
   InputManager *input_manager;
   ResourceManager *resource_manager;
 
-
   static constexpr f32 FPS = 60.0;
   i32 max_updates_per_render = 10;
   i32 min_updates_per_render = 1;

@@ -9,8 +9,6 @@
 #include <vector>
 using json = nlohmann::json;
 
-class ResourceManager;
-
 /** Animation class that stores the animation of only 1 sprite, multiple
  * animations will be stored in the actual animation component */
 class Animation {

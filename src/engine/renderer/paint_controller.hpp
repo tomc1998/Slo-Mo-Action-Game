@@ -1,10 +1,11 @@
 #pragma once
 
-#include "engine/renderer/paint_buffer.hpp"
-#include "engine/renderer/batch.hpp"
 #include "engine/animation.hpp"
-#include "engine/texture.hpp"
+#include "engine/comp/tilemap.hpp"
+#include "engine/renderer/batch.hpp"
+#include "engine/renderer/paint_buffer.hpp"
 #include "engine/resource_manager.hpp"
+#include "engine/texture.hpp"
 
 /**
  * A class created by the renderer, used for buffering vertex data before
@@ -21,7 +22,7 @@ private:
   TexHandle white;
   /** The cache tex index for white - this is just to prevent unnecessary
    * lookups. */
-  Texture* white_cache_tex;
+  Texture *white_cache_tex;
   Batch curr_batch;
 
   /** Checks the current batch. If the texture currently loaded is equal to
@@ -33,20 +34,23 @@ public:
   /** Create a new paint controller. See the Renderer class - paint
    * controllers should only be created via the gen_paint_controller method on
    * the renderer. */
-  PaintController(PaintBuffer *_buffer, ResourceManager* r, TexHandle _white);
+  PaintController(PaintBuffer *_buffer, ResourceManager *r, TexHandle _white);
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
-  void draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y, f32 w, f32 h, f32 rot, Color *tint);
-  void draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h, f32 rotation, Color *tint);
-
+  void draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y, f32 w, f32 h,
+                      f32 rot, Color *tint);
+  void draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h, f32 rotation,
+                  Color *tint);
 
   /** Draw some quads with the given vertices. This function will transform the
    * quads into 2 tris each. */
-  void draw_quads(Vertex* v_buf, size_t num_quads, TexHandle tex);
+  void draw_quads(Vertex *v_buf, size_t num_quads, TexHandle tex);
+
+  void draw_tilemap(CompTilemap const &tilemap, Color *tint);
 
   /** Convenience method for getting a texture from a resource handle. Useful
    * for when you need to know UVs, like with draw_quads. */
-  Texture* get_tex_for_handle(TexHandle r);
+  Texture *get_tex_for_handle(TexHandle r);
 
   /** Flush the current batch if there's any vertices there, set the next batch
    * to have the same cache texture ix */
