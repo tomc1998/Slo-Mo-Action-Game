@@ -57,6 +57,7 @@ void Engine::engine_go() {
         this->update();
         this->camera->update_pos();
       }
+      // If something is NOT affected by slomo, put it here
       this->camera->update_width();
     }
 
