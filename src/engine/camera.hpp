@@ -20,15 +20,15 @@ private:
   /* Aspect ratio of width/height (e.g.16/9) */
   f32 aspect_ratio;
 
-  
 public:
   /* fills 16 f32s based on the current x, y, width, and aspect ratio */
   void gen_ortho_proj_mat(f32 *dest);
-  
+
   /** Moves the camera a percentage of the distance to the target pos */
   void update_pos();
 
-  /** Changes the width of the camera a percentage of the distance to the target width */
+  /** Changes the width of the camera a percentage of the distance to the target
+   * width */
   void update_width();
 
   /**
