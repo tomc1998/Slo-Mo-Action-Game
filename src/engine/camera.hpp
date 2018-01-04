@@ -23,7 +23,8 @@ public:
   /* fills 16 f32s based on the current x, y, width, and aspect ratio */
   void gen_ortho_proj_mat(f32 *dest);
   
-  void update();
+  void update_pos();
+  void update_width();
 
   /**
    *

@@ -35,11 +35,13 @@ void Camera::gen_ortho_proj_mat(f32 *dest) {
 
 }
 
-void Camera::update() {
+void Camera::update_pos() {
   if (this->pos != this->target_pos) {
     this->pos += (this->target_pos - this->pos) * 0.01f;
   }
+}
 
+void Camera::update_width() {
   if (this->w != this->target_w) {
     this->w += (this->target_w - this->w) * 0.01f;
   }

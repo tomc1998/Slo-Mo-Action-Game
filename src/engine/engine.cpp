@@ -50,10 +50,14 @@ void Engine::pop_screen() {
 
 void Engine::engine_go() {
   while (true) {
-    for (i32 ii = 0; ii < (int)this->updates_per_render; ii++) {
-      this->input_manager->update_input();
+    for (i32 ii = 0; ii < (int)this->max_updates_per_render; ii++) {
+      if (ii % (i32)(this->max_updates_per_render / this->updates_per_render) == 0) {
+        this->input_manager->update_input();
 
-      this->update();
+        this->update();
+        this->camera->update_pos();
+      }
+      this->camera->update_width();
     }
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -92,8 +96,7 @@ void Engine::update() {
     this->slomo = !this->slomo;
     if (this->slomo) {
       this->camera->set_target_width(720.0f);
-    }
-    else {
+    } else {
       this->camera->set_target_width(800.0f);
     }
   }
@@ -110,7 +113,6 @@ void Engine::update() {
 
   ECS *current_ecs = this->screen_stack.back().first;
   current_ecs->update(input_state, camera);
-  this->camera->update();
 }
 
 void Engine::paint() {
