@@ -26,6 +26,7 @@ public:
           continue;
         }
         if (input_state->mouse_drag.size()) {
+          std::cout << camera->get_top_left().x << std::endl;
           paint_controller->draw_line(entity.pos + Vec2(8.0, 8.0),
                                       input_state->mouse_drag.back() +
                                           camera->get_top_left(),
