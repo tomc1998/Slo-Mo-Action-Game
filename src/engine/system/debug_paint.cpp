@@ -18,19 +18,11 @@ public:
   void handle_components(ECS *ecs, InputState *input_state,
                          PaintController *paint_controller, Camera *camera) {
     Color white = Color(1.0, 1.0, 1.0, 1.0);
-    Color black = Color(0.0, 0.0, 0.0, 1.0);
     for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
       CompGameEntity entity = ecs->comp_game_entity[ii];
       for (u32 jj = 0; jj < ecs->comp_animation.size(); jj++) {
         if (entity.entity_id != ecs->comp_animation[jj].entity_id) {
           continue;
-        }
-        if (input_state->mouse_drag.size()) {
-          std::cout << camera->get_top_left().x << std::endl;
-          paint_controller->draw_line(entity.pos + Vec2(8.0, 8.0),
-                                      input_state->mouse_drag.back() +
-                                          camera->get_top_left(),
-                                      2.0, &black, &white);
         }
         CompAnimation a = ecs->comp_animation[jj];
         paint_controller->draw_animation(a.anim, a.updates, entity.pos.x,

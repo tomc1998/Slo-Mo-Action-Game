@@ -1,5 +1,5 @@
-#include "engine/ecs.hpp"
 #include "engine/camera.hpp"
+#include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "update_system.hpp"
 #include <iostream>
@@ -13,6 +13,11 @@ public:
             ecs->comp_game_entity[ii].entity_id) {
           continue;
         }
+        CompPlayerControlled* p = &ecs->comp_player_controlled[jj];
+
+        if (input_state->lmb_down) {
+          p->state = p->PRE_TELEPORT;
+        } 
         Vec2 *acc = &ecs->comp_game_entity[ii].acc;
         f32 force_to_apply = ecs->comp_player_controlled[jj].force_to_apply;
         f32 mass = ecs->comp_game_entity[ii].mass;
@@ -31,10 +36,11 @@ public:
         if (input_state->move_left >= 0) {
           acc->x = acc->x - force_to_apply / mass * input_state->move_left;
         }
+        
 
-        //Mouse button released
+        // Mouse button released
         if (!input_state->lmb_down && input_state->lmb_down_prev) {
-          ecs->comp_game_entity[ii].pos = input_state->mouse_pos + camera->get_top_left();
+          p->state = p->TELEPORTING;
         }
 
         camera->set_target_pos(ecs->comp_game_entity[ii].pos);

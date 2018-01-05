@@ -10,6 +10,7 @@
 #include "system/player_controlled.cpp"
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
+#include "system/teleport_renderer.cpp"
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
@@ -25,6 +26,7 @@ ECS::ECS() {
 
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemDebugPaint);
+  this->paint_systems.push_back(new SystemTeleportRenderer);
 }
 
 ECS::~ECS() {
