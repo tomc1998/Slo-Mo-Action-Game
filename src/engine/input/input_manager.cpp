@@ -18,6 +18,7 @@ InputManager::InputManager(GLFWwindow *window) {
   current_input_state.move_left = 0.0f;
   current_input_state.attack_down = false;
   current_input_state.slomo_down = false;
+  current_input_state.lmb_down = false;
 
   glfwSetKeyCallback(window, InputManager::key_callback);
   glfwSetMouseButtonCallback(window, InputManager::mouse_callback);
@@ -117,8 +118,7 @@ void InputManager::cursor_position_callback(GLFWwindow *window, double xpos,
                                             double ypos) {
   InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
 
-  input_state->mouse_x = (f32)xpos;
-  input_state->mouse_y = (f32)ypos;
+  input_state->mouse_pos = Vec2((f32)xpos, (f32)ypos);
 }
 
 void InputManager::update_input() {
@@ -129,9 +129,9 @@ void InputManager::update_input() {
   current_input_state.move_left_prev = current_input_state.move_left;
   current_input_state.attack_down_prev = current_input_state.attack_down;
   current_input_state.slomo_down_prev = current_input_state.slomo_down;
+  current_input_state.lmb_down_prev = current_input_state.lmb_down;
   glfwPollEvents();
   if (current_input_state.lmb_down) {
-    current_input_state.mouse_drag.push_back(
-        Vec2(current_input_state.mouse_x, current_input_state.mouse_y));
+    current_input_state.mouse_drag.push_back(current_input_state.mouse_pos);
   }
 }

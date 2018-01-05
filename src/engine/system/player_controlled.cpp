@@ -2,6 +2,7 @@
 #include "engine/camera.hpp"
 #include "engine/input/input_state.hpp"
 #include "update_system.hpp"
+#include <iostream>
 
 class SystemPlayerControlled : public UpdateSystem {
 public:
@@ -29,6 +30,11 @@ public:
 
         if (input_state->move_left >= 0) {
           acc->x = acc->x - force_to_apply / mass * input_state->move_left;
+        }
+
+        //Mouse button released
+        if (!input_state->lmb_down && input_state->lmb_down_prev) {
+          ecs->comp_game_entity[ii].pos = input_state->mouse_pos + camera->get_top_left();
         }
 
         camera->set_target_pos(ecs->comp_game_entity[ii].pos);
