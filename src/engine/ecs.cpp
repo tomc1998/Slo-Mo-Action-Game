@@ -10,11 +10,13 @@
 #include "system/player_controlled.cpp"
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
+#include "system/tilemap_renderer.cpp"
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
 ECS_IMPL_COMPONENT(CompWall, wall)
 ECS_IMPL_COMPONENT(CompAnimation, animation)
+ECS_IMPL_COMPONENT(CompTilemap, tilemap)
 
 ECS::ECS() {
   this->current_entity_id = 0;
@@ -23,6 +25,7 @@ ECS::ECS() {
   this->update_systems.push_back(new SystemWallCollision);
   this->update_systems.push_back(new SystemAnimationUpdate);
 
+  this->paint_systems.push_back(new SystemTilemapRenderer);
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemDebugPaint);
 }

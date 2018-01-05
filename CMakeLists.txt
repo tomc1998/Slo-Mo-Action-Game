@@ -31,6 +31,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/camera.cpp
   ${PROJECT_SOURCE_DIR}/engine/animation.cpp
   ${PROJECT_SOURCE_DIR}/engine/anim_frame.cpp
+  ${PROJECT_SOURCE_DIR}/engine/tileset.cpp
   ${PROJECT_SOURCE_DIR}/engine/keyframe.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/player_controlled.cpp
@@ -38,10 +39,12 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/system/wall_collision.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/animation_update.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/camera_update.cpp
+  ${PROJECT_SOURCE_DIR}/engine/system/tilemap_renderer.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/player_controlled.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/game_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/wall.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/animation.cpp
+  ${PROJECT_SOURCE_DIR}/engine/comp/tilemap.cpp
   )
 
 
