@@ -13,34 +13,42 @@ public:
             ecs->comp_game_entity[ii].entity_id) {
           continue;
         }
-        CompPlayerControlled* p = &ecs->comp_player_controlled[jj];
+        CompPlayerControlled *p = &ecs->comp_player_controlled[jj];
 
-        if (input_state->lmb_down) {
-          p->state = p->PRE_TELEPORT;
-        } 
-        Vec2 *acc = &ecs->comp_game_entity[ii].acc;
-        f32 force_to_apply = ecs->comp_player_controlled[jj].force_to_apply;
-        f32 mass = ecs->comp_game_entity[ii].mass;
-        if (input_state->move_up >= 0) {
-          acc->y = acc->y - force_to_apply / mass * input_state->move_up;
-        }
+        p->state_change_timer++;
 
-        if (input_state->move_right >= 0) {
-          acc->x = acc->x + force_to_apply / mass * input_state->move_right;
-        }
+        if (p->state != p->TELEPORTING) {
+          if (input_state->lmb_down) {
+            p->state = p->PRE_TELEPORT;
+            p->state_change_timer = 0;
+          }
 
-        if (input_state->move_down >= 0) {
-          acc->y = acc->y + force_to_apply / mass * input_state->move_down;
-        }
+          // Mouse button released
+          if (!input_state->lmb_down && input_state->lmb_down_prev) {
+            p->state = p->TELEPORTING;
+            p->teleport_pos = input_state->mouse_pos + camera->get_top_left();
+            std::cout << p->teleport_pos.x << " " << p->teleport_pos.y << std::endl;
+            p->state_change_timer = 0;
+          }
 
-        if (input_state->move_left >= 0) {
-          acc->x = acc->x - force_to_apply / mass * input_state->move_left;
-        }
-        
+          Vec2 *acc = &ecs->comp_game_entity[ii].acc;
+          f32 force_to_apply = ecs->comp_player_controlled[jj].force_to_apply;
+          f32 mass = ecs->comp_game_entity[ii].mass;
+          if (input_state->move_up >= 0) {
+            acc->y = acc->y - force_to_apply / mass * input_state->move_up;
+          }
 
-        // Mouse button released
-        if (!input_state->lmb_down && input_state->lmb_down_prev) {
-          p->state = p->TELEPORTING;
+          if (input_state->move_right >= 0) {
+            acc->x = acc->x + force_to_apply / mass * input_state->move_right;
+          }
+
+          if (input_state->move_down >= 0) {
+            acc->y = acc->y + force_to_apply / mass * input_state->move_down;
+          }
+
+          if (input_state->move_left >= 0) {
+            acc->x = acc->x - force_to_apply / mass * input_state->move_left;
+          }
         }
 
         camera->set_target_pos(ecs->comp_game_entity[ii].pos);

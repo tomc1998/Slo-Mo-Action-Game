@@ -9,6 +9,7 @@
 #include "system/physics.cpp"
 #include "system/player_controlled.cpp"
 #include "system/wall_collision.cpp"
+#include "system/teleport.cpp"
 #include "system/wall_renderer.cpp"
 #include "system/teleport_renderer.cpp"
 
@@ -23,6 +24,7 @@ ECS::ECS() {
   this->update_systems.push_back(new SystemPhysics);
   this->update_systems.push_back(new SystemWallCollision);
   this->update_systems.push_back(new SystemAnimationUpdate);
+  this->update_systems.push_back(new SystemTeleport);
 
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemDebugPaint);

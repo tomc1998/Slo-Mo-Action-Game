@@ -1,5 +1,6 @@
 #pragma once
 #include "engine/entity_id.hpp"
+#include "engine/vec.hpp"
 
 class CompPlayerControlled {
 public:
@@ -9,6 +10,8 @@ public:
 
   CompPlayerControlled(EntityId entity_id, f32 force_to_apply);
 
+  Vec2 teleport_pos;
+  u32 state_change_timer;
   u8 state;
   EntityId entity_id;
   f32 force_to_apply;
