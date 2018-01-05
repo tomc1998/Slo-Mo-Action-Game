@@ -31,4 +31,7 @@ public:
   /** Vector of mouse positions throughout the drag */
   bool lmb_down;
   std::vector<Vec2> mouse_drag;
+
+  f32 mouse_x;
+  f32 mouse_y;
 };

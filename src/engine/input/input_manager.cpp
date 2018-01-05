@@ -21,6 +21,7 @@ InputManager::InputManager(GLFWwindow *window) {
 
   glfwSetKeyCallback(window, InputManager::key_callback);
   glfwSetMouseButtonCallback(window, InputManager::mouse_callback);
+  glfwSetCursorPosCallback(window, InputManager::cursor_position_callback);
   glfwSetWindowUserPointer(window, &this->current_input_state);
 }
 
@@ -95,6 +96,8 @@ void InputManager::mouse_callback(GLFWwindow *window, int button, int action,
   if (action == GLFW_PRESS) {
     if (button == GLFW_MOUSE_BUTTON_LEFT) {
       input_state->lmb_down = true;
+      glfwGetCursorPos(window, &xpos, &ypos);
+      input_state->mouse_drag.push_back(Vec2((f32)xpos, (f32)ypos));
     }
   }
   if (action == GLFW_RELEASE) {
@@ -104,14 +107,18 @@ void InputManager::mouse_callback(GLFWwindow *window, int button, int action,
   }
 
   // If lmb is down, add the coordinates to the mouse_drag vector
-  if (input_state->lmb_down) {
-    glfwGetCursorPos(window, &xpos, &ypos);
-    input_state->mouse_drag.push_back(Vec2((f32)xpos, (f32)ypos));
-  }
   // If lmb is released and the mouse_drag vector is not already empty, empty it
-  else if (not(input_state->lmb_down) && input_state->mouse_drag.size() != 0) {
+  if (not(input_state->lmb_down) && input_state->mouse_drag.size() != 0) {
     input_state->mouse_drag.clear();
   }
+}
+
+void InputManager::cursor_position_callback(GLFWwindow *window, double xpos,
+                                            double ypos) {
+  InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
+
+  input_state->mouse_x = (f32)xpos;
+  input_state->mouse_y = (f32)ypos;
 }
 
 void InputManager::update_input() {
@@ -123,4 +130,8 @@ void InputManager::update_input() {
   current_input_state.attack_down_prev = current_input_state.attack_down;
   current_input_state.slomo_down_prev = current_input_state.slomo_down;
   glfwPollEvents();
+  if (current_input_state.lmb_down) {
+    current_input_state.mouse_drag.push_back(
+        Vec2(current_input_state.mouse_x, current_input_state.mouse_y));
+  }
 }

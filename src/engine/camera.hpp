@@ -31,6 +31,8 @@ public:
    * width */
   void update_width();
 
+  Vec2 get_top_left();
+
   /**
    *
    * @param[in] pos The initial position of the camera

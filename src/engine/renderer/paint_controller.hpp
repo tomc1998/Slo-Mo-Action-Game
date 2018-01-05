@@ -36,7 +36,7 @@ public:
   PaintController(PaintBuffer *_buffer, ResourceManager* r, TexHandle _white);
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
-  void draw_line(Vec2 start, Vec2 end, f32 stroke, Color *color);
+  void draw_line(Vec2 start, Vec2 end, f32 stroke, Color *start_col, Color *end_col);
   void draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y, f32 w, f32 h, f32 rot, Color *tint);
   void draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h, f32 rotation, Color *tint);
 

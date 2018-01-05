@@ -63,3 +63,8 @@ void Camera::set_target_pos(Vec2 pos) {
 void Camera::set_target_width(f32 w) {
   this->target_w = w;
 }
+
+Vec2 Camera::get_top_left() {
+  f32 h = this->w/this->aspect_ratio;
+  return Vec2(this->pos.x - this->w/2, this->pos.y - h/2);
+}

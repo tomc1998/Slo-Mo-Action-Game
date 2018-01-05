@@ -19,6 +19,8 @@ public:
   /** Mouse callback function to handle mouse input */
   static void mouse_callback(GLFWwindow *window, int button, int action,
                              int mods);
+  static void cursor_position_callback(GLFWwindow *window, double xpos,
+                                       double ypos);
   /** Polls events and changes the current_input_state */
   void update_input();
 };
