@@ -8,7 +8,8 @@
 #include "engine/vec.hpp"
 #include "paint_system.hpp"
 
-class SystemTeleportRenderer : public PaintSystem {
+/** Renders player effects, such as teleporting & attacking */
+class SystemPlayerEffectRenderer : public PaintSystem {
 public:
   void handle_components(ECS *ecs, InputState *input_state,
                          PaintController *paint_controller, Camera *camera) {
