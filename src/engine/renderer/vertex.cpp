@@ -23,3 +23,15 @@ Vertex::Vertex(Vec2 _pos, Color *_color, Vec2 _uv) {
   this->uv[0] = _uv.x;
   this->uv[1] = _uv.y;
 }
+
+Vertex::Vertex() {
+  this->pos[0] = 0.0;
+  this->pos[1] = 0.0;
+  this->pos[2] = 0.0;
+  this->color[0] = 0.0;
+  this->color[1] = 0.0;
+  this->color[2] = 0.0;
+  this->color[3] = 1.0;
+  this->uv[0] = 0.0;
+  this->uv[1] = 0.0;
+}
