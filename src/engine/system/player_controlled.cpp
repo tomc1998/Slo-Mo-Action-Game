@@ -17,15 +17,15 @@ public:
 
         p->state_change_timer++;
 
-        if (p->state != p->TELEPORTING) {
+        if (p->state != p->STATE_TELEPORTING) {
           if (input_state->lmb_down) {
-            p->state = p->PRE_TELEPORT;
+            p->state = p->STATE_PRE_TELEPORT;
             p->state_change_timer = 0;
           }
 
           // Mouse button released
           if (!input_state->lmb_down && input_state->lmb_down_prev) {
-            p->state = p->TELEPORTING;
+            p->state = p->STATE_TELEPORTING;
             p->teleport_pos = input_state->mouse_pos + camera->get_top_left();
             std::cout << p->teleport_pos.x << " " << p->teleport_pos.y << std::endl;
             p->state_change_timer = 0;
