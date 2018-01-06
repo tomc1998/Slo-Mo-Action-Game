@@ -18,12 +18,12 @@ public:
         p->state_change_timer++;
 
         if (p->get_state() != p->STATE_TELEPORTING) {
-          if (input_state->lmb_down) {
+          if (input_state->rmb_down) {
             p->set_state(p->STATE_PRE_TELEPORT);
           }
 
           // Mouse button released
-          if (!input_state->lmb_down && input_state->lmb_down_prev) {
+          if (!input_state->rmb_down && input_state->rmb_down_prev) {
             p->set_state(p->STATE_TELEPORTING);
             p->teleport_pos = input_state->mouse_pos + camera->get_top_left();
           }

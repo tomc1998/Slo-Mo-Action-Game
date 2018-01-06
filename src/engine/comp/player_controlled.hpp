@@ -15,7 +15,9 @@ public:
   CompPlayerControlled(EntityId entity_id, f32 force_to_apply);
 
   EntityId entity_id;
+
   Vec2 teleport_pos;
+
   /** Incremented every update. Reset to 0 when state changes. */
   u32 state_change_timer;
 

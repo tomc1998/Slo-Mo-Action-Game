@@ -2,6 +2,8 @@
 #include "engine/vec.hpp"
 #include <vector>
 
+/** TODO: Find way of binding constrols to multiple controls (just referencing
+ * keycodes doesn't a allow binding to mouse buttons) */
 class InputState {
 public:
   f32 move_up;
@@ -20,18 +22,21 @@ public:
   f32 move_left_prev;
   i32 move_left_keycode;
 
-  bool attack_down;
-  bool attack_down_prev;
-  i32 attack_down_keycode;
-
   bool slomo_down;
   bool slomo_down_prev;
   i32 slomo_down_keycode;
 
-  /** Vector of mouse positions throughout the drag */
+  /** LMB = attack control */
   bool lmb_down;
   bool lmb_down_prev;
-  std::vector<Vec2> mouse_drag;
+  /** Vector of mouse positions throughout the drag */
+  std::vector<Vec2> lmb_drag;
+
+  /** RMB = teleport control */
+  bool rmb_down;
+  bool rmb_down_prev;
+  /** Vector of mouse positions throughout the drag */
+  std::vector<Vec2> rmb_drag;
 
   Vec2 mouse_pos;
 };
