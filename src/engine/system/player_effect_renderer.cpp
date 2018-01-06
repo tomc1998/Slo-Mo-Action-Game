@@ -1,3 +1,4 @@
+#include <cmath>
 #include "engine/camera.hpp"
 #include "engine/color.hpp"
 #include "engine/comp/game_entity.hpp"
@@ -7,7 +8,9 @@
 #include "engine/renderer/paint_controller.hpp"
 #include "engine/vec.hpp"
 #include "paint_system.hpp"
-#include <cmath>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 /** Renders player effects, such as teleporting & attacking */
 class SystemPlayerEffectRenderer : public PaintSystem {
@@ -41,7 +44,8 @@ public:
           const static u32 NUM_SEGMENTS = 2;
           const static f32 THICKNESS = 6.0;
           const static f32 START_RAD = 24.0;
-          // Need this for rendering at the centre. Maybe rethink player anim rendering.
+          // Need this for rendering at the centre. Maybe rethink player anim
+          // rendering.
           const static Vec2 HALF_PLAYER = Vec2(8.0, 8.0);
           Texture *white = paint_controller->get_white_tex();
           Vertex quads[NUM_SEGMENTS * 4];
@@ -55,20 +59,23 @@ public:
             Vec2 start_quad_vec = Vec2(cos(angle), sin(angle));
             Vec2 end_quad_vec =
                 Vec2(cos(angle + seg_len), sin(angle + seg_len));
-            p_curr_quad[0] = Vertex(ge.pos + HALF_PLAYER + start_quad_vec * START_RAD, &red,
-                                    Vec2(white->uvs[0], white->uvs[1]));
-            p_curr_quad[1] = Vertex(ge.pos + HALF_PLAYER + start_quad_vec * (START_RAD + THICKNESS), &red,
-                                    Vec2(white->uvs[0], white->uvs[1]));
-            p_curr_quad[2] = Vertex(ge.pos + HALF_PLAYER + end_quad_vec * (START_RAD + THICKNESS), &red,
-                                    Vec2(white->uvs[0], white->uvs[1]));
-            p_curr_quad[3] = Vertex(ge.pos + HALF_PLAYER + end_quad_vec * START_RAD, &red,
-                                    Vec2(white->uvs[0], white->uvs[1]));
+            p_curr_quad[0] =
+                Vertex(ge.pos + HALF_PLAYER + start_quad_vec * START_RAD, &red,
+                       Vec2(white->uvs[0], white->uvs[1]));
+            p_curr_quad[1] = Vertex(
+                ge.pos + HALF_PLAYER + start_quad_vec * (START_RAD + THICKNESS),
+                &red, Vec2(white->uvs[0], white->uvs[1]));
+            p_curr_quad[2] = Vertex(ge.pos + HALF_PLAYER +
+                                        end_quad_vec * (START_RAD + THICKNESS),
+                                    &red, Vec2(white->uvs[0], white->uvs[1]));
+            p_curr_quad[3] =
+                Vertex(ge.pos + HALF_PLAYER + end_quad_vec * START_RAD, &red,
+                       Vec2(white->uvs[0], white->uvs[1]));
             p_curr_quad += 4;
             angle += seg_len;
           }
           paint_controller->draw_quads(
-              quads, NUM_SEGMENTS,
-              paint_controller->get_white_tex_handle());
+              quads, NUM_SEGMENTS, paint_controller->get_white_tex_handle());
         }
 
         break;
