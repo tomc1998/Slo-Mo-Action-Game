@@ -18,6 +18,7 @@ class SystemDebugPaint;
 class SystemWallCollision;
 class SystemAnimationUpdate;
 class SystemTilemapRenderer;
+class SystemTeleportRenderer;
 class InputState;
 class PaintController;
 
@@ -67,6 +68,7 @@ class ECS {
   friend class SystemDebugPaint;
   friend class SystemWallRenderer;
   friend class SystemTilemapRenderer;
+  friend class SystemTeleportRenderer;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)

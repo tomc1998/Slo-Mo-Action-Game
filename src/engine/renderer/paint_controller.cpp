@@ -72,6 +72,26 @@ void PaintController::draw_tilemap(CompTilemap const &tilemap, Color *tint) {
   curr_batch.buffer(&v_buf[0], v_buf.size());
 }
 
+void PaintController::draw_line(Vec2 start, Vec2 end, f32 stroke, Color *start_col,
+                                Color *end_col) {
+  flush_if_batch_tex_not(white_cache_tex->cache_tex_ix);
+  f32 *uvs = white_cache_tex->uvs;
+
+  Vec2 inbetween = end - start;
+
+  Vec2 left = start + Vec2(-inbetween.y, inbetween.x).nor() * stroke / 2;
+  Vec2 right = start + Vec2(inbetween.y, -inbetween.x).nor() * stroke / 2;
+
+  Vertex v[] = {Vertex(left, start_col, Vec2(uvs[0], uvs[1])),
+                Vertex(left + inbetween, end_col, Vec2(uvs[2], uvs[1])),
+                Vertex(right, start_col, Vec2(uvs[2], uvs[3])),
+
+                Vertex(right, start_col, Vec2(uvs[0], uvs[1])),
+                Vertex(right + inbetween, end_col, Vec2(uvs[0], uvs[3])),
+                Vertex(left + inbetween, end_col, Vec2(uvs[2], uvs[3]))};
+  curr_batch.buffer(v, 6);
+}
+
 void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
                                  TexHandle tex) {
   flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix);

@@ -1,8 +1,8 @@
 #include "engine/anim_frame.hpp"
+#include "engine/camera.hpp"
 #include "engine/color.hpp"
 #include "engine/comp/animation.hpp"
 #include "engine/comp/game_entity.hpp"
-#include "engine/camera.hpp"
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
@@ -25,7 +25,8 @@ public:
           continue;
         }
         CompAnimation a = ecs->comp_animation[jj];
-        paint_controller->draw_animation(a.anim, a.updates, entity.pos.x, entity.pos.y, 16.0, 16.0, 0.0, &white);
+        paint_controller->draw_animation(a.anim, a.updates, entity.pos.x,
+                                         entity.pos.y, 16.0, 16.0, 0.0, &white);
         break;
       }
     }

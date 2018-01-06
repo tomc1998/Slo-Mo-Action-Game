@@ -31,6 +31,8 @@ public:
    * width */
   void update_width();
 
+  Vec2 get_top_left();
+
   /**
    *
    * @param[in] pos The initial position of the camera
@@ -46,4 +48,8 @@ public:
 
   /** Sets the target width */
   void set_target_width(f32 w);
+
+  f32 get_width();
+
+  f32 default_w;
 };
