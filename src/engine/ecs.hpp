@@ -4,6 +4,7 @@
 #include "comp/player_controlled.hpp"
 #include "comp/wall.hpp"
 #include "comp/tilemap.hpp"
+#include "comp/ai_enemy_basic.hpp"
 #include "engine/camera.hpp"
 #include <chrono>
 #include <cstdint>
@@ -19,6 +20,7 @@ class SystemWallCollision;
 class SystemAnimationUpdate;
 class SystemTilemapRenderer;
 class SystemPlayerEffectRenderer;
+class SystemAIEnemyBasic;
 class InputState;
 class PaintController;
 
@@ -69,6 +71,7 @@ class ECS {
   friend class SystemWallRenderer;
   friend class SystemTilemapRenderer;
   friend class SystemPlayerEffectRenderer;
+  friend class SystemAIEnemyBasic;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
@@ -76,6 +79,7 @@ class ECS {
   ECS_DECLARE_COMPONENT(CompWall, wall)
   ECS_DECLARE_COMPONENT(CompAnimation, animation)
   ECS_DECLARE_COMPONENT(CompTilemap, tilemap)
+  ECS_DECLARE_COMPONENT(CompAIEnemyBasic, ai_enemy_basic)
 
 private:
   std::vector<UpdateSystem *> update_systems;

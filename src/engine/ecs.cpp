@@ -13,16 +13,19 @@
 #include "system/wall_renderer.cpp"
 #include "system/tilemap_renderer.cpp"
 #include "system/player_effect_renderer.cpp"
+#include "system/ai_enemy_basic.cpp"
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
 ECS_IMPL_COMPONENT(CompWall, wall)
 ECS_IMPL_COMPONENT(CompAnimation, animation)
 ECS_IMPL_COMPONENT(CompTilemap, tilemap)
+ECS_IMPL_COMPONENT(CompAIEnemyBasic, ai_enemy_basic)
 
 ECS::ECS() {
   this->current_entity_id = 0;
   this->update_systems.push_back(new SystemPlayerControlled);
+  this->update_systems.push_back(new SystemAIEnemyBasic);
   this->update_systems.push_back(new SystemPhysics);
   this->update_systems.push_back(new SystemWallCollision);
   this->update_systems.push_back(new SystemAnimationUpdate);

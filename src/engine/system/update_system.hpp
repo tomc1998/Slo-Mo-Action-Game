@@ -1,5 +1,6 @@
 #pragma once
 #include "engine/camera.hpp"
+#include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
 
