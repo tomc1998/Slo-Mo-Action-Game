@@ -10,4 +10,5 @@ public:
   Vertex(Vec2 _pos, f32 _layer, Color *_color, Vec2 _uv);
   /** Default to layer 0 */
   Vertex(Vec2 _pos, Color *_color, Vec2 _uv);
+  Vertex();
 };

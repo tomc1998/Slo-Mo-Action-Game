@@ -1,6 +1,6 @@
+#include "engine/comp/tilemap.hpp"
 #include "engine/matrix.hpp"
 #include "engine/renderer/paint_controller.hpp"
-#include "engine/comp/tilemap.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -30,6 +30,9 @@ void PaintController::flush() {
   curr_batch = Batch(curr_batch.tex);
 }
 
+Texture *PaintController::get_white_tex() { return white_cache_tex; }
+TexHandle PaintController::get_white_tex_handle() { return white; }
+
 void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
   flush_if_batch_tex_not(white_cache_tex->cache_tex_ix);
   f32 *uvs = white_cache_tex->uvs;
@@ -47,24 +50,24 @@ void PaintController::draw_tilemap(CompTilemap const &tilemap, Color *tint) {
   // Create a vector and reserve the right amount of space for all the vertices
   std::vector<Vertex> v_buf;
   v_buf.reserve(tilemap.w * tilemap.h * 6);
-  Tileset* tileset = res_manager->lookup_tileset(tilemap.tileset);
+  Tileset *tileset = res_manager->lookup_tileset(tilemap.tileset);
   for (u32 ii = 0; ii < tilemap.w; ++ii) {
     for (u32 jj = 0; jj < tilemap.h; ++jj) {
-      u32 ix = ii+jj*tilemap.w;
+      u32 ix = ii + jj * tilemap.w;
       // Find the upper left & lower right positions of the tile
       Vec2 pos0(tilemap.pos.x + (tilemap.tile_size.x * ii),
-               tilemap.pos.y + (tilemap.tile_size.y * jj));
+                tilemap.pos.y + (tilemap.tile_size.y * jj));
       Vec2 pos1 = pos0 + tilemap.tile_size;
       // Find uvs
       f32 uvs[4];
       tileset->get_uv(uvs, tilemap.tiles[ix]);
-      v_buf.push_back(Vertex(pos0,                 tint, Vec2(uvs[0], uvs[1])));
+      v_buf.push_back(Vertex(pos0, tint, Vec2(uvs[0], uvs[1])));
       v_buf.push_back(Vertex(Vec2(pos1.x, pos0.y), tint, Vec2(uvs[2], uvs[1])));
-      v_buf.push_back(Vertex(pos1,            tint, Vec2(uvs[2], uvs[3])));
+      v_buf.push_back(Vertex(pos1, tint, Vec2(uvs[2], uvs[3])));
 
-      v_buf.push_back(Vertex(pos0,                 tint, Vec2(uvs[0], uvs[1])));
+      v_buf.push_back(Vertex(pos0, tint, Vec2(uvs[0], uvs[1])));
       v_buf.push_back(Vertex(Vec2(pos0.x, pos1.y), tint, Vec2(uvs[0], uvs[3])));
-      v_buf.push_back(Vertex(pos1,            tint, Vec2(uvs[2], uvs[3])));
+      v_buf.push_back(Vertex(pos1, tint, Vec2(uvs[2], uvs[3])));
     }
   }
 
@@ -72,8 +75,8 @@ void PaintController::draw_tilemap(CompTilemap const &tilemap, Color *tint) {
   curr_batch.buffer(&v_buf[0], v_buf.size());
 }
 
-void PaintController::draw_line(Vec2 start, Vec2 end, f32 stroke, Color *start_col,
-                                Color *end_col) {
+void PaintController::draw_line(Vec2 start, Vec2 end, f32 stroke,
+                                Color *start_col, Color *end_col) {
   flush_if_batch_tex_not(white_cache_tex->cache_tex_ix);
   f32 *uvs = white_cache_tex->uvs;
 

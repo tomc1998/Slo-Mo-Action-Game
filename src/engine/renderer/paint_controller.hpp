@@ -53,6 +53,9 @@ public:
    * for when you need to know UVs, like with draw_quads. */
   Texture *get_tex_for_handle(TexHandle r);
 
+  Texture *get_white_tex();
+  TexHandle get_white_tex_handle();
+
   /** Flush the current batch if there's any vertices there, set the next batch
    * to have the same cache texture ix */
   void flush();

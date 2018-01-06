@@ -15,6 +15,9 @@ public:
   Vec2 scl(const f32 k) const;
   f32 len() const;
   f32 len2() const;
+  /** Find the angle to another vector, in radians. Uses c++ STD atan2, see
+   * those docs for more details on the return value. */
+  f32 angle_to(const Vec2 other) const;
   Vec2 nor() const;
   Vec2 operator+(Vec2 other) const;
   Vec2 operator+=(Vec2 other);
