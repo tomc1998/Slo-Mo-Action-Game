@@ -23,6 +23,11 @@ f32 Vec2::len() const { return std::sqrt(this->x * this->x + this->y * this->y);
 
 f32 Vec2::len2() const { return (this->x * this->x + this->y * this->y); }
 
+f32 Vec2::angle_to(const Vec2 other) const {
+  Vec2 to = other - *this;
+  return atan2(to.y, to.x);
+}
+
 Vec2 Vec2::nor() const { return *this / this->len(); }
 
 Vec2 Vec2::operator+(Vec2 other) const { return add(other); }

@@ -13,24 +13,31 @@ public:
             ecs->comp_game_entity[ii].entity_id) {
           continue;
         }
-        CompPlayerControlled *p = &ecs->comp_player_controlled[jj];
+        CompPlayerControlled &p = ecs->comp_player_controlled[jj];
+        CompGameEntity &ge = ecs->comp_game_entity[ii];
 
-        p->state_change_timer++;
+        p.state_change_timer++;
 
-        if (p->get_state() != p->STATE_TELEPORTING) {
+        if (p.get_state() != p.STATE_TELEPORTING) {
           if (input_state->rmb_down) {
-            p->set_state(p->STATE_PRE_TELEPORT);
+            p.set_state(p.STATE_PRE_TELEPORT);
+          } else if (input_state->lmb_down) {
+            p.set_state(p.STATE_ATTACKING);
+            // Figure out the angle to attack
+            auto mouse_world_pos = input_state->mouse_pos + camera->get_top_left();
+            auto player_world_pos = ge.pos;
+            p.attack_angle = player_world_pos.angle_to(mouse_world_pos);
           }
 
-          // Mouse button released
+          // Mouse button released? (teleport!)
           if (!input_state->rmb_down && input_state->rmb_down_prev) {
-            p->set_state(p->STATE_TELEPORTING);
-            p->teleport_pos = input_state->mouse_pos + camera->get_top_left();
+            p.set_state(p.STATE_TELEPORTING);
+            p.teleport_pos = input_state->mouse_pos + camera->get_top_left();
           }
 
-          Vec2 *acc = &ecs->comp_game_entity[ii].acc;
+          Vec2 *acc = &ge.acc;
           f32 force_to_apply = ecs->comp_player_controlled[jj].force_to_apply;
-          f32 mass = ecs->comp_game_entity[ii].mass;
+          f32 mass = ge.mass;
           if (input_state->move_up >= 0) {
             acc->y = acc->y - force_to_apply / mass * input_state->move_up;
           }
@@ -48,7 +55,7 @@ public:
           }
         }
 
-        camera->set_target_pos(ecs->comp_game_entity[ii].pos);
+        camera->set_target_pos(ge.pos);
         break;
       }
     }
