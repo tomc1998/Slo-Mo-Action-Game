@@ -32,7 +32,9 @@ public:
           // Mouse button released? (teleport!)
           if (!input_state->rmb_down && input_state->rmb_down_prev) {
             p.set_state(p.STATE_TELEPORTING);
-            p.teleport_pos = input_state->mouse_pos + camera->get_top_left();
+            p.teleport_pos = input_state->mouse_pos *
+                                  (camera->get_width() / camera->default_w) +
+                              camera->get_top_left();
           }
 
           Vec2 *acc = &ge.acc;
@@ -52,6 +54,11 @@ public:
 
           if (input_state->move_left >= 0) {
             acc->x = acc->x - force_to_apply / mass * input_state->move_left;
+          }
+        } else {
+          if (p.state_change_timer >= 200) {
+            ecs->comp_game_entity[ii].pos = p.teleport_pos;
+            p.set_state(p.STATE_NORMAL);
           }
         }
 
