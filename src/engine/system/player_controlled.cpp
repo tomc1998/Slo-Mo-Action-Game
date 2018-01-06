@@ -17,18 +17,16 @@ public:
 
         p->state_change_timer++;
 
-        if (p->state != p->STATE_TELEPORTING) {
+        if (p->get_state() != p->STATE_TELEPORTING) {
           if (input_state->lmb_down) {
-            p->state = p->STATE_PRE_TELEPORT;
-            p->state_change_timer = 0;
+            p->set_state(p->STATE_PRE_TELEPORT);
           }
 
           // Mouse button released
           if (!input_state->lmb_down && input_state->lmb_down_prev) {
-            p->state = p->STATE_TELEPORTING;
+            p->set_state(p->STATE_TELEPORTING);
             p->teleport_pos = input_state->mouse_pos + camera->get_top_left();
             std::cout << p->teleport_pos.x << " " << p->teleport_pos.y << std::endl;
-            p->state_change_timer = 0;
           }
 
           Vec2 *acc = &ecs->comp_game_entity[ii].acc;

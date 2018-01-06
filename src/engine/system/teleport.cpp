@@ -16,13 +16,13 @@ public:
           continue;
         }
 
-        if (ecs->comp_player_controlled[ii].state ==
+        if (ecs->comp_player_controlled[ii].get_state() ==
             ecs->comp_player_controlled[ii].STATE_TELEPORTING) {
           CompPlayerControlled *p = &ecs->comp_player_controlled[ii];
 
           if (p->state_change_timer >= 200) {
             ecs->comp_game_entity[jj].pos = p->teleport_pos;
-            p->state = p->STATE_NORMAL;
+            p->set_state(p->STATE_NORMAL);
           }
         }
       }

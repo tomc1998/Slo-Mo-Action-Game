@@ -7,3 +7,10 @@ CompPlayerControlled::CompPlayerControlled(EntityId entity_id,
   this->state = 0;
   this->state_change_timer = 0;
 }
+
+void CompPlayerControlled::set_state(u8 state) {
+  this->state = state;
+  state_change_timer = 0;
+}
+
+u8 CompPlayerControlled::get_state() { return state; }
