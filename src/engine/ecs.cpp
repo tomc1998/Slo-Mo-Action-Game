@@ -1,6 +1,7 @@
 #include "comp/animation.hpp"
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
+#include "comp/tilemap.hpp"
 #include "comp/wall.hpp"
 #include "ecs.hpp"
 #include "renderer/paint_controller.hpp"
@@ -9,8 +10,10 @@
 #include "system/physics.cpp"
 #include "system/player_controlled.cpp"
 #include "system/wall_collision.cpp"
+#include "system/teleport.cpp"
 #include "system/wall_renderer.cpp"
 #include "system/tilemap_renderer.cpp"
+#include "system/teleport_renderer.cpp"
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
@@ -24,10 +27,12 @@ ECS::ECS() {
   this->update_systems.push_back(new SystemPhysics);
   this->update_systems.push_back(new SystemWallCollision);
   this->update_systems.push_back(new SystemAnimationUpdate);
+  this->update_systems.push_back(new SystemTeleport);
 
   this->paint_systems.push_back(new SystemTilemapRenderer);
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemDebugPaint);
+  this->paint_systems.push_back(new SystemTeleportRenderer);
 }
 
 ECS::~ECS() {
