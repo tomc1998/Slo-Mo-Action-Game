@@ -7,8 +7,8 @@
 class SystemPlayerControlled : public UpdateSystem {
 public:
   void handle_components(ECS *ecs, InputState *input_state, Camera *camera) {
-    for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
-      for (u32 jj = 0; jj < ecs->comp_player_controlled.size(); jj++) {
+    for (u32 jj = 0; jj < ecs->comp_player_controlled.size(); jj++) {
+      for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
         if (ecs->comp_player_controlled[jj].entity_id !=
             ecs->comp_game_entity[ii].entity_id) {
           continue;
@@ -21,7 +21,7 @@ public:
         if (p.get_state() != p.STATE_TELEPORTING) {
           if (input_state->rmb_down) {
             p.set_state(p.STATE_PRE_TELEPORT);
-          } else if (input_state->lmb_down) {
+          } else if (input_state->lmb_down && !input_state->lmb_down_prev) {
             p.set_state(p.STATE_ATTACKING);
             // Figure out the angle to attack
             auto mouse_world_pos = input_state->mouse_pos + camera->get_top_left();
@@ -52,6 +52,13 @@ public:
 
           if (input_state->move_left >= 0) {
             acc->x = acc->x - force_to_apply / mass * input_state->move_left;
+          }
+        }
+
+        // Check if attacking finished
+        if (p.get_state() == p.STATE_ATTACKING) {
+          if (p.state_change_timer >= 200) {
+            p.set_state(p.STATE_NORMAL);
           }
         }
 

@@ -15,21 +15,34 @@ public:
                          PaintController *paint_controller, Camera *camera) {
     Color white = Color(1.0, 1.0, 1.0, 1.0);
     Color black = Color(0.0, 0.0, 0.0, 1.0);
+    Color red = Color(1.0, 0.0, 0.0, 1.0);
     for (u32 ii = 0; ii < ecs->comp_player_controlled.size(); ii++) {
       for (u32 jj = 0; jj < ecs->comp_game_entity.size(); jj++) {
         if (ecs->comp_player_controlled[ii].entity_id !=
             ecs->comp_game_entity[jj].entity_id) {
           continue;
         }
+        CompGameEntity& ge = ecs->comp_game_entity[jj];
+        CompPlayerControlled& p = ecs->comp_player_controlled[jj];
 
-        CompGameEntity entity = ecs->comp_game_entity[jj];
-        if (ecs->comp_player_controlled[ii].get_state() ==
-            ecs->comp_player_controlled[ii].STATE_PRE_TELEPORT) {
-          paint_controller->draw_line(entity.pos + Vec2(8.0, 8.0),
+        // Render pre-teleport line from player to cursor
+        if (p.get_state() == p.STATE_PRE_TELEPORT) {
+          paint_controller->draw_line(ge.pos + Vec2(8.0, 8.0),
                                       input_state->rmb_drag.back() +
                                           camera->get_top_left(),
                                       2.0, &black, &white);
         }
+
+        // Render attacking 'arc'
+        else if (p.get_state() == p.STATE_ATTACKING) {
+          // This is rendered in 2 quads forming a sort of arrow pointing in
+          // the direction of p.attack_angle.
+          paint_controller->draw_line(ge.pos + Vec2(8.0, 8.0),
+                                      input_state->lmb_drag.back() +
+                                          camera->get_top_left(),
+                                      2.0, &red, &red);
+        }
+
         break;
       }
     }
