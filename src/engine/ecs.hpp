@@ -65,7 +65,6 @@ class ECS {
   friend class SystemPlayerControlled;
   friend class SystemWallCollision;
   friend class SystemAnimationUpdate;
-  friend class SystemTeleport;
   friend class SystemDebugPaint;
   friend class SystemWallRenderer;
   friend class SystemTilemapRenderer;

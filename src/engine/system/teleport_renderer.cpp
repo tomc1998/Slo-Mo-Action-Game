@@ -24,10 +24,13 @@ public:
         CompGameEntity entity = ecs->comp_game_entity[jj];
         if (ecs->comp_player_controlled[ii].get_state() ==
             ecs->comp_player_controlled[ii].STATE_PRE_TELEPORT) {
-          paint_controller->draw_line(entity.pos + Vec2(8.0, 8.0),
-                                      input_state->rmb_drag.back() +
-                                          camera->get_top_left(),
-                                      2.0, &black, &white);
+          paint_controller->draw_line(
+              entity.pos + Vec2(8.0, 8.0),
+              input_state->rmb_drag.back() *
+                      //scales the pixel to world coordinates
+                      (camera->get_width() / camera->default_w) +
+                  camera->get_top_left(),
+              2.0, &black, &white);
         }
         break;
       }
