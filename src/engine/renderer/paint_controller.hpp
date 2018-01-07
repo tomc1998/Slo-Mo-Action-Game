@@ -2,7 +2,7 @@
 
 #include "engine/animation.hpp"
 #include "engine/comp/tilemap.hpp"
-#include "engine/font/hpp"
+#include "engine/font.hpp"
 #include "engine/renderer/batch.hpp"
 #include "engine/renderer/paint_buffer.hpp"
 #include "engine/resource_manager.hpp"
@@ -59,8 +59,8 @@ public:
    * the line.
    *
    * */
-  void draw_text_line(const char *text, f32 x, f32 y,
-                      TextAlign align, FontHandle font);
+  void draw_text(const char *text, f32 x, f32 y,
+                      TextAlign align, FontHandle font, Color *color);
 
   /** Convenience method for getting a texture from a resource handle. Useful
    * for when you need to know UVs, like with draw_quads. */

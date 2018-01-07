@@ -8,3 +8,4 @@ i32 Font::get_width_for_text(const char *text) {
   return width;
 }
 
+u64 Font::get_cache_tex() {return this->tex.cache_tex_ix;}

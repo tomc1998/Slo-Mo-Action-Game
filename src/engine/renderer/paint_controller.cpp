@@ -1,8 +1,11 @@
 #include "engine/comp/tilemap.hpp"
+#include "engine/font.hpp"
+#include "engine/glyph.hpp"
 #include "engine/matrix.hpp"
 #include "engine/renderer/paint_controller.hpp"
 #include <cassert>
 #include <cmath>
+#include <cstring>
 #include <iostream>
 #include <vector>
 
@@ -130,15 +133,50 @@ void PaintController::draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y,
   delete[] frames;
 }
 
-void PaintController::draw_text_line(const char *text, f32 x, f32 y,
-                                     TextAlign align, FontHandle font) {
+void PaintController::draw_text(const char *text, f32 x, f32 y, TextAlign align,
+                                FontHandle font, Color *color) {
+
+  assert(font != -1);
   Font *f = this->res_manager->lookup_font(font);
+  std::vector<Vertex> v_buf;
+  v_buf.reserve(std::strlen(text) * 6);
+  Vec2 cursor_pos;
 
-  for (u32 ii=0; text[ii] != 0, ii++) {
-
+  switch (align) {
+  case BOT_LEFT: {
+    cursor_pos = Vec2(x, y - f->base);
+    break;
   }
 
+  case BOT_CENTRE: {
+    cursor_pos = Vec2(x - f->get_width_for_text(text), y - f->base);
+    break;
+  }
 
+  case BOT_RIGHT: {
+    cursor_pos = Vec2(x - f->get_width_for_text(text) * 0.5, y - f->base);
+    break;
+  }
+  }
+
+  for (u32 ii = 0; text[ii] != 0; ii++) {
+    Glyph *g = &f->char_map[text[ii]];
+    Vec2 offset_pos = cursor_pos + Vec2(g->x_offset, g->y_offset);
+    v_buf.push_back(Vertex(offset_pos, color, Vec2(g->uvs[0], g->uvs[1])));
+    v_buf.push_back(Vertex(offset_pos + Vec2(g->width, 0.0), color,
+                           Vec2(g->uvs[2], g->uvs[1])));
+    v_buf.push_back(Vertex(offset_pos + Vec2(g->width, g->height), color,
+                           Vec2(g->uvs[2], g->uvs[3])));
+
+    v_buf.push_back(Vertex(offset_pos, color, Vec2(g->uvs[0], g->uvs[1])));
+    v_buf.push_back(Vertex(offset_pos + Vec2(0.0, g->height), color,
+                           Vec2(g->uvs[2], g->uvs[1])));
+    v_buf.push_back(Vertex(offset_pos + Vec2(g->width, g->height), color,
+                           Vec2(g->uvs[2], g->uvs[3])));
+  }
+
+  flush_if_batch_tex_not(f->get_cache_tex());
+  curr_batch.buffer(&v_buf[0], v_buf.size());
 }
 
 void PaintController::draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h,

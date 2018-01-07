@@ -1,6 +1,7 @@
 #pragma once
 
 class Glyph {
+public:
   /** The uvs in the font texture of this character */
   f32 uvs[4];
 

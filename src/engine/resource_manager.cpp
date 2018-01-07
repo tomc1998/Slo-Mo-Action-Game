@@ -61,6 +61,14 @@ Texture *ResourceManager::lookup_tex(TexHandle handle) {
   return &r_it->second;
 }
 
+Font *ResourceManager::lookup_font(FontHandle handle) {
+  auto r_it = font_handle_map.find(handle);
+  if (r_it == font_handle_map.end()) {
+    return NULL;
+  }
+  return &r_it->second;
+}
+
 Tileset *ResourceManager::lookup_tileset(TilesetHandle handle) {
   auto r_it = tileset_handle_map.find(handle);
   if (r_it == tileset_handle_map.end()) {
