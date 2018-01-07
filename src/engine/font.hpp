@@ -9,7 +9,9 @@ class Font {
   Texture tex;
   /** Map of actual characters (e.g. 'a' or '3') to their respective FontChars
    */
-  spp::sparse_hash_map<char, Glyph> ;
-  /** How far down the cursor position
+  spp::sparse_hash_map<char, Glyph> char_map;
+  /** How far down the cursor position */
   u32 line_height;
+
+  i32 get_width_for_text(const char *text);
 };

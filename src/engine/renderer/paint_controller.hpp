@@ -2,6 +2,7 @@
 
 #include "engine/animation.hpp"
 #include "engine/comp/tilemap.hpp"
+#include "engine/font/hpp"
 #include "engine/renderer/batch.hpp"
 #include "engine/renderer/paint_buffer.hpp"
 #include "engine/resource_manager.hpp"
@@ -37,7 +38,8 @@ public:
   PaintController(PaintBuffer *_buffer, ResourceManager *r, TexHandle _white);
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
-  void draw_line(Vec2 start, Vec2 end, f32 stroke, Color *start_col, Color *end_col);
+  void draw_line(Vec2 start, Vec2 end, f32 stroke, Color *start_col,
+                 Color *end_col);
   void draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y, f32 w, f32 h,
                       f32 rot, Color *tint);
   void draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h, f32 rotation,
@@ -48,6 +50,17 @@ public:
   void draw_quads(Vertex *v_buf, size_t num_quads, TexHandle tex);
 
   void draw_tilemap(CompTilemap const &tilemap, Color *tint);
+
+  /** Draws a line of text, given the x and y position and alignment
+   *
+   * The x and y position will not always reference the same thing, it depends
+   * on the alignment. E.g. BOT_LEFT alignment will specify the bottom and left
+   * of the line, whereas BOT_CENTRE will specify the bottom and the centre of
+   * the line.
+   *
+   * */
+  void draw_text_line(const char *text, f32 x, f32 y,
+                      TextAlign align, FontHandle font);
 
   /** Convenience method for getting a texture from a resource handle. Useful
    * for when you need to know UVs, like with draw_quads. */

@@ -18,6 +18,7 @@ private:
   spp::sparse_hash_map<TexHandle, Texture> tex_handle_map;
   spp::sparse_hash_map<AnimHandle, Animation> anim_handle_map;
   spp::sparse_hash_map<TilesetHandle, Tileset> tileset_handle_map;
+  spp::sparse_hash_map<FontHandle, Font> font_handle_map;
 
   /** Texture cache mapping texhandles to rects. */
   TexCache tex_cache;

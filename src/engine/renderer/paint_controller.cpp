@@ -130,6 +130,17 @@ void PaintController::draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y,
   delete[] frames;
 }
 
+void PaintController::draw_text_line(const char *text, f32 x, f32 y,
+                                     TextAlign align, FontHandle font) {
+  Font *f = this->res_manager->lookup_font(font);
+
+  for (u32 ii=0; text[ii] != 0, ii++) {
+
+  }
+
+
+}
+
 void PaintController::draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h,
                                  f32 rotation, Color *tint) {
   // We don't want a null resource handle
