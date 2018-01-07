@@ -27,7 +27,8 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
 
   AnimHandle ah =
       res_manager->load_animation("assets/animations/walk.json", texs);
-  ecs->add_comp_animation(CompAnimation(entity_id, ah, 400));
+  FontHandle fh = res_manager->load_font("assets/fonts/fixedsys_excelsior.fnt");
+  ecs->add_comp_animation(CompAnimation(entity_id, ah, fh, 400));
 
   TexHandle wall_tex =
       res_manager->load_texture("assets/sprites/test_wall.png");

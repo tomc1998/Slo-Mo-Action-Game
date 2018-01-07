@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iostream>
 #include <sparsepp/spp.h>
+#include <string>
 using json = nlohmann::json;
 
 ResourceManager::ResourceManager() {
@@ -86,48 +87,52 @@ Tileset *ResourceManager::lookup_tileset(TilesetHandle handle) {
 FontHandle ResourceManager::load_font(const char *path) {
   std::vector<char *> lines = load_file_by_lines(path);
   Font f;
-  u32 w;
-  u32 h;
-  char *tex_name;
-  std::sscanf(lines[1], "lineHeight=%u", &f.line_height);
-  std::sscanf(lines[1], "base=%u", &f.base);
-  std::sscanf(lines[1], "scaleW=%u", &w);
-  std::sscanf(lines[1], "scaleH=%u", &h);
-  std::sscanf(lines[2], "file=\"%s\"", tex_name);
+  u32 line_height = 0;
+  u32 base = 0;
+  u32 w = 0;
+  u32 h = 0;
+  char tex_name[100];
+  std::sscanf(lines[1],
+              "%*[^l]lineHeight=%u%*[^b]base=%u%*[^s]scaleW=%u%*[^s]scaleH=%u",
+              &line_height, &base, &w, &h);
+  std::sscanf(lines[2], "%*[^f]file=\"%[^\"]", tex_name);
+  std::cout << tex_name << std::endl;
+  f.line_height = line_height;
+  f.base = base;
 
   TexHandle font_tex_h = next_res_handle++;
 
-  this->load_texture_internal(tex_name, &f.tex, font_tex_h);
+  this->load_texture_internal((const char *)tex_name, &f.tex, font_tex_h);
   f32 font_uvs[4] = {f.tex.uvs[0], f.tex.uvs[1], f.tex.uvs[2], f.tex.uvs[3]};
 
-  for (u32 ii = 3; ii < lines.size(); ii++) {
-    u32 id;
-    u32 x;
-    u32 y;
-    u32 width;
-    u32 height;
-    i32 x_offset;
-    i32 y_offset;
-    i32 x_advance;
+  for (u32 ii = 4; ii < lines.size(); ii++) {
+    u32 id = 0;
+    u32 x = 0;
+    u32 y = 0;
+    u32 width = 0;
+    u32 height = 0;
+    i32 x_offset = 0;
+    i32 y_offset = 0;
+    i32 x_advance = 0;
 
-    std::sscanf(lines[ii], "id=%u", &id);
-    std::sscanf(lines[ii], "x=%u", &x);
-    std::sscanf(lines[ii], "y=%u", &y);
-    std::sscanf(lines[ii], "width=%u", &width);
-    std::sscanf(lines[ii], "height=%u", &height);
-    std::sscanf(lines[ii], "xoffset=%d", &x_offset);
-    std::sscanf(lines[ii], "yoffset=%d", &y_offset);
-    std::sscanf(lines[ii], "xadvance=%d", &x_advance);
+    std::sscanf(lines[ii], "%*sid=%u", &id);
+    std::sscanf(lines[ii], "%*sx=%u", &x);
+    std::sscanf(lines[ii], "%*sy=%u", &y);
+    std::sscanf(lines[ii], "%*swidth=%u", &width);
+    std::sscanf(lines[ii], "%*sheight=%u", &height);
+    std::sscanf(lines[ii], "%*sxoffset=%d", &x_offset);
+    std::sscanf(lines[ii], "%*syoffset=%d", &y_offset);
+    std::sscanf(lines[ii], "%*sxadvance=%d", &x_advance);
 
     f32 uvs[] = {
-      font_uvs[0] + (font_uvs[2] - font_uvs[0]) * (f32)x / (f32)w,
-      font_uvs[1] + (font_uvs[3] - font_uvs[1]) * (f32)y / (f32)h,
-      font_uvs[0] + (font_uvs[2] - font_uvs[0]) * (f32)(x + width) / (f32)w,
-      font_uvs[2] + (font_uvs[3] - font_uvs[1]) * (f32)(y + height) / (f32)h,
+        font_uvs[0] + (font_uvs[2] - font_uvs[0]) * (f32)x / (f32)w,
+        font_uvs[1] + (font_uvs[3] - font_uvs[1]) * (f32)y / (f32)h,
+        font_uvs[0] + (font_uvs[2] - font_uvs[0]) * (f32)(x + width) / (f32)w,
+        font_uvs[2] + (font_uvs[3] - font_uvs[1]) * (f32)(y + height) / (f32)h,
     };
 
     f.char_map[char(id)] =
-      Glyph(uvs, width, height, x_offset, y_offset, x_advance);
+        Glyph(uvs, width, height, x_offset, y_offset, x_advance);
   }
 
   FontHandle fh = next_res_handle++;
@@ -139,7 +144,7 @@ FontHandle ResourceManager::load_font(const char *path) {
  * blender exporter. Also takes in a reference to a vector of TexHandles to
  * store in the animation. Returns an animation handle */
 AnimHandle ResourceManager::load_animation(const char *path,
-    std::vector<TexHandle> &texs) {
+                                           std::vector<TexHandle> &texs) {
   std::ifstream i(path);
   json j;
   i >> j;
