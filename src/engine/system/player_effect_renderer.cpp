@@ -1,4 +1,3 @@
-#include <cmath>
 #include "engine/camera.hpp"
 #include "engine/color.hpp"
 #include "engine/comp/game_entity.hpp"
@@ -8,6 +7,7 @@
 #include "engine/renderer/paint_controller.hpp"
 #include "engine/vec.hpp"
 #include "paint_system.hpp"
+#include <cmath>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -32,7 +32,9 @@ public:
         // Render pre-teleport line from player to cursor
         if (p.get_state() == p.STATE_PRE_TELEPORT) {
           paint_controller->draw_line(ge.pos + Vec2(8.0, 8.0),
-                                      input_state->rmb_drag.back() +
+                                      input_state->rmb_drag.back() *
+                                              camera->get_width() /
+                                              camera->default_w +
                                           camera->get_top_left(),
                                       2.0, &black, &white);
         }
