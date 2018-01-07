@@ -1,6 +1,6 @@
 #pragma once
 
-class FontChar {
+class Glyph {
   /** The uvs in the font texture of this character */
   f32 uvs[4];
 
