@@ -26,7 +26,7 @@ public:
         }
         CompAnimation a = ecs->comp_animation[jj];
 
-        paint_controller->draw_text("this is Test Text", 800.0, 600.0, BOT_RIGHT, a.font, &white);
+        paint_controller->draw_text("this is Test Text", 100.0, 100.0, BOT_RIGHT, a.font, &white);
         paint_controller->draw_animation(a.anim, a.updates, entity.pos.x,
                                          entity.pos.y, 16.0, 16.0, 0.0, &white);
         break;

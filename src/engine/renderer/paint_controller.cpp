@@ -143,20 +143,17 @@ void PaintController::draw_text(const char *text, f32 x, f32 y, TextAlign align,
   Vec2 cursor_pos;
 
   switch (align) {
-  case BOT_LEFT: {
+  case BOT_LEFT:
     cursor_pos = Vec2(x, y - f->base);
     break;
-  }
 
-  case BOT_CENTRE: {
+  case BOT_CENTRE:
     cursor_pos = Vec2(x - f->get_width_for_text(text), y - f->base);
     break;
-  }
 
-  case BOT_RIGHT: {
+  case BOT_RIGHT:
     cursor_pos = Vec2(x - f->get_width_for_text(text) * 0.5, y - f->base);
     break;
-  }
   }
 
   for (u32 ii = 0; text[ii] != 0; ii++) {
@@ -170,9 +167,10 @@ void PaintController::draw_text(const char *text, f32 x, f32 y, TextAlign align,
 
     v_buf.push_back(Vertex(offset_pos, color, Vec2(g->uvs[0], g->uvs[1])));
     v_buf.push_back(Vertex(offset_pos + Vec2(0.0, g->height), color,
-                           Vec2(g->uvs[2], g->uvs[1])));
+                           Vec2(g->uvs[0], g->uvs[3])));
     v_buf.push_back(Vertex(offset_pos + Vec2(g->width, g->height), color,
                            Vec2(g->uvs[2], g->uvs[3])));
+    cursor_pos.x += g->x_advance;
   }
 
   flush_if_batch_tex_not(f->get_cache_tex());

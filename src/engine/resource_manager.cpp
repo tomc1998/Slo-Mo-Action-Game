@@ -14,6 +14,7 @@
 #include <iostream>
 #include <sparsepp/spp.h>
 #include <string>
+#include <cstring>
 using json = nlohmann::json;
 
 ResourceManager::ResourceManager() {
@@ -91,19 +92,23 @@ FontHandle ResourceManager::load_font(const char *path) {
   u32 base = 0;
   u32 w = 0;
   u32 h = 0;
-  char tex_name[100];
+  const char* font_tex_folder = "assets/fonts/";
+  const u32 FONT_FOLDER_PATH_LEN=13;
+  char tex_path[1024+FONT_FOLDER_PATH_LEN];
+  char tex_name[1024];
   std::sscanf(lines[1],
               "%*[^l]lineHeight=%u%*[^b]base=%u%*[^s]scaleW=%u%*[^s]scaleH=%u",
               &line_height, &base, &w, &h);
   std::sscanf(lines[2], "%*[^f]file=\"%[^\"]", tex_name);
-  std::cout << tex_name << std::endl;
+  strcpy(tex_path, font_tex_folder);
+  strcat(tex_path, tex_name);
   f.line_height = line_height;
   f.base = base;
 
   TexHandle font_tex_h = next_res_handle++;
 
-  this->load_texture_internal((const char *)tex_name, &f.tex, font_tex_h);
-  f32 font_uvs[4] = {f.tex.uvs[0], f.tex.uvs[1], f.tex.uvs[2], f.tex.uvs[3]};
+  this->load_texture_internal((const char *)tex_path, &f.tex, font_tex_h);
+  f32* font_uvs = f.tex.uvs;
 
   for (u32 ii = 4; ii < lines.size(); ii++) {
     u32 id = 0;
@@ -115,20 +120,20 @@ FontHandle ResourceManager::load_font(const char *path) {
     i32 y_offset = 0;
     i32 x_advance = 0;
 
-    std::sscanf(lines[ii], "%*sid=%u", &id);
-    std::sscanf(lines[ii], "%*sx=%u", &x);
-    std::sscanf(lines[ii], "%*sy=%u", &y);
-    std::sscanf(lines[ii], "%*swidth=%u", &width);
-    std::sscanf(lines[ii], "%*sheight=%u", &height);
-    std::sscanf(lines[ii], "%*sxoffset=%d", &x_offset);
-    std::sscanf(lines[ii], "%*syoffset=%d", &y_offset);
-    std::sscanf(lines[ii], "%*sxadvance=%d", &x_advance);
+    std::sscanf(lines[ii], "%*s id=%u "
+        "x=%u "
+        "y=%u "
+        "width=%u "
+        "height=%u "
+        "xoffset=%d "
+        "yoffset=%d "
+        "xadvance=%d", &id, &x, &y, &width, &height, &x_offset, &y_offset, &x_advance);
 
     f32 uvs[] = {
         font_uvs[0] + (font_uvs[2] - font_uvs[0]) * (f32)x / (f32)w,
         font_uvs[1] + (font_uvs[3] - font_uvs[1]) * (f32)y / (f32)h,
         font_uvs[0] + (font_uvs[2] - font_uvs[0]) * (f32)(x + width) / (f32)w,
-        font_uvs[2] + (font_uvs[3] - font_uvs[1]) * (f32)(y + height) / (f32)h,
+        font_uvs[1] + (font_uvs[3] - font_uvs[1]) * (f32)(y + height) / (f32)h,
     };
 
     f.char_map[char(id)] =
