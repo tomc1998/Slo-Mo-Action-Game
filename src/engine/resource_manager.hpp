@@ -60,6 +60,8 @@ public:
    * Will assert if res is not a font */
   Font *lookup_font(FontHandle r);
 
+  FontHandle load_font(const char *path);
+
   AnimHandle load_animation(const char *path, std::vector<TexHandle> &texs);
 
   /** Lookup an animation, returning a pointer to it if it exists, or null

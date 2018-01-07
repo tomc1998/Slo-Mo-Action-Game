@@ -33,6 +33,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/anim_frame.cpp
   ${PROJECT_SOURCE_DIR}/engine/tileset.cpp
   ${PROJECT_SOURCE_DIR}/engine/font.cpp
+  ${PROJECT_SOURCE_DIR}/engine/glyph.cpp
   ${PROJECT_SOURCE_DIR}/engine/keyframe.cpp
   ${PROJECT_SOURCE_DIR}/engine/ecs.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/player_controlled.cpp

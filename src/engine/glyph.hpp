@@ -21,4 +21,8 @@ public:
   /** How far the cursor should move in the x position when drawing the
    * character */
   i32 x_advance;
+
+  Glyph(f32 *uvs, u32 width, u32 height, i32 x_offset, i32 y_offset,
+        i32 x_advance);
+  Glyph();
 };
