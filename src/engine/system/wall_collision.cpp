@@ -14,20 +14,20 @@ public:
         continue;
       }
 
-      CompGameEntity *e = &ecs->comp_game_entity[ii];
+      CompGameEntity &e = ecs->comp_game_entity[ii];
       for (u32 jj = 0; jj < ecs->comp_wall.size(); jj++) {
         // TODO: Change +8s to be +width/2 and +height/2
 
-        CompWall *wall = &ecs->comp_wall[jj];
-        u32 vertices = wall->vertices.size();
+        CompWall &wall = ecs->comp_wall[jj];
+        u32 vertices = wall.vertices.size();
 
-        Vec2 centre = Vec2(e->pos.x + 8.0, e->pos.y + 8.0);
+        Vec2 centre = Vec2(e.pos.x + 8.0, e.pos.y + 8.0);
         f32 radius = 8.0;
 
         for (u32 kk = 0; kk < vertices; kk++) {
           // Start and end of wall respectively
-          Vec2 v1 = wall->vertices[kk];
-          Vec2 v2 = wall->vertices[(kk + 1) % vertices];
+          Vec2 v1 = wall.vertices[kk];
+          Vec2 v2 = wall.vertices[(kk + 1) % vertices];
 
           // http://paulbourke.net/geometry/pointlineplane/
           f64 u = (((centre.x - v1.x) * (v2.x - v1.x) +
@@ -56,7 +56,7 @@ public:
 
             Vec2 to_push_back = radius_v * (collision_depth / radius);
 
-            e->pos -= to_push_back;
+            e.pos -= to_push_back;
           }
         }
       }
