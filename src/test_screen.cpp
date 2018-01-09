@@ -14,6 +14,7 @@
 #include <vector>
 
 void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
+  // Add player
   EntityId entity_id = ecs->gen_entity_id();
   ecs->add_comp_player_controlled(CompPlayerControlled(entity_id, 600.0f));
   ecs->add_comp_game_entity(CompGameEntity(entity_id, 10.0f, 0.02f, true));
@@ -29,6 +30,14 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
       res_manager->load_animation("assets/animations/walk.json", texs);
   ecs->add_comp_animation(CompAnimation(entity_id, ah, 400));
 
+  // Add enemy
+  EntityId enemy_id = ecs->gen_entity_id();
+  ecs->add_comp_animation(CompAnimation(enemy_id, ah, 200));
+  ecs->add_comp_game_entity(CompGameEntity(enemy_id, 10.0f, 0.02f, true));
+  ecs->add_comp_ai_enemy_basic(CompAIEnemyBasic(enemy_id));
+
+
+  // Add wall
   TexHandle wall_tex =
       res_manager->load_texture("assets/sprites/test_wall.png");
   EntityId wall_id = ecs->gen_entity_id();

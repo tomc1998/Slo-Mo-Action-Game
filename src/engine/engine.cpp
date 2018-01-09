@@ -2,6 +2,7 @@
 #include "engine/engine.hpp"
 #include "engine/input/input_manager.hpp"
 #include "engine/input/input_state.hpp"
+#include "engine/system/globals.hpp"
 #include "engine/screen.hpp"
 #include <chrono>
 #include <iostream>
@@ -33,6 +34,8 @@ Engine::Engine() {
   this->camera = new Camera(Vec2(400.0, 300.0), 800.0, 800.0 / 600.0);
   this->resource_manager = new ResourceManager();
   this->input_manager = new InputManager(this->window);
+
+  std_tex.enemy_bullet = resource_manager->load_texture("assets/sprites/enemy_bullet.png");
 }
 
 void Engine::push_screen(Screen *screen) {
@@ -114,7 +117,7 @@ void Engine::update() {
   }
 
   ECS *current_ecs = this->screen_stack.back().first;
-  current_ecs->update(input_state, camera);
+  current_ecs->update(input_state, camera, &std_tex);
 }
 
 void Engine::paint() {
@@ -122,6 +125,6 @@ void Engine::paint() {
   auto controller = renderer->gen_paint_controller(
       resource_manager, resource_manager->get_white());
   current_ecs->paint(this->input_manager->get_current_input_state(),
-                     &controller, camera);
+                     &controller, camera, &std_tex);
   controller.flush();
 }
