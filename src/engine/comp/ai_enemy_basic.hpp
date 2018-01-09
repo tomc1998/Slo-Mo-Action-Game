@@ -34,5 +34,5 @@ public:
   void set_state(u8 state);
   /** Get the current state. */
 
-  u8 get_state();
+  u8 get_state() const;
 };

@@ -31,7 +31,6 @@ public:
           Vec2 v2 = wall->vertices[(kk + 1) % vertices];
 
           // http://paulbourke.net/geometry/pointlineplane/
-
           f64 u = (((centre.x - v1.x) * (v2.x - v1.x) +
                     (centre.y - v1.y) * (v2.y - v1.y)) /
                    (v2-v1).len2());
