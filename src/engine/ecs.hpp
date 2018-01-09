@@ -19,10 +19,6 @@ class InputState;
 class PaintController;
 class StandardTextures;
 
-/** Given a (sorted) list of components and an entity ID, find
- * the component with the given entity ID */
-template <class T> T *find_id(T *comp_list, u32 len, EntityId target_id);
-
 /************/
 /** MACROS **/
 /************/
@@ -56,7 +52,7 @@ public:                                                                        \
 #define ECS_IMPL_COMPONENT(TYPE, NAME)                                         \
   void ECS::add_comp_##NAME(TYPE comp) { this->comp_##NAME.push_back(comp); }  \
   TYPE *ECS::find_comp_##NAME##_with_id(EntityId entity_id) {                       \
-    return find_id<TYPE>(&comp_##NAME[0], comp_##NAME.size(), entity_id);            \
+    return ECS::find_id<TYPE>(&comp_##NAME[0], comp_##NAME.size(), entity_id);            \
   }
 
 /***********************/
@@ -101,4 +97,8 @@ public:
               StandardTextures *std_tex);
   void paint(InputState *input_state, PaintController *paint_controller,
              Camera *camera, StandardTextures *std_tex);
+  /** Given a (sorted) list of components and an entity ID, find
+   * the component with the given entity ID */
+  template <class T> static T *find_id(T *comp_list, u32 len, EntityId target_id);
+
 };

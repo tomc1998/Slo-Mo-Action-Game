@@ -19,7 +19,7 @@
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
 
-template <class T> T *find_id(T *comp_list, u32 len, EntityId target_id) {
+template <class T> T *ECS::find_id(T *comp_list, u32 len, EntityId target_id) {
   u32 min = 0;
   u32 max = len;
   u32 ii;
