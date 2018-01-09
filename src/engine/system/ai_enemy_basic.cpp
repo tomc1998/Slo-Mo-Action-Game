@@ -6,6 +6,7 @@
 #include "engine/input/input_state.hpp"
 #include "engine/system/update_system.hpp"
 #include "engine/system/globals.hpp"
+#include <cmath>
 #include <iostream>
 
 class SystemAIEnemyBasic : public UpdateSystem {
@@ -18,6 +19,7 @@ private:
     CompSprite sprite(e_id, tex);
     CompBullet bullet(e_id, 4);
     ge.vel = (target - pos).nor() * speed;  
+    ge.rot = atan2(ge.vel.y, ge.vel.x);
     ecs->add_comp_game_entity(ge);
     ecs->add_comp_sprite(sprite);
     ecs->add_comp_bullet(bullet);
@@ -177,7 +179,7 @@ public:
           } else {
             // Shoot
             if (ai.reload_timer > ai.RELOAD_TIME) {
-              shoot_bullet(ecs, globals.std_tex->enemy_bullet, ge.pos, player_ge.pos, 20.0f);
+              shoot_bullet(ecs, globals.std_tex->enemy_bullet, ge.pos, player_ge.pos, 50.0f);
               ai.reload_timer = 0;
             }
             else {
