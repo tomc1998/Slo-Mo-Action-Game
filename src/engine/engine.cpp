@@ -53,6 +53,9 @@ void Engine::pop_screen() {
 
 void Engine::engine_go() {
   while (true) {
+
+    auto frame_time_start = std::chrono::high_resolution_clock::now();
+
     for (i32 ii = 0; ii < (int)this->max_updates_per_render; ii++) {
       if (ii % (i32)(this->max_updates_per_render / this->updates_per_render) ==
           0) {
@@ -66,12 +69,15 @@ void Engine::engine_go() {
     }
 
     glClear(GL_COLOR_BUFFER_BIT);
-    auto frame_time_start = std::chrono::high_resolution_clock::now();
 
     this->paint();
     renderer->render(resource_manager, camera);
     renderer->clear_paint_buffer();
     glfwSwapBuffers(this->window);
+
+    if (glfwWindowShouldClose(this->window)) {
+      break;
+    }
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
         std::chrono::high_resolution_clock::now() - frame_time_start);
@@ -87,10 +93,6 @@ void Engine::engine_go() {
 #else
 #error "Platform not supported"
 #endif
-    }
-
-    if (glfwWindowShouldClose(this->window)) {
-      break;
     }
   }
 }
