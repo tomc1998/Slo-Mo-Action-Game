@@ -28,6 +28,10 @@ Renderer::Renderer(f32 w, f32 h) {
   // setup the shader uniforms
   glUseProgram(shader->program_id);
   glUniform1i(tex_uniform_loc, 0); // Bind tex to texture unit 0
+
+  // Enable alpha blending
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Renderer::render(ResourceManager *res_manager, Camera *camera) {
