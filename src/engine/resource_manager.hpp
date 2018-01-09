@@ -1,5 +1,6 @@
 #pragma once
 #include "engine/animation.hpp"
+#include "engine/font.hpp"
 #include "engine/renderer/tex_cache.hpp"
 #include "engine/texture.hpp"
 #include "engine/tileset.hpp"
@@ -18,16 +19,17 @@ private:
   spp::sparse_hash_map<TexHandle, Texture> tex_handle_map;
   spp::sparse_hash_map<AnimHandle, Animation> anim_handle_map;
   spp::sparse_hash_map<TilesetHandle, Tileset> tileset_handle_map;
+  spp::sparse_hash_map<FontHandle, Font> font_handle_map;
 
   /** Texture cache mapping texhandles to rects. */
   TexCache tex_cache;
   TexHandle white;
 
-  /** 
-   * Utility function to load a texture into the cache & return the UVs 
+  /**
+   * Utility function to load a texture into the cache & return the UVs
    * @param[out] t Where to store the resulting UVs
    */
-  void load_texture_internal(const char *path, Texture* t, TexHandle th);
+  void load_texture_internal(const char *path, Texture *t, TexHandle th);
 
 public:
   ResourceManager();
@@ -53,6 +55,12 @@ public:
   /** Lookup a texture, returning a pointer to it if it exists, or null
    * otherwise. Will assert if res is not a texture. */
   Texture *lookup_tex(TexHandle r);
+
+  /** Lookup a font, returning a pointer to it if it exists, or null otherwise.
+   * Will assert if res is not a font */
+  Font *lookup_font(FontHandle r);
+
+  FontHandle load_font(const char *path);
 
   AnimHandle load_animation(const char *path, std::vector<TexHandle> &texs);
 
