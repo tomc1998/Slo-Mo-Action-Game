@@ -15,6 +15,7 @@ public:
 
   CompAIEnemyBasic(EntityId entity_id);
 
+  const static u16 RELOAD_TIME = 300;
   const static u8 STATE_NORMAL = 0;
   /** This state will be set when the player is in view, but the AI hasn't
    * reacted yet */
@@ -27,6 +28,9 @@ public:
   /** Upon seeing the player, how long (in game ticks) does it take to respond?
    */
   u16 reaction_delay = 150;
+
+  /** When this reaches RELOAD_TIME, this entity will shoot */
+  u16 reload_timer = 0;
 
   /**
    * Set the state to a given value.

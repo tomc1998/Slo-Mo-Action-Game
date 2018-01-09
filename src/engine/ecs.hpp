@@ -17,6 +17,7 @@ class PaintSystem;
 class UpdateSystem;
 class InputState;
 class PaintController;
+class StandardTextures;
 
 /************/
 /** MACROS **/
@@ -88,7 +89,7 @@ public:
   ~ECS();
   EntityId gen_entity_id();
   /** Updates the ECS */
-  void update(InputState *input_state, Camera *camera);
+  void update(InputState *input_state, Camera *camera, StandardTextures* std_tex);
   void paint(InputState *input_state, PaintController *paint_controller,
-             Camera *camera);
+             Camera *camera, StandardTextures* std_tex);
 };

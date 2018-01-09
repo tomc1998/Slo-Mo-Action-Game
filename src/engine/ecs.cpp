@@ -17,6 +17,7 @@
 #include "system/player_effect_renderer.cpp"
 #include "system/ai_enemy_basic.cpp"
 #include "system/bullet_collision.cpp"
+#include "system/globals.hpp"
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
@@ -57,24 +58,26 @@ EntityId ECS::gen_entity_id() {
   return this->current_entity_id;
 }
 
-void ECS::update(InputState *input_state, Camera *camera) {
+void ECS::update(InputState *input_state, Camera *camera, StandardTextures *std_tex) {
   Globals g;
   g.ecs = this;
   g.input_state = input_state;
   g.paint_controller = NULL;
   g.camera = camera;
+  g.std_tex = std_tex;
   for (u32 ii = 0; ii < this->update_systems.size(); ii++) {
     this->update_systems[ii]->handle_components(g);
   }
 }
 
 void ECS::paint(InputState *input_state, PaintController *paint_controller,
-                Camera *camera) {
+                Camera *camera, StandardTextures *std_tex) {
   Globals g;
   g.ecs = this;
   g.input_state = input_state;
   g.paint_controller = paint_controller;
   g.camera = camera;
+  g.std_tex = std_tex;
   for (u32 ii = 0; ii < this->paint_systems.size(); ii++) {
     this->paint_systems[ii]->handle_components(g);
   }

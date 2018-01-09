@@ -1,5 +1,6 @@
 #include "engine/camera.hpp"
 #include "engine/comp/ai_enemy_basic.hpp"
+#include "engine/comp/game_entity.hpp"
 #include "engine/ecs.hpp"
 #include "engine/entity_id.hpp"
 #include "engine/input/input_state.hpp"
@@ -9,6 +10,19 @@
 
 class SystemAIEnemyBasic : public UpdateSystem {
 private:
+  /** Shoot a bullet at a given target from the given position with a given
+   * speed. */
+  void shoot_bullet(ECS* ecs, TexHandle tex, Vec2 pos, Vec2 target, f32 speed) {
+    EntityId e_id = ecs->gen_entity_id();
+    CompGameEntity ge(e_id, pos, 1.0f, 0.0f, false);
+    CompSprite sprite(e_id, tex);
+    CompBullet bullet(e_id, 4);
+    ge.vel = (target - pos).nor() * speed;  
+    ecs->add_comp_game_entity(ge);
+    ecs->add_comp_sprite(sprite);
+    ecs->add_comp_bullet(bullet);
+  }
+
   /**
    * Given a list of walls, a list of enemy positions, and a player position,
    * return a list of enemies which can currently see the player.
@@ -162,7 +176,13 @@ public:
             ai.set_state(ai.STATE_NORMAL);
           } else {
             // Shoot
-            std::cout << "Shooting" << std::endl;
+            if (ai.reload_timer > ai.RELOAD_TIME) {
+              shoot_bullet(ecs, globals.std_tex->enemy_bullet, ge.pos, player_ge.pos, 20.0f);
+              ai.reload_timer = 0;
+            }
+            else {
+              ai.reload_timer ++;
+            }
           }
         }
         ai.state_change_timer++;
