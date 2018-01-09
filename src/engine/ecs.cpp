@@ -21,20 +21,21 @@
 
 template <class T> T *find_id(T *comp_list, u32 len, EntityId target_id) {
   u32 min = 0;
-  u32 max = len-1;
-  u32 ii = 0;
+  u32 max = len;
+  u32 ii;
 
   while (min < max) {
+    ii = min + (max-min)/2;
     if (comp_list[ii].entity_id == target_id) {
       return &comp_list[ii];
     }
 
     if (comp_list[ii].entity_id < target_id) {
-      min = ii + 1;
+      min = ii;
     }
 
     else {
-      max = ii - 1;
+      max = ii;
     }
   }
 
