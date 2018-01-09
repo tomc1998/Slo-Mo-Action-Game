@@ -1,23 +1,45 @@
 #include "comp/animation.hpp"
+#include "comp/bullet.hpp"
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
+#include "comp/sprite.hpp"
 #include "comp/tilemap.hpp"
 #include "comp/wall.hpp"
-#include "comp/bullet.hpp"
-#include "comp/sprite.hpp"
 #include "ecs.hpp"
 #include "renderer/paint_controller.hpp"
+#include "system/ai_enemy_basic.cpp"
 #include "system/animation_update.cpp"
+#include "system/bullet_collision.cpp"
 #include "system/game_entity_renderer.cpp"
+#include "system/globals.hpp"
 #include "system/physics.cpp"
 #include "system/player_controlled.cpp"
+#include "system/player_effect_renderer.cpp"
+#include "system/tilemap_renderer.cpp"
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
-#include "system/tilemap_renderer.cpp"
-#include "system/player_effect_renderer.cpp"
-#include "system/ai_enemy_basic.cpp"
-#include "system/bullet_collision.cpp"
-#include "system/globals.hpp"
+
+template <class T> T *find_id(T *comp_list, u32 len, EntityId target_id) {
+  u32 min = 0;
+  u32 max = len-1;
+  u32 ii = 0;
+
+  while (min < max) {
+    if (comp_list[ii].entity_id == target_id) {
+      return &comp_list[ii];
+    }
+
+    if (comp_list[ii].entity_id < target_id) {
+      min = ii + 1;
+    }
+
+    else {
+      max = ii - 1;
+    }
+  }
+
+  return NULL;
+}
 
 ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
 ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
@@ -58,7 +80,8 @@ EntityId ECS::gen_entity_id() {
   return this->current_entity_id;
 }
 
-void ECS::update(InputState *input_state, Camera *camera, StandardTextures *std_tex) {
+void ECS::update(InputState *input_state, Camera *camera,
+                 StandardTextures *std_tex) {
   Globals g;
   g.ecs = this;
   g.input_state = input_state;

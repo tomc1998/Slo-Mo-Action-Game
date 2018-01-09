@@ -1,12 +1,12 @@
 #pragma once
+#include "comp/ai_enemy_basic.hpp"
 #include "comp/animation.hpp"
+#include "comp/bullet.hpp"
 #include "comp/game_entity.hpp"
 #include "comp/player_controlled.hpp"
-#include "comp/wall.hpp"
-#include "comp/tilemap.hpp"
-#include "comp/ai_enemy_basic.hpp"
-#include "comp/bullet.hpp"
 #include "comp/sprite.hpp"
+#include "comp/tilemap.hpp"
+#include "comp/wall.hpp"
 #include "engine/camera.hpp"
 #include <chrono>
 #include <cstdint>
@@ -38,7 +38,8 @@ private:                                                                       \
   std::vector<TYPE> comp_##NAME;                                               \
                                                                                \
 public:                                                                        \
-  void add_comp_##NAME(TYPE comp);
+  void add_comp_##NAME(TYPE comp);                                             \
+  TYPE *find_comp_##NAME##_with_id(EntityId entity_id);
 
 /** Macro for generating implementations of functions to add components. When
  * declaring a component of type `CompPlayerControlled`, with the name
@@ -49,7 +50,10 @@ public:                                                                        \
  * ```
  */
 #define ECS_IMPL_COMPONENT(TYPE, NAME)                                         \
-  void ECS::add_comp_##NAME(TYPE comp) { this->comp_##NAME.push_back(comp); }
+  void ECS::add_comp_##NAME(TYPE comp) { this->comp_##NAME.push_back(comp); }  \
+  TYPE *ECS::find_comp_##NAME##_with_id(EntityId entity_id) {                       \
+    return find_id<TYPE>(&comp_##NAME[0], comp_##NAME.size(), entity_id);            \
+  }
 
 /***********************/
 /** Class declaration **/
@@ -89,7 +93,8 @@ public:
   ~ECS();
   EntityId gen_entity_id();
   /** Updates the ECS */
-  void update(InputState *input_state, Camera *camera, StandardTextures* std_tex);
+  void update(InputState *input_state, Camera *camera,
+              StandardTextures *std_tex);
   void paint(InputState *input_state, PaintController *paint_controller,
-             Camera *camera, StandardTextures* std_tex);
+             Camera *camera, StandardTextures *std_tex);
 };
