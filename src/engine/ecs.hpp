@@ -19,6 +19,10 @@ class InputState;
 class PaintController;
 class StandardTextures;
 
+/** Given a (sorted) list of components and an entity ID, find
+ * the component with the given entity ID */
+template <class T> T *find_id(T *comp_list, u32 len, EntityId target_id);
+
 /************/
 /** MACROS **/
 /************/
