@@ -5,6 +5,8 @@
 #include "comp/wall.hpp"
 #include "comp/tilemap.hpp"
 #include "comp/ai_enemy_basic.hpp"
+#include "comp/bullet.hpp"
+#include "comp/sprite.hpp"
 #include "engine/camera.hpp"
 #include <chrono>
 #include <cstdint>
@@ -13,14 +15,6 @@
 // Forward declaration or else circular include happens
 class PaintSystem;
 class UpdateSystem;
-class SystemPlayerControlled;
-class SystemPhysics;
-class SystemDebugPaint;
-class SystemWallCollision;
-class SystemAnimationUpdate;
-class SystemTilemapRenderer;
-class SystemPlayerEffectRenderer;
-class SystemAIEnemyBasic;
 class InputState;
 class PaintController;
 
@@ -67,19 +61,22 @@ class ECS {
   friend class SystemPlayerControlled;
   friend class SystemWallCollision;
   friend class SystemAnimationUpdate;
-  friend class SystemDebugPaint;
+  friend class SystemGameEntityRenderer;
   friend class SystemWallRenderer;
   friend class SystemTilemapRenderer;
   friend class SystemPlayerEffectRenderer;
   friend class SystemAIEnemyBasic;
+  friend class SystemBulletCollision;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
   ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
   ECS_DECLARE_COMPONENT(CompWall, wall)
   ECS_DECLARE_COMPONENT(CompAnimation, animation)
+  ECS_DECLARE_COMPONENT(CompSprite, sprite)
   ECS_DECLARE_COMPONENT(CompTilemap, tilemap)
   ECS_DECLARE_COMPONENT(CompAIEnemyBasic, ai_enemy_basic)
+  ECS_DECLARE_COMPONENT(CompBullet, bullet)
 
 private:
   std::vector<UpdateSystem *> update_systems;

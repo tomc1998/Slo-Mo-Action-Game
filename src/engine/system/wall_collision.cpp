@@ -1,15 +1,14 @@
 #include "engine/comp/wall.hpp"
-#include "engine/ecs.hpp"
-#include "engine/camera.hpp"
-#include "engine/input/input_state.hpp"
 #include "engine/vec.hpp"
 #include "update_system.hpp"
+#include "globals.hpp"
 #include <cmath>
 #include <iostream>
 
 class SystemWallCollision : public UpdateSystem {
 public:
-  void handle_components(ECS *ecs, InputState *input_state, Camera *camera) {
+  void handle_components(Globals &globals) {
+    const auto& ecs = globals.ecs;
     for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
       if (!ecs->comp_game_entity[ii].collides_with_walls) {
         continue;

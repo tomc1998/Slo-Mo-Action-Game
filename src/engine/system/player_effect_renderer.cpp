@@ -1,4 +1,3 @@
-#include "engine/camera.hpp"
 #include "engine/color.hpp"
 #include "engine/comp/game_entity.hpp"
 #include "engine/comp/player_controlled.hpp"
@@ -7,13 +6,17 @@
 #include "engine/renderer/paint_controller.hpp"
 #include "engine/vec.hpp"
 #include "paint_system.hpp"
+#include "globals.hpp"
 #include <cmath>
 
 /** Renders player effects, such as teleporting & attacking */
 class SystemPlayerEffectRenderer : public PaintSystem {
 public:
-  void handle_components(ECS *ecs, InputState *input_state,
-                         PaintController *paint_controller, Camera *camera) {
+  void handle_components(Globals &globals) {
+    const auto& ecs = globals.ecs;
+    const auto& paint_controller = globals.paint_controller;
+    const auto& input_state = globals.input_state;
+    const auto& camera = globals.camera;
     Color white = Color(1.0, 1.0, 1.0, 1.0);
     Color black = Color(0.0, 0.0, 0.0, 1.0);
     Color red = Color(1.0, 0.0, 0.0, 1.0);

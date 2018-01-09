@@ -2,11 +2,15 @@
 #include "engine/ecs.hpp"
 #include "engine/input/input_state.hpp"
 #include "update_system.hpp"
+#include "globals.hpp"
 #include <iostream>
 
 class SystemPlayerControlled : public UpdateSystem {
 public:
-  void handle_components(ECS *ecs, InputState *input_state, Camera *camera) {
+  void handle_components(Globals &globals) {
+    const auto& ecs = globals.ecs;
+    const auto& input_state = globals.input_state;
+    const auto& camera = globals.camera;
     for (u32 jj = 0; jj < ecs->comp_player_controlled.size(); jj++) {
       for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
         if (ecs->comp_player_controlled[jj].entity_id !=

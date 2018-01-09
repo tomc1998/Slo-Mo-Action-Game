@@ -4,6 +4,7 @@
 #include "engine/entity_id.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/system/update_system.hpp"
+#include "engine/system/globals.hpp"
 #include <iostream>
 
 class SystemAIEnemyBasic : public UpdateSystem {
@@ -73,7 +74,8 @@ private:
   }
 
 public:
-  void handle_components(ECS *ecs, InputState *input_state, Camera *camera) {
+  void handle_components(Globals &globals) {
+    const auto& ecs = globals.ecs;
     // Make sure there's a player controlled entities on screen! If there
     // isn't, just return, no need to process any AI stuff
     if (ecs->comp_player_controlled.size() == 0) {
