@@ -25,13 +25,13 @@ template <class T> T *ECS::find_id(T *comp_list, u32 len, EntityId target_id) {
   u32 ii;
 
   while (min < max) {
-    ii = min + (max-min)/2;
+    ii = min + (max - min) / 2;
     if (comp_list[ii].entity_id == target_id) {
       return &comp_list[ii];
     }
 
     if (comp_list[ii].entity_id < target_id) {
-      min = ii;
+      min = ii + 1;
     }
 
     else {
@@ -64,6 +64,8 @@ ECS::ECS() {
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemGameEntityRenderer);
   this->paint_systems.push_back(new SystemPlayerEffectRenderer);
+
+  death_queue.reserve(64);
 }
 
 ECS::~ECS() {
@@ -92,6 +94,7 @@ void ECS::update(InputState *input_state, Camera *camera,
   for (u32 ii = 0; ii < this->update_systems.size(); ii++) {
     this->update_systems[ii]->handle_components(g);
   }
+  kill_entities();
 }
 
 void ECS::paint(InputState *input_state, PaintController *paint_controller,
@@ -105,4 +108,33 @@ void ECS::paint(InputState *input_state, PaintController *paint_controller,
   for (u32 ii = 0; ii < this->paint_systems.size(); ii++) {
     this->paint_systems[ii]->handle_components(g);
   }
+}
+
+void ECS::queue_entity_death(EntityId entity_id) {
+  death_queue.push_back(entity_id);
+}
+
+void ECS::kill_entities() {
+#define ERASE_COMP(NAME, ID)                                                   \
+  {                                                                            \
+    const auto loc = find_comp_##NAME##_with_id(ID);                           \
+    if (loc != NULL) {                                                         \
+      const auto ix = (u32)(loc - &comp_##NAME[0]);                            \
+      comp_##NAME.erase(comp_##NAME.begin() + ix);                             \
+    }                                                                          \
+  }
+
+  for (const auto id : death_queue) {
+    ERASE_COMP(game_entity, id)
+    ERASE_COMP(player_controlled, id)
+    ERASE_COMP(wall, id)
+    ERASE_COMP(animation, id)
+    ERASE_COMP(sprite, id)
+    ERASE_COMP(tilemap, id)
+    ERASE_COMP(ai_enemy_basic, id)
+    ERASE_COMP(bullet, id)
+  }
+
+#undef ERASE_COMP
+  death_queue.clear();
 }
