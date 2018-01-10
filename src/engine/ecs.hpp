@@ -86,7 +86,12 @@ class ECS {
 private:
   std::vector<UpdateSystem *> update_systems;
   std::vector<PaintSystem *> paint_systems;
+  /** A buffer of entity IDs which need to be killed after an update. */
+  std::vector<EntityId> death_queue;
   int current_entity_id;
+
+  /** Kill all the entities in the queue. */
+  void kill_entities();
 
 public:
   ECS();
@@ -97,8 +102,11 @@ public:
               StandardTextures *std_tex);
   void paint(InputState *input_state, PaintController *paint_controller,
              Camera *camera, StandardTextures *std_tex);
+  /** Kill an entity. Entity will be removed after all systems have finished
+   * running. */
+  void queue_entity_death(EntityId id);
+
   /** Given a (sorted) list of components and an entity ID, find
    * the component with the given entity ID */
   template <class T> static T *find_id(T *comp_list, u32 len, EntityId target_id);
-
 };
