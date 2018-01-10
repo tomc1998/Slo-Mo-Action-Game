@@ -13,4 +13,7 @@ public:
   float hit_rad = 8.0;
   /** How many times this entity can be hit before being removed */
   u32 life_left = 3;
+  /** How many ticks of invincibility do we have left? (decremented to 0 every
+   * update in check_death system) */
+  u32 inv_frames = 0;
 };
