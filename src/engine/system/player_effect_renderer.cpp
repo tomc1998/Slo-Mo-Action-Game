@@ -25,12 +25,8 @@ public:
     Color red = Color(1.0, 0.0, 0.0, 1.0);
     for (u32 ii = 0; ii < ecs->comp_player_controlled.size(); ii++) {
       for (u32 jj = 0; jj < ecs->comp_game_entity.size(); jj++) {
-        if (ecs->comp_player_controlled[ii].entity_id !=
-            ecs->comp_game_entity[jj].entity_id) {
-          continue;
-        }
-        CompGameEntity &ge = ecs->comp_game_entity[jj];
         CompPlayerControlled &p = ecs->comp_player_controlled[jj];
+        CompGameEntity &ge = *ecs->find_comp_game_entity_with_id(p.entity_id);
 
         // Render pre-teleport line from player to cursor
         if (p.get_state() == p.STATE_PRE_TELEPORT) {

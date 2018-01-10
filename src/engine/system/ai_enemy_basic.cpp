@@ -4,21 +4,22 @@
 #include "engine/ecs.hpp"
 #include "engine/entity_id.hpp"
 #include "engine/input/input_state.hpp"
-#include "engine/system/update_system.hpp"
 #include "engine/system/globals.hpp"
+#include "engine/system/update_system.hpp"
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 
 class SystemAIEnemyBasic : public UpdateSystem {
 private:
   /** Shoot a bullet at a given target from the given position with a given
    * speed. */
-  void shoot_bullet(ECS* ecs, TexHandle tex, Vec2 pos, Vec2 target, f32 speed) {
+  void shoot_bullet(ECS *ecs, TexHandle tex, Vec2 pos, Vec2 target, f32 speed) {
     EntityId e_id = ecs->gen_entity_id();
     CompGameEntity ge(e_id, pos, 1.0f, 0.0f, false);
     CompSprite sprite(e_id, tex);
     CompBullet bullet(e_id, 4);
-    ge.vel = (target - pos).nor() * speed;  
+    ge.vel = (target - pos).nor() * speed;
     ge.rot = atan2(ge.vel.y, ge.vel.x);
     ecs->add_comp_game_entity(ge);
     ecs->add_comp_sprite(sprite);
@@ -67,11 +68,11 @@ private:
                       (w1.x - w0.x) * (enemy_pos.y - player_pos.y);
           if (denom != 0.0f) {
             f32 ua = ((w1.x - w0.x) * (player_pos.y - w0.y) -
-                     (w1.y - w0.y) * (player_pos.x - w0.x)) /
-                    denom;
+                      (w1.y - w0.y) * (player_pos.x - w0.x)) /
+                     denom;
             f32 ub = ((enemy_pos.x - player_pos.x) * (player_pos.y - w0.y) -
-                     (enemy_pos.y - player_pos.y) * (player_pos.x - w0.x)) /
-                    denom;
+                      (enemy_pos.y - player_pos.y) * (player_pos.x - w0.x)) /
+                     denom;
             if (ua >= 0.0 && ua <= 1.0 && ub >= 0.0 && ub <= 1.0) {
               // This collides, so the enemy doesn't have vision - just continue
               // to the next enemy [C++ no named loops killme]
@@ -91,7 +92,7 @@ private:
 
 public:
   void handle_components(Globals &globals) {
-    const auto& ecs = globals.ecs;
+    const auto &ecs = globals.ecs;
     // Make sure there's a player controlled entities on screen! If there
     // isn't, just return, no need to process any AI stuff
     if (ecs->comp_player_controlled.size() == 0) {
@@ -104,17 +105,11 @@ public:
     std::vector<CompAIEnemyBasic> enemy_ai_list;
     enemy_ge_list.reserve(ecs->comp_ai_enemy_basic.size());
     enemy_ai_list.reserve(ecs->comp_ai_enemy_basic.size());
-    for (u32 jj = 0; jj < ecs->comp_ai_enemy_basic.size(); jj++) {
-      // TODO: Once component lists are sorted we can binary search here
-      for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
-        CompAIEnemyBasic ai = ecs->comp_ai_enemy_basic[jj];
-        CompGameEntity ge = ecs->comp_game_entity[ii];
-        if (ai.entity_id != ge.entity_id) {
-          continue;
-        }
-        enemy_ge_list.push_back(ge);
-        enemy_ai_list.push_back(ai);
-      }
+    for (u32 ii = 0; ii < ecs->comp_ai_enemy_basic.size(); ii++) {
+      CompAIEnemyBasic ai = ecs->comp_ai_enemy_basic[ii];
+      CompGameEntity ge = *ecs->find_comp_game_entity_with_id(ai.entity_id);
+      enemy_ge_list.push_back(ge);
+      enemy_ai_list.push_back(ai);
     }
 
     const auto &player_pc = ecs->comp_player_controlled[0];
@@ -137,58 +132,46 @@ public:
     // from earlier - these are copies of the components, so mutations won't
     // apply.
     for (u32 jj = 0; jj < ecs->comp_ai_enemy_basic.size(); jj++) {
-      // TODO: Once component lists are sorted we can binary search here
-      for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
-        auto &ai = ecs->comp_ai_enemy_basic[jj];
-        auto &ge = ecs->comp_game_entity[ii];
-        if (ai.entity_id != ge.entity_id) {
-          continue;
-        }
+      auto &ai = ecs->comp_ai_enemy_basic[jj];
+      auto &ge = *ecs->find_comp_game_entity_with_id(ai.entity_id);
 
-        // Check if this enemy has vision...
-        // TODO: Once we have sorted component lists we can optimise this by
-        // binary searching
-        bool has_vision = false;
-        for (const auto &e : enemies_with_vision) {
-          if (e == ai.entity_id) {
-            has_vision = true;
-            break;
-          }
-        }
+      // Check if this enemy has vision...
+      bool has_vision = std::binary_search(enemies_with_vision.begin(), 
+          enemies_with_vision.end(), 
+          ai.entity_id);
 
-        if (ai.get_state() == ai.STATE_NORMAL) {
-          if (has_vision) {
-            std::cout << "Transitioning AI to state 'waiting on reaction'"
-                      << std::endl;
-            ai.set_state(ai.STATE_WAITING_ON_REACTION);
-          }
-        } else if (ai.get_state() == ai.STATE_WAITING_ON_REACTION) {
-          if (!has_vision) { // Player disappeared, go back to normal
-            std::cout << "Lost vision of player." << std::endl;
-            ai.set_state(ai.STATE_NORMAL);
-          } else if (ai.state_change_timer >= ai.reaction_delay) {
-            ai.set_state(ai.SPOTTED_PLAYER);
-            std::cout << "Transitioning AI to state 'spotted player'"
-                      << std::endl;
-          }
-        } else if (ai.get_state() == ai.SPOTTED_PLAYER) {
-          if (!has_vision) { // Player disappeared, go back to normal...
-            // here we'd put in some kind of chasing AI
-            std::cout << "Lost vision of player." << std::endl;
-            ai.set_state(ai.STATE_NORMAL);
+      if (ai.get_state() == ai.STATE_NORMAL) {
+        if (has_vision) {
+          std::cout << "Transitioning AI to state 'waiting on reaction'"
+                    << std::endl;
+          ai.set_state(ai.STATE_WAITING_ON_REACTION);
+        }
+      } else if (ai.get_state() == ai.STATE_WAITING_ON_REACTION) {
+        if (!has_vision) { // Player disappeared, go back to normal
+          std::cout << "Lost vision of player." << std::endl;
+          ai.set_state(ai.STATE_NORMAL);
+        } else if (ai.state_change_timer >= ai.reaction_delay) {
+          ai.set_state(ai.SPOTTED_PLAYER);
+          std::cout << "Transitioning AI to state 'spotted player'"
+                    << std::endl;
+        }
+      } else if (ai.get_state() == ai.SPOTTED_PLAYER) {
+        if (!has_vision) { // Player disappeared, go back to normal...
+          // here we'd put in some kind of chasing AI
+          std::cout << "Lost vision of player." << std::endl;
+          ai.set_state(ai.STATE_NORMAL);
+        } else {
+          // Shoot
+          if (ai.reload_timer > ai.RELOAD_TIME) {
+            shoot_bullet(ecs, globals.std_tex->enemy_bullet, ge.pos,
+                         player_ge.pos, 50.0f);
+            ai.reload_timer = 0;
           } else {
-            // Shoot
-            if (ai.reload_timer > ai.RELOAD_TIME) {
-              shoot_bullet(ecs, globals.std_tex->enemy_bullet, ge.pos, player_ge.pos, 50.0f);
-              ai.reload_timer = 0;
-            }
-            else {
-              ai.reload_timer ++;
-            }
+            ai.reload_timer++;
           }
         }
-        ai.state_change_timer++;
       }
+      ai.state_change_timer++;
     }
   }
 };

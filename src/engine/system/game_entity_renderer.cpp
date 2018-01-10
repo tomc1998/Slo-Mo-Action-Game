@@ -20,28 +20,19 @@ public:
     const auto &ecs = globals.ecs;
     const auto &paint_controller = globals.paint_controller;
     Color white = Color(1.0, 1.0, 1.0, 1.0);
-    for (u32 ii = 0; ii < ecs->comp_game_entity.size(); ii++) {
-      CompGameEntity entity = ecs->comp_game_entity[ii];
-      for (u32 jj = 0; jj < ecs->comp_animation.size(); jj++) {
-        if (entity.entity_id != ecs->comp_animation[jj].entity_id) {
-          continue;
-        }
-        CompAnimation a = ecs->comp_animation[jj];
 
-        paint_controller->draw_animation(a.anim, a.updates, entity.pos.x,
-                                         entity.pos.y, 16.0, 16.0,
-                                         entity.rot, &white);
-        break;
-      }
-      for (u32 jj = 0; jj < ecs->comp_sprite.size(); jj++) {
-        if (entity.entity_id != ecs->comp_sprite[jj].entity_id) {
-          continue;
-        }
-        CompSprite s = ecs->comp_sprite[jj];
-        paint_controller->draw_image(s.tex, entity.pos.x, entity.pos.y, 16.0f,
-                                     16.0f, entity.rot, &white);
-        break;
-      }
+    for (u32 ii = 0; ii < ecs->comp_animation.size(); ii++) {
+      CompAnimation &a = ecs->comp_animation[ii];
+      CompGameEntity &entity = *ecs->find_comp_game_entity_with_id(a.entity_id);
+      paint_controller->draw_animation(a.anim, a.updates, entity.pos.x,
+                                       entity.pos.y, 16.0, 16.0, entity.rot,
+                                       &white);
+    }
+    for (u32 ii = 0; ii < ecs->comp_sprite.size(); ii++) {
+      CompSprite &s = ecs->comp_sprite[ii];
+      CompGameEntity &entity = *ecs->find_comp_game_entity_with_id(s.entity_id);
+      paint_controller->draw_image(s.tex, entity.pos.x, entity.pos.y, 16.0f,
+                                   16.0f, entity.rot, &white);
     }
   }
 };
