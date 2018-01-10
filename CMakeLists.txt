@@ -44,6 +44,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/system/tilemap_renderer.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/ai_enemy_basic.cpp
   ${PROJECT_SOURCE_DIR}/engine/system/bullet_collision.cpp
+  ${PROJECT_SOURCE_DIR}/engine/system/check_death.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/player_controlled.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/game_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/wall.cpp
@@ -52,6 +53,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/comp/ai_enemy_basic.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/bullet.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/sprite.cpp
+  ${PROJECT_SOURCE_DIR}/engine/comp/player_killable.cpp
   )
 
 

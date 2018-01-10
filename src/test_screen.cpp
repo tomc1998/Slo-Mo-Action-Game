@@ -35,7 +35,7 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   ecs->add_comp_animation(CompAnimation(enemy_id, ah, 200));
   ecs->add_comp_game_entity(CompGameEntity(enemy_id, 10.0f, 0.02f, true));
   ecs->add_comp_ai_enemy_basic(CompAIEnemyBasic(enemy_id));
-
+  ecs->add_comp_player_killable(CompPlayerKillable(enemy_id));
 
   // Add wall
   TexHandle wall_tex =

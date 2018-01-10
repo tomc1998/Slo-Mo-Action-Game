@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/entity_id.hpp"
 #include "engine/vec.hpp"
+#include <cmath>
 
 /** Since there'll only be 1 instance of this, this class can pretty much be as
  * bloated as we like. Don't freak out about adding stuff willy nilly
@@ -12,9 +13,19 @@ public:
   const static u8 STATE_TELEPORTING = 2;
   const static u8 STATE_ATTACKING = 3;
 
+  /** Length, in radians, of the player's attack arc */
+  constexpr static f32 ATTACK_ARC_LEN = 2.0f * M_PI / 3.0f;
+  /** The distance from the player the arc starts (thickness) */
+  constexpr static f32 ATTACK_ARC_MIN_DIS = 24.0;
+  /** The distance from the player the arc starts (thickness) */
+  constexpr static f32 ATTACK_ARC_MAX_DIS = 30.0;
+
   CompPlayerControlled(EntityId entity_id, f32 force_to_apply);
 
   EntityId entity_id;
+
+  /** How many more hits can we take without dying? */
+  u32 life_left = 3;
 
   /** When teleporting, this is the destination for the teleport. This value
    * only means something if state == STATE_TELEPORTING. */
