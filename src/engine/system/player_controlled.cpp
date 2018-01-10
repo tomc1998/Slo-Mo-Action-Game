@@ -62,7 +62,7 @@ public:
       }
 
       if (p.get_state() == p.STATE_ATTACKING) {
-        if (p.state_change_timer >= 200) {
+        if (p.state_change_timer >= 50) {
           p.set_state(p.STATE_NORMAL);
         } else {
           // Check collisions with player killables
