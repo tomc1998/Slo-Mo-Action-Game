@@ -13,13 +13,13 @@ class SystemBulletCollision : public UpdateSystem {
       for(const auto& b : ecs->comp_bullet) {
         const auto& ge = *ecs->find_comp_game_entity_with_id(b.entity_id);
 
-        for (u32 jj = 0; jj < ecs->comp_wall.size(); jj++) {
+        for (u32 ii = 0; ii < ecs->comp_wall.size(); ii++) {
 
-          CompWall &wall = ecs->comp_wall[jj];
+          CompWall &wall = ecs->comp_wall[ii];
           u32 vertices = wall.vertices.size();
 
-          Vec2 centre = Vec2(ge.pos.x + 8.0, ge.pos.y + 8.0);
-          f32 radius = 8.0;
+          Vec2 centre = Vec2(ge.pos.x + b.hit_rad, ge.pos.y + b.hit_rad);
+          f32 radius = b.hit_rad;
 
           for (u32 kk = 0; kk < vertices; kk++) {
             // Start and end of wall respectively
@@ -44,9 +44,18 @@ class SystemBulletCollision : public UpdateSystem {
             if (std::pow((f64)radius, 2) > distance_to_wall) {
               // if we're here, we've collided - delete the bullet
               ecs->queue_entity_death(b.entity_id);
-              std::cout << "Deleting bullet: " << b.entity_id << std::endl;
               goto continue_outer_loop;
             }
+          }
+        }
+        for (auto& p : ecs->comp_player_controlled) {
+          const auto& p_ge = *ecs->find_comp_game_entity_with_id(p.entity_id);
+          f32 dis2 = (p_ge.pos - ge.pos).len2();
+          if (dis2 < 8.0 * 8.0 + b.hit_rad * b.hit_rad) {
+            // Collision with player
+            ecs->queue_entity_death(b.entity_id);
+            p.life_left -= 1;
+            goto continue_outer_loop;
           }
         }
 continue_outer_loop:;

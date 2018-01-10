@@ -142,23 +142,17 @@ public:
 
       if (ai.get_state() == ai.STATE_NORMAL) {
         if (has_vision) {
-          std::cout << "Transitioning AI to state 'waiting on reaction'"
-                    << std::endl;
           ai.set_state(ai.STATE_WAITING_ON_REACTION);
         }
       } else if (ai.get_state() == ai.STATE_WAITING_ON_REACTION) {
         if (!has_vision) { // Player disappeared, go back to normal
-          std::cout << "Lost vision of player." << std::endl;
           ai.set_state(ai.STATE_NORMAL);
         } else if (ai.state_change_timer >= ai.reaction_delay) {
           ai.set_state(ai.SPOTTED_PLAYER);
-          std::cout << "Transitioning AI to state 'spotted player'"
-                    << std::endl;
         }
       } else if (ai.get_state() == ai.SPOTTED_PLAYER) {
         if (!has_vision) { // Player disappeared, go back to normal...
           // here we'd put in some kind of chasing AI
-          std::cout << "Lost vision of player." << std::endl;
           ai.set_state(ai.STATE_NORMAL);
         } else {
           // Shoot

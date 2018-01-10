@@ -6,6 +6,7 @@
 #include "comp/player_controlled.hpp"
 #include "comp/sprite.hpp"
 #include "comp/tilemap.hpp"
+#include "comp/player_killable.hpp"
 #include "comp/wall.hpp"
 #include "engine/camera.hpp"
 #include <chrono>
@@ -72,6 +73,7 @@ class ECS {
   friend class SystemPlayerEffectRenderer;
   friend class SystemAIEnemyBasic;
   friend class SystemBulletCollision;
+  friend class SystemCheckDeath;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
@@ -82,6 +84,7 @@ class ECS {
   ECS_DECLARE_COMPONENT(CompTilemap, tilemap)
   ECS_DECLARE_COMPONENT(CompAIEnemyBasic, ai_enemy_basic)
   ECS_DECLARE_COMPONENT(CompBullet, bullet)
+  ECS_DECLARE_COMPONENT(CompPlayerKillable, player_killable)
 
 private:
   std::vector<UpdateSystem *> update_systems;
