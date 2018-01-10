@@ -23,14 +23,16 @@ private:
   /** The handle of the main VBO used for rendering everything. This is
    * rebuffered every frame (hence the name 'dynamic vbo'). */
   GLuint dyn_vbo;
-  PaintBuffer buffer;
+  PaintBuffer game_buffer;
+  PaintBuffer hud_buffer;
 
   /* Shader + uniform locations */
   Shader *shader;
   GLint proj_mat_uniform_loc;
   GLint tex_uniform_loc;
 
-  f32 proj_mat[16];
+  /** An untransformed camera for HUD projection matrix generation */
+  Camera hud_camera;
 
 public:
   /** Initialise the renderer at the given viewport w / h */
@@ -43,10 +45,15 @@ public:
    * buffer will be rebuffered to the VBO (with glbufferdata). If false, the
    * vbo will simply be re-rendered.
    */
-  void render(ResourceManager *res_manager, Camera *camera);
+  void render_game(ResourceManager *res_manager, Camera *camera);
+
+  /** Similar to render_game but renders the heads up display instead. */
+  void render_hud(ResourceManager *res_manager);
 
   /** Clear the internal paint buffer */
-  void clear_paint_buffer();
+  void clear_game_paint_buffer();
+  /** Clear the internal paint buffer for hud objects */
+  void clear_hud_paint_buffer();
 
   /** Generate a paint controller, pointing to this renderer's internal paint
    * buffer. Provide a texture to use for coloured (non-textured) drawing -

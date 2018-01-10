@@ -71,8 +71,10 @@ void Engine::engine_go() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     this->paint();
-    renderer->render(resource_manager, camera);
-    renderer->clear_paint_buffer();
+    renderer->render_game(resource_manager, camera);
+    renderer->render_hud(resource_manager);
+    renderer->clear_game_paint_buffer();
+    renderer->clear_hud_paint_buffer();
     glfwSwapBuffers(this->window);
 
     if (glfwWindowShouldClose(this->window)) {
