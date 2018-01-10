@@ -16,6 +16,9 @@ public:
 
   EntityId entity_id;
 
+  /** How many more hits can we take without dying? */
+  u32 life_left = 3;
+
   /** When teleporting, this is the destination for the teleport. This value
    * only means something if state == STATE_TELEPORTING. */
   Vec2 teleport_pos;

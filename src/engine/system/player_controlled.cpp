@@ -11,9 +11,12 @@ public:
     const auto &ecs = globals.ecs;
     const auto &input_state = globals.input_state;
     const auto &camera = globals.camera;
-    for (u32 jj = 0; jj < ecs->comp_player_controlled.size(); jj++) {
-      CompPlayerControlled &p = ecs->comp_player_controlled[jj];
-      CompGameEntity *ge = ecs->find_comp_game_entity_with_id(p.entity_id); 
+    for (auto &p : ecs->comp_player_controlled) {
+      if (p.life_left <= 0) {
+        ecs->queue_entity_death(p.entity_id);
+        continue;
+      }
+      CompGameEntity *ge = ecs->find_comp_game_entity_with_id(p.entity_id);
 
       p.state_change_timer++;
 
@@ -38,7 +41,7 @@ public:
         }
 
         Vec2 *acc = &ge->acc;
-        f32 force_to_apply = ecs->comp_player_controlled[jj].force_to_apply;
+        f32 force_to_apply = p.force_to_apply;
         f32 mass = ge->mass;
         if (input_state->move_up >= 0) {
           acc->y = acc->y - force_to_apply / mass * input_state->move_up;
