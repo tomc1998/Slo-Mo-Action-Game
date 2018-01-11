@@ -25,13 +25,13 @@
 
 Engine::Engine() {
   glfwInit();
-  this->window = glfwCreateWindow(800, 600, "Slo-Mo Action Game", NULL, NULL);
+  this->window = glfwCreateWindow(1066, 600, "Slo-Mo Action Game", NULL, NULL);
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   glfwSwapInterval(0);
 
-  this->renderer = new Renderer(800.0, 600.0);
-  this->camera = new Camera(Vec2(400.0, 300.0), 800.0, 800.0 / 600.0);
+  this->renderer = new Renderer(1066.0, 600.0);
+  this->camera = new Camera(Vec2(400.0, 300.0), 1066.0, 1066.0 / 600.0);
   this->resource_manager = new ResourceManager();
   this->input_manager = new InputManager(this->window);
 
