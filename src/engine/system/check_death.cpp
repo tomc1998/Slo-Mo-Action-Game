@@ -1,6 +1,6 @@
 #include "globals.hpp"
 #include "update_system.hpp"
-#include <iostream>
+#include "engine/ecs.hpp"
 
 class SystemCheckDeath : public UpdateSystem {
 

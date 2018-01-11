@@ -1,9 +1,10 @@
 #pragma once
-#include "engine/camera.hpp"
-#include "engine/ecs.hpp"
-#include "engine/input/input_state.hpp"
-#include "engine/renderer/paint_controller.hpp"
-#include "engine/texture.hpp"
+#include "engine/resource_defs.hpp"
+
+class InputState;
+class PaintController;
+class Camera;
+class ECS;
 
 /** A collection of standard texture handles, to be referenced across systems */
 class StandardTextures {
