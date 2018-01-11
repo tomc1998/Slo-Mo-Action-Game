@@ -36,6 +36,7 @@ Engine::Engine() {
   this->input_manager = new InputManager(this->window);
 
   std_tex.enemy_bullet = resource_manager->load_texture("assets/sprites/enemy_bullet.png");
+  std_tex.penumbra = resource_manager->load_texture("assets/penumbra.png");
 }
 
 void Engine::push_screen(Screen *screen) {

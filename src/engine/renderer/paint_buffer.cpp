@@ -42,7 +42,7 @@ void PaintBuffer::buffer_to_gl(GLuint v_pos_index, GLuint v_col_index, GLuint v_
   GLvoid *uv_attr_offset = (GLvoid *)offsetof(Vertex, uv);
   glVertexAttribPointer(v_pos_index, 3, GL_FLOAT, GL_FALSE, sizeof(all_vertices[0]),
                         pos_attr_offset);
-  glVertexAttribPointer(v_col_index, 4, GL_FLOAT, GL_FALSE, sizeof(all_vertices[0]),
+  glVertexAttribPointer(v_col_index, 4, GL_FLOAT, GL_TRUE, sizeof(all_vertices[0]),
                         col_attr_offset);
   glVertexAttribPointer(v_uv_index, 2, GL_FLOAT, GL_FALSE, sizeof(all_vertices[0]),
                         uv_attr_offset);

@@ -9,6 +9,8 @@
 class StandardTextures {
 public:
   TexHandle enemy_bullet;
+  /** Texture for shadow penumbra */
+  TexHandle penumbra;
 };
 
 /** A class which is passed into all the systems. Allows easy access to
