@@ -8,17 +8,16 @@
 #include "comp/tilemap.hpp"
 #include "comp/player_killable.hpp"
 #include "comp/wall.hpp"
-#include "engine/camera.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
 
-// Forward declaration or else circular include happens
 class PaintSystem;
 class UpdateSystem;
 class InputState;
 class PaintController;
 class StandardTextures;
+class Camera;
 
 /************/
 /** MACROS **/

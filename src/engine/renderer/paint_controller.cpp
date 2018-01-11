@@ -3,10 +3,11 @@
 #include "engine/glyph.hpp"
 #include "engine/matrix.hpp"
 #include "engine/renderer/paint_controller.hpp"
+#include "engine/resource_manager.hpp"
+#include "paint_buffer.hpp"
 #include <cassert>
 #include <cmath>
 #include <cstring>
-#include <iostream>
 #include <vector>
 
 PaintController::PaintController(PaintBuffer *_buffer,
