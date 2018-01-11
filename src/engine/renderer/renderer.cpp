@@ -32,6 +32,9 @@ Renderer::Renderer(f32 w, f32 h) {
   // Enable alpha blending
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  // Set background colour
+  glClearColor(0.4, 0.4, 0.4, 1.0);
 }
 
 void Renderer::render(ResourceManager *res_manager, Camera *camera) {

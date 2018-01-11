@@ -17,6 +17,7 @@
 #include "system/physics.cpp"
 #include "system/player_controlled.cpp"
 #include "system/player_effect_renderer.cpp"
+#include "system/shadow_renderer.cpp"
 #include "system/tilemap_renderer.cpp"
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
@@ -67,6 +68,7 @@ ECS::ECS() {
   this->paint_systems.push_back(new SystemTilemapRenderer);
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemGameEntityRenderer);
+  this->paint_systems.push_back(new SystemShadowRenderer);
   this->paint_systems.push_back(new SystemPlayerEffectRenderer);
 
   death_queue.reserve(64);
