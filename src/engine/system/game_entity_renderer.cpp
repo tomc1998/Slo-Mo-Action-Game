@@ -33,6 +33,7 @@ public:
       CompGameEntity &entity = *ecs->find_comp_game_entity_with_id(s.entity_id);
       paint_controller->draw_image(s.tex, entity.pos.x, entity.pos.y, 16.0f,
                                    16.0f, entity.rot, &white);
+
     }
   }
 };

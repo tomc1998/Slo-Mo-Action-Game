@@ -17,7 +17,7 @@
  * by default upon engine creation.
  */
 class PaintController {
-  friend class Engine
+  friend class Engine;
 private:
   PaintBuffer *game_buffer;
   PaintBuffer *hud_buffer;
