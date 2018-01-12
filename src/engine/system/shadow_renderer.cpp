@@ -68,7 +68,7 @@ public:
                                    Vec2(penumbra->uvs[0], penumbra->uvs[3])));
           }
           if (!is_next_backface) { // penumbra on b
-            f32 dis_to_p = (curr_v - ge.pos).len();
+            f32 dis_to_p = (next_v - ge.pos).len();
             f32 soft_angle = std::min((M_PI/8.0f)*(50.0/dis_to_p), M_PI/8.0f);
             f32 angle_b = atan2(b.y, b.x);
             f32 angle_b_soft = angle_b + soft_angle / 2.0f;
