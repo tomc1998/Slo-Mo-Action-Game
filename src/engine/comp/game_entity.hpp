@@ -9,11 +9,9 @@
 class CompGameEntity {
 public:
   /** Damping between 0 and 1 */
-  CompGameEntity(EntityId entity_id, f32 mass, f32 damping,
-                 bool collides_with_walls);
+  CompGameEntity(EntityId entity_id, f32 mass, f32 damping);
   /** Damping between 0 and 1 */
-  CompGameEntity(EntityId entity_id, Vec2 pos, f32 mass, f32 damping,
-                 bool collides_with_walls);
+  CompGameEntity(EntityId entity_id, Vec2 pos, f32 mass, f32 damping);
 
   EntityId entity_id;
   Vec2 pos = Vec2(0.0, 0.0);
@@ -22,5 +20,4 @@ public:
   f32 rot;
   f32 mass;
   f32 damping;
-  bool collides_with_walls;
 };

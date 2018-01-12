@@ -54,6 +54,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/comp/bullet.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/sprite.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/player_killable.cpp
+  ${PROJECT_SOURCE_DIR}/engine/comp/circle_collider.cpp
   )
 
 
