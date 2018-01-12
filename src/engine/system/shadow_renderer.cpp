@@ -1,6 +1,7 @@
 #include "globals.hpp"
 #include "paint_system.hpp"
 #include <cmath>
+#include <algorithm>
 
 class SystemShadowRenderer : public PaintSystem {
 public:
@@ -39,7 +40,6 @@ public:
           }
           const static f32 SHADOW_LEN = 1000.0;
           // How wide is the soft part of the shadow?
-          const static f32 SOFT_ANGLE = M_PI / 12.0f;
           Vec2 curr_v = w.vertices[ii];
           Vec2 next_v = w.vertices[(ii + 1) % w.vertices.size()];
           bool is_prev_backface = is_backface[(ii - 1) % is_backface.size()];
@@ -50,8 +50,10 @@ public:
           Vec2 a = (curr_v - ge.pos).nor() * SHADOW_LEN;
           Vec2 b = (next_v - ge.pos).nor() * SHADOW_LEN;
           if (!is_prev_backface) { // penumbra on a
+            f32 dis_to_p = (curr_v - ge.pos).len();
+            f32 soft_angle = std::min((M_PI/8.0f)*(50.0/dis_to_p), M_PI/8.0f);
             f32 angle_a = atan2(a.y, a.x);
-            f32 angle_a_soft = angle_a - SOFT_ANGLE / 2.0f;
+            f32 angle_a_soft = angle_a - soft_angle / 2.0f;
             Vec2 a_soft;
             a_soft.x = cos(angle_a_soft) * SHADOW_LEN;
             a_soft.y = sin(angle_a_soft) * SHADOW_LEN;
@@ -66,8 +68,10 @@ public:
                                    Vec2(penumbra->uvs[0], penumbra->uvs[3])));
           }
           if (!is_next_backface) { // penumbra on b
+            f32 dis_to_p = (curr_v - ge.pos).len();
+            f32 soft_angle = std::min((M_PI/8.0f)*(50.0/dis_to_p), M_PI/8.0f);
             f32 angle_b = atan2(b.y, b.x);
-            f32 angle_b_soft = angle_b + SOFT_ANGLE / 2.0f;
+            f32 angle_b_soft = angle_b + soft_angle / 2.0f;
             Vec2 b_soft;
             b_soft.x = cos(angle_b_soft) * SHADOW_LEN;
             b_soft.y = sin(angle_b_soft) * SHADOW_LEN;
