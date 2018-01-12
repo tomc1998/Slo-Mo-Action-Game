@@ -1,6 +1,7 @@
 #pragma once
-#include "engine/color.hpp"
 #include "engine/vec.hpp"
+
+class Color;
 
 class Vertex {
 public:

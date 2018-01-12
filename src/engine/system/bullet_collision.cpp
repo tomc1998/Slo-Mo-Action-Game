@@ -50,8 +50,9 @@ class SystemBulletCollision : public UpdateSystem {
         }
         for (auto& p : ecs->comp_player_controlled) {
           const auto& p_ge = *ecs->find_comp_game_entity_with_id(p.entity_id);
+          const auto& p_circ_coll = *ecs->find_comp_circle_collider_with_id(p.entity_id);
           f32 dis2 = (p_ge.pos - ge.pos).len2();
-          if (dis2 < 8.0 * 8.0 + b.hit_rad * b.hit_rad) {
+          if (dis2 < p_circ_coll.rad * p_circ_coll.rad + b.hit_rad * b.hit_rad) {
             // Collision with player
             ecs->queue_entity_death(b.entity_id);
             p.life_left -= 1;

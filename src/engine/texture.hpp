@@ -1,7 +1,4 @@
 #pragma once
-#include "resource_defs.hpp"
-
-/** -1 indicates a 'null' tex handle */
 
 class Texture {
 public:

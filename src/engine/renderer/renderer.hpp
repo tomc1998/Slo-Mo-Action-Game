@@ -4,13 +4,11 @@
 
 #include <GLFW/glfw3.h>
 
-#include "engine/color.hpp"
 #include "engine/renderer/paint_buffer.hpp"
 #include "engine/renderer/paint_controller.hpp"
-#include "engine/renderer/shader.hpp"
-#include "engine/vec.hpp"
 #include <vector>
 
+class Shader;
 class ResourceManager;
 
 /** Since this class will be alive for the existence of the engine, there is no

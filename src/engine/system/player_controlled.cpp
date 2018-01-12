@@ -72,10 +72,12 @@ public:
             }
             const auto &pk_ge =
                 *ecs->find_comp_game_entity_with_id(pk.entity_id);
+            const auto &pk_circ_coll =
+                *ecs->find_comp_circle_collider_with_id(pk.entity_id);
             // First check we're at the right distance to be hit, then check
             // we're at the right angle
-            const auto min_dis = (pk_ge.pos - ge.pos).len() - pk.hit_rad;
-            const auto max_dis = (pk_ge.pos - ge.pos).len() + pk.hit_rad;
+            const auto min_dis = (pk_ge.pos - ge.pos).len() - pk_circ_coll.rad;
+            const auto max_dis = (pk_ge.pos - ge.pos).len() + pk_circ_coll.rad;
             if (!(min_dis < p.ATTACK_ARC_MAX_DIS &&
                   max_dis > p.ATTACK_ARC_MIN_DIS)) {
               continue;
