@@ -9,7 +9,7 @@
 #include "engine/vec.hpp"
 #include <map>
 
-Renderer::Renderer(f32 w, f32 h) {
+Renderer::Renderer(f32 w, f32 h) : hud_camera(Vec2(0.0, 0.0), w, (w / h)) {
   glGenBuffers(1, &dyn_vbo);
 
   // Compile the shader
@@ -36,7 +36,8 @@ Renderer::Renderer(f32 w, f32 h) {
   glClearColor(0.4, 0.4, 0.4, 1.0);
 }
 
-void Renderer::render(ResourceManager *res_manager, Camera *camera) {
+void Renderer::render_game(ResourceManager *res_manager, Camera *camera) {
+  f32 proj_mat[16];
   glUseProgram(shader->program_id);
 
   // Generate the projection matrix based on camera pos and zoom
@@ -49,22 +50,49 @@ void Renderer::render(ResourceManager *res_manager, Camera *camera) {
   glEnableVertexAttribArray(Renderer::V_ATTR_POS_LOC);
   glEnableVertexAttribArray(Renderer::V_ATTR_COL_LOC);
   glEnableVertexAttribArray(Renderer::V_ATTR_UV_LOC);
-  buffer.buffer_to_gl(Renderer::V_ATTR_POS_LOC, Renderer::V_ATTR_COL_LOC,
-                      Renderer::V_ATTR_UV_LOC);
+  game_buffer.buffer_to_gl(Renderer::V_ATTR_POS_LOC, Renderer::V_ATTR_COL_LOC,
+                           Renderer::V_ATTR_UV_LOC);
 
   // Loop through the triangles, and bind the right textures.
   u64 curr_ix = 0;
-  for (const auto &b : buffer.b_buf) {
+  for (const auto &b : game_buffer.b_buf) {
     res_manager->bind_cache_tex(b.tex);
     glDrawArrays(GL_TRIANGLES, curr_ix, b.size());
     curr_ix += b.size();
   }
 }
 
-void Renderer::clear_paint_buffer() { buffer.clear(); }
+void Renderer::render_hud(ResourceManager *res_manager) {
+  f32 proj_mat[16];
+  glUseProgram(shader->program_id);
+
+  // Generate the projection matrix based on camera pos and zoom
+  hud_camera.gen_ortho_proj_mat(proj_mat);
+  // Setup uniforms
+  glUniformMatrix4fv(proj_mat_uniform_loc, 1, true, proj_mat);
+
+  glBindBuffer(GL_ARRAY_BUFFER, dyn_vbo);
+  glActiveTexture(GL_TEXTURE0 + 0);
+  glEnableVertexAttribArray(Renderer::V_ATTR_POS_LOC);
+  glEnableVertexAttribArray(Renderer::V_ATTR_COL_LOC);
+  glEnableVertexAttribArray(Renderer::V_ATTR_UV_LOC);
+  hud_buffer.buffer_to_gl(Renderer::V_ATTR_POS_LOC, Renderer::V_ATTR_COL_LOC,
+                          Renderer::V_ATTR_UV_LOC);
+
+  // Loop through the triangles, and bind the right textures.
+  u64 curr_ix = 0;
+  for (const auto &b : hud_buffer.b_buf) {
+    res_manager->bind_cache_tex(b.tex);
+    glDrawArrays(GL_TRIANGLES, curr_ix, b.size());
+    curr_ix += b.size();
+  }
+}
+
+void Renderer::clear_game_paint_buffer() { game_buffer.clear(); }
+void Renderer::clear_hud_paint_buffer() { hud_buffer.clear(); }
 
 PaintController Renderer::gen_paint_controller(ResourceManager *rm,
                                                TexHandle white) {
-  PaintController p(&buffer, rm, white);
+  PaintController p(&game_buffer, &hud_buffer, rm, white);
   return p;
 }
