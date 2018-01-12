@@ -39,17 +39,32 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   ecs->add_comp_player_killable(CompPlayerKillable(enemy_id));
   ecs->add_comp_circle_collider(CompCircleCollider(enemy_id, 8.0f));
 
-  // Add wall
+  // Add walls
   TexHandle wall_tex =
       res_manager->load_texture("assets/sprites/test_wall.png");
-  EntityId wall_id = ecs->gen_entity_id();
 
+  EntityId wall_id = ecs->gen_entity_id();
   std::vector<Vec2> vertices;
   vertices.push_back(Vec2(120.0f, 100.0f));
   vertices.push_back(Vec2(200.0f, 100.0f));
   vertices.push_back(Vec2(220.0f, 200.0f));
   vertices.push_back(Vec2(80.0f, 200.0f));
+  ecs->add_comp_wall(CompWall(wall_id, vertices, wall_tex));
 
+  wall_id = ecs->gen_entity_id();
+  vertices.clear();
+  vertices.push_back(Vec2(200.0f+120.0f, 100.0f));
+  vertices.push_back(Vec2(200.0f+200.0f, 100.0f));
+  vertices.push_back(Vec2(200.0f+220.0f, 200.0f));
+  vertices.push_back(Vec2(200.0f+80.0f, 200.0f));
+  ecs->add_comp_wall(CompWall(wall_id, vertices, wall_tex));
+
+  wall_id = ecs->gen_entity_id();
+  vertices.clear();
+  vertices.push_back(Vec2(120.0f, 200.0f+100.0f));
+  vertices.push_back(Vec2(200.0f, 200.0f+100.0f));
+  vertices.push_back(Vec2(220.0f, 200.0f+200.0f));
+  vertices.push_back(Vec2(80.0f,  200.0f+200.0f));
   ecs->add_comp_wall(CompWall(wall_id, vertices, wall_tex));
 
   // Add tilemap

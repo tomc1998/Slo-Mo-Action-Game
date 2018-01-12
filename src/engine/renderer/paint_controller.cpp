@@ -104,7 +104,6 @@ void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
   flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix);
   std::vector<Vertex> vertices;
   vertices.reserve(num_quads * 6);
-  ;
   for (u32 ii = 0; ii < num_quads * 4; ii += 4) {
     Vertex v[] = {v_buf[ii], v_buf[ii + 1], v_buf[ii + 2],
                   v_buf[ii], v_buf[ii + 3], v_buf[ii + 2]};

@@ -74,6 +74,7 @@ class ECS {
   friend class SystemAIEnemyBasic;
   friend class SystemBulletCollision;
   friend class SystemCheckDeath;
+  friend class SystemShadowRenderer;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
