@@ -16,7 +16,7 @@ private:
    * speed. */
   void shoot_bullet(ECS *ecs, TexHandle tex, Vec2 pos, Vec2 target, f32 speed) {
     EntityId e_id = ecs->gen_entity_id();
-    CompGameEntity ge(e_id, pos, 1.0f, 0.0f, false);
+    CompGameEntity ge(e_id, pos, 1.0f, 0.0f);
     CompSprite sprite(e_id, tex);
     CompBullet bullet(e_id, 4);
     ge.vel = (target - pos).nor() * speed;
