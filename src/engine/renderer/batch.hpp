@@ -1,8 +1,8 @@
 #pragma once
 
 #include "engine/renderer/vertex.hpp"
-#include "engine/resource_manager.hpp"
 #include <vector>
+#include <cstddef>
 
 class PaintBuffer;
 

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "engine/animation.hpp"
-#include "engine/comp/tilemap.hpp"
-#include "engine/font.hpp"
 #include "engine/renderer/batch.hpp"
-#include "engine/renderer/paint_buffer.hpp"
-#include "engine/resource_manager.hpp"
-#include "engine/texture.hpp"
+#include "engine/resource_defs.hpp"
+
+class ResourceManager;
+class PaintBuffer;
+class Texture;
+class CompTilemap;
 
 /**
  * A class created by the renderer, used for buffering vertex data before

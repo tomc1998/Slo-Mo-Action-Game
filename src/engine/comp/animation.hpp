@@ -1,6 +1,5 @@
 #pragma once
 #include "engine/entity_id.hpp"
-#include "engine/vec.hpp"
 #include "engine/resource_defs.hpp"
 #include <vector>
 

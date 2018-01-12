@@ -1,4 +1,5 @@
 #include "engine/vec.hpp"
+#include "engine/entity_id.hpp"
 #include "game_entity.hpp"
 
 CompGameEntity::CompGameEntity(EntityId entity_id, f32 mass, f32 damping) {

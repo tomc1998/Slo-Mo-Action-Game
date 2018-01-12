@@ -5,9 +5,8 @@
 #include "engine/camera.hpp"
 #include "engine/renderer/renderer.hpp"
 #include "engine/resource_manager.hpp"
+#include "shader.hpp"
 #include "engine/vec.hpp"
-#include <cassert>
-#include <iostream>
 #include <map>
 
 Renderer::Renderer(f32 w, f32 h) {

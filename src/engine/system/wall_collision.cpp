@@ -1,9 +1,10 @@
 #include "engine/comp/wall.hpp"
 #include "engine/vec.hpp"
+#include <iostream>
 #include "update_system.hpp"
 #include "globals.hpp"
+#include "engine/ecs.hpp"
 #include <cmath>
-#include <iostream>
 
 class SystemWallCollision : public UpdateSystem {
 public:
