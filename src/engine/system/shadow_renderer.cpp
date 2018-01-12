@@ -2,6 +2,7 @@
 #include "paint_system.hpp"
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 class SystemShadowRenderer : public PaintSystem {
 public:
@@ -50,9 +51,14 @@ public:
           Vec2 a = (curr_v - ge.pos).nor() * SHADOW_LEN;
           Vec2 b = (next_v - ge.pos).nor() * SHADOW_LEN;
           if (!is_prev_backface) { // penumbra on a
+            // Calculate angle of wall + angle of player to wall vertex
+            f32 wall_angle = (next_v-curr_v).angle();
+            f32 angle_a = a.angle();
             f32 dis_to_p = (curr_v - ge.pos).len();
-            f32 soft_angle = std::min((M_PI/8.0f)*(50.0/dis_to_p), M_PI/8.0f);
-            f32 angle_a = atan2(a.y, a.x);
+            // Calculate size of penumbra angle
+            f32 soft_angle = std::min((f32)fabs(angle_a-wall_angle), 
+                (f32)std::min((M_PI/8.0f)*(50.0/dis_to_p), M_PI/8.0f));
+            // Calculate position of the 'soft' vertex of the triangle (far point)
             f32 angle_a_soft = angle_a - soft_angle / 2.0f;
             Vec2 a_soft;
             a_soft.x = cos(angle_a_soft) * SHADOW_LEN;
@@ -68,9 +74,14 @@ public:
                                    Vec2(penumbra->uvs[0], penumbra->uvs[3])));
           }
           if (!is_next_backface) { // penumbra on b
+            // Calculate angle of wall + angle of player to wall vertex
+            f32 wall_angle = (curr_v-next_v).angle();
+            f32 angle_b = b.angle();
             f32 dis_to_p = (next_v - ge.pos).len();
-            f32 soft_angle = std::min((M_PI/8.0f)*(50.0/dis_to_p), M_PI/8.0f);
-            f32 angle_b = atan2(b.y, b.x);
+            // Calculate size of penumbra angle
+            f32 soft_angle = std::min((f32)fabs(angle_b-wall_angle), 
+                (f32)std::min((M_PI/8.0f)*(50.0/dis_to_p), M_PI/8.0f));
+            // Calculate position of the 'soft' vertex of the triangle (far point)
             f32 angle_b_soft = angle_b + soft_angle / 2.0f;
             Vec2 b_soft;
             b_soft.x = cos(angle_b_soft) * SHADOW_LEN;
