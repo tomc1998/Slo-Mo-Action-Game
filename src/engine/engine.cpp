@@ -72,8 +72,10 @@ void Engine::engine_go() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     this->paint();
-    renderer->render(resource_manager, camera);
-    renderer->clear_paint_buffer();
+    renderer->render_game(resource_manager, camera);
+    renderer->render_hud(resource_manager);
+    renderer->clear_game_paint_buffer();
+    renderer->clear_hud_paint_buffer();
     glfwSwapBuffers(this->window);
 
     if (glfwWindowShouldClose(this->window)) {
@@ -129,5 +131,6 @@ void Engine::paint() {
       resource_manager, resource_manager->get_white());
   current_ecs->paint(this->input_manager->get_current_input_state(),
                      &controller, camera, &std_tex);
-  controller.flush();
+  controller.flush(controller.curr_batch_game, controller.game_buffer);
+  controller.flush(controller.curr_batch_hud, controller.hud_buffer);
 }

@@ -10,14 +10,19 @@
 #include <cstring>
 #include <vector>
 
-PaintController::PaintController(PaintBuffer *_buffer,
+PaintController::PaintController(PaintBuffer *_game_buffer,
+                                 PaintBuffer *_hud_buffer,
                                  ResourceManager *_res_manager,
                                  TexHandle _white)
-    : buffer(_buffer), res_manager(_res_manager), white(_white),
+    : game_buffer(_game_buffer), hud_buffer(_hud_buffer),
+      res_manager(_res_manager), white(_white),
       white_cache_tex(_res_manager->lookup_tex(_white)),
-      curr_batch(Batch(white_cache_tex->cache_tex_ix)) {}
+      curr_batch_game(Batch(white_cache_tex->cache_tex_ix)),
+      curr_batch_hud(Batch(white_cache_tex->cache_tex_ix)) {}
 
-void PaintController::flush_if_batch_tex_not(u64 cache_tex_ix) {
+void PaintController::flush_if_batch_tex_not(u64 cache_tex_ix,
+                                             Batch &curr_batch,
+                                             PaintBuffer *buffer) {
   if (curr_batch.tex == cache_tex_ix) {
     return;
   }
@@ -27,7 +32,7 @@ void PaintController::flush_if_batch_tex_not(u64 cache_tex_ix) {
   curr_batch = Batch(cache_tex_ix);
 }
 
-void PaintController::flush() {
+void PaintController::flush(Batch &curr_batch, PaintBuffer *buffer) {
   if (curr_batch.vertices.size() > 0) {
     buffer->buffer(curr_batch);
   }
@@ -37,8 +42,10 @@ void PaintController::flush() {
 Texture *PaintController::get_white_tex() { return white_cache_tex; }
 TexHandle PaintController::get_white_tex_handle() { return white; }
 
-void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
-  flush_if_batch_tex_not(white_cache_tex->cache_tex_ix);
+void PaintController::fill_rect_internal(f32 x, f32 y, f32 w, f32 h,
+                                         Color *color, Batch &curr_batch,
+                                         PaintBuffer *buffer) {
+  flush_if_batch_tex_not(white_cache_tex->cache_tex_ix, curr_batch, buffer);
   f32 *uvs = white_cache_tex->uvs;
   Vertex v[] = {Vertex(Vec2(x, y), color, Vec2(uvs[0], uvs[1])),
                 Vertex(Vec2(x + w, y), color, Vec2(uvs[2], uvs[1])),
@@ -50,7 +57,9 @@ void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
   curr_batch.buffer(v, 6);
 }
 
-void PaintController::draw_tilemap(CompTilemap const &tilemap, Color *tint) {
+void PaintController::draw_tilemap_internal(CompTilemap const &tilemap,
+                                            Color *tint, Batch &curr_batch,
+                                            PaintBuffer *buffer) {
   // Create a vector and reserve the right amount of space for all the vertices
   std::vector<Vertex> v_buf;
   v_buf.reserve(tilemap.w * tilemap.h * 6);
@@ -75,13 +84,15 @@ void PaintController::draw_tilemap(CompTilemap const &tilemap, Color *tint) {
     }
   }
 
-  flush_if_batch_tex_not(tileset->get_cache_tex());
+  flush_if_batch_tex_not(tileset->get_cache_tex(), curr_batch, buffer);
   curr_batch.buffer(&v_buf[0], v_buf.size());
 }
 
-void PaintController::draw_line(Vec2 start, Vec2 end, f32 stroke,
-                                Color *start_col, Color *end_col) {
-  flush_if_batch_tex_not(white_cache_tex->cache_tex_ix);
+void PaintController::draw_line_internal(Vec2 start, Vec2 end, f32 stroke,
+                                         Color *start_col, Color *end_col,
+                                         Batch &curr_batch,
+                                         PaintBuffer *buffer) {
+  flush_if_batch_tex_not(white_cache_tex->cache_tex_ix, curr_batch, buffer);
   f32 *uvs = white_cache_tex->uvs;
 
   Vec2 inbetween = end - start;
@@ -99,9 +110,10 @@ void PaintController::draw_line(Vec2 start, Vec2 end, f32 stroke,
   curr_batch.buffer(v, 6);
 }
 
-void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
-                                 TexHandle tex) {
-  flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix);
+void PaintController::draw_quads_internal(Vertex *v_buf, size_t num_quads,
+                                          TexHandle tex, Batch &curr_batch,
+                                          PaintBuffer *buffer) {
+  flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix, curr_batch, buffer);
   std::vector<Vertex> vertices;
   vertices.reserve(num_quads * 6);
   for (u32 ii = 0; ii < num_quads * 4; ii += 4) {
@@ -116,8 +128,11 @@ Texture *PaintController::get_tex_for_handle(TexHandle r) {
   return res_manager->lookup_tex(r);
 }
 
-void PaintController::draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y,
-                                     f32 w, f32 h, f32 rot, Color *tint) {
+void PaintController::draw_animation_internal(AnimHandle anim, u32 updates,
+                                              f32 x, f32 y, f32 w, f32 h,
+                                              f32 rot, Color *tint,
+                                              Batch &curr_batch,
+                                              PaintBuffer *buffer) {
   assert(anim != -1);
 
   Animation *animation = this->res_manager->lookup_anim(anim);
@@ -125,16 +140,19 @@ void PaintController::draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y,
   animation->get_anim_frames(updates, frames);
 
   for (u32 ii = 0; ii < animation->get_part_count(); ii++) {
-    this->draw_image(
+    this->draw_image_internal(
         frames[ii].tex, x + frames[ii].posx - (frames[ii].scale - 1) * w / 2,
         y + frames[ii].posy - (frames[ii].scale - 1) * h / 2,
-        w * frames[ii].scale, h * frames[ii].scale, rot + frames[ii].rot, tint);
+        w * frames[ii].scale, h * frames[ii].scale, rot + frames[ii].rot, tint,
+        curr_batch, buffer);
   }
   delete[] frames;
 }
 
-void PaintController::draw_text(const char *text, f32 x, f32 y, TextAlign align,
-                                FontHandle font, Color *color) {
+void PaintController::draw_text_internal(const char *text, f32 x, f32 y,
+                                         TextAlign align, FontHandle font,
+                                         Color *color, Batch &curr_batch,
+                                         PaintBuffer *buffer) {
 
   assert(font != -1);
   Font *f = this->res_manager->lookup_font(font);
@@ -173,18 +191,20 @@ void PaintController::draw_text(const char *text, f32 x, f32 y, TextAlign align,
     cursor_pos.x += g->x_advance;
   }
 
-  flush_if_batch_tex_not(f->get_cache_tex());
+  flush_if_batch_tex_not(f->get_cache_tex(), curr_batch, buffer);
   curr_batch.buffer(&v_buf[0], v_buf.size());
 }
 
-void PaintController::draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h,
-                                 f32 rotation, Color *tint) {
+void PaintController::draw_image_internal(TexHandle tex, f32 x, f32 y, f32 w,
+                                          f32 h, f32 rotation, Color *tint,
+                                          Batch &curr_batch,
+                                          PaintBuffer *buffer) {
   // We don't want a null resource handle
   assert(tex != -1);
 
   Texture *texture = this->res_manager->lookup_tex(tex);
 
-  this->flush_if_batch_tex_not(texture->cache_tex_ix);
+  this->flush_if_batch_tex_not(texture->cache_tex_ix, curr_batch, buffer);
   f32 *uvs = texture->uvs;
   Vec2 centre = Vec2(x + w / 2, y + h / 2);
   Vec2 translated = Vec2(x - centre.x, y - centre.y);
@@ -204,4 +224,80 @@ void PaintController::draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h,
                 Vertex(newPoints[2], tint, Vec2(uvs[0], uvs[3])),
                 Vertex(newPoints[3], tint, Vec2(uvs[2], uvs[3]))};
   curr_batch.buffer(v, 6);
+}
+
+void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {
+  fill_rect_internal(x, y, w, h, color, curr_batch_game, game_buffer);
+}
+
+void PaintController::fill_rect_hud(f32 x, f32 y, f32 w, f32 h, Color *color) {
+  fill_rect_internal(x, y, w, h, color, curr_batch_hud, hud_buffer);
+}
+
+void PaintController::draw_line(Vec2 start, Vec2 end, f32 stroke,
+                                Color *start_col, Color *end_col) {
+  draw_line_internal(start, end, stroke, start_col, end_col, curr_batch_game,
+            game_buffer);
+}
+
+void PaintController::draw_line_hud(Vec2 start, Vec2 end, f32 stroke,
+                                    Color *start_col, Color *end_col) {
+  draw_line_internal(start, end, stroke, start_col, end_col, curr_batch_hud, hud_buffer);
+}
+
+void PaintController::draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y,
+                                     f32 w, f32 h, f32 rot, Color *tint) {
+  draw_animation_internal(anim, updates, x, y, w, h, rot, tint, curr_batch_game,
+                          game_buffer);
+}
+
+void PaintController::draw_animation_hud(AnimHandle anim, u32 updates, f32 x,
+                                         f32 y, f32 w, f32 h, f32 rot,
+                                         Color *tint) {
+  draw_animation_internal(anim, updates, x, y, w, h, rot, tint, curr_batch_hud,
+                          hud_buffer);
+}
+
+void PaintController::draw_image(TexHandle tex, f32 x, f32 y, f32 w, f32 h,
+                                 f32 rotation, Color *tint) {
+  draw_image_internal(tex, x, y, w, h, rotation, tint, curr_batch_game,
+                      game_buffer);
+}
+
+void PaintController::draw_image_hud(TexHandle tex, f32 x, f32 y, f32 w, f32 h,
+                                     f32 rotation, Color *tint) {
+  draw_image_internal(tex, x, y, w, h, rotation, tint, curr_batch_hud,
+                      hud_buffer);
+}
+
+void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
+                                 TexHandle tex) {
+  draw_quads_internal(v_buf, num_quads, tex, curr_batch_game, game_buffer);
+}
+
+void PaintController::draw_quads_hud(Vertex *v_buf, size_t num_quads,
+                                     TexHandle tex) {
+  draw_quads_internal(v_buf, num_quads, tex, curr_batch_hud, hud_buffer);
+}
+
+void PaintController::draw_tilemap(CompTilemap const &tilemap, Color *tint) {
+  draw_tilemap_internal(tilemap, tint, curr_batch_game, game_buffer);
+}
+
+void PaintController::draw_tilemap_hud(CompTilemap const &tilemap,
+                                       Color *tint) {
+  draw_tilemap_internal(tilemap, tint, curr_batch_hud, hud_buffer);
+}
+
+void PaintController::draw_text(const char *text, f32 x, f32 y, TextAlign align,
+                                FontHandle font, Color *color) {
+  draw_text_internal(text, x, y, align, font, color, curr_batch_game,
+                     game_buffer);
+}
+
+void PaintController::draw_text_hud(const char *text, f32 x, f32 y,
+                                    TextAlign align, FontHandle font,
+                                    Color *color) {
+  draw_text_internal(text, x, y, align, font, color, curr_batch_hud,
+                     hud_buffer);
 }
