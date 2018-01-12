@@ -2,6 +2,9 @@
 #include "engine/entity_id.hpp"
 #include "engine/vec.hpp"
 #include <cmath>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 /** Since there'll only be 1 instance of this, this class can pretty much be as
  * bloated as we like. Don't freak out about adding stuff willy nilly

@@ -130,5 +130,6 @@ void Engine::paint() {
       resource_manager, resource_manager->get_white());
   current_ecs->paint(this->input_manager->get_current_input_state(),
                      &controller, camera, &std_tex);
-  controller.flush();
+  controller.flush(controller.game_buffer, controller.curr_batch_game);
+  controller.flush(controller.hud_buffer, controller.curr_batch_hud);
 }

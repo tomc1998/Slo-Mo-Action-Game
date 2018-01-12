@@ -91,6 +91,6 @@ void Renderer::clear_hud_paint_buffer() { hud_buffer.clear(); }
 
 PaintController Renderer::gen_paint_controller(ResourceManager *rm,
                                                TexHandle white) {
-  PaintController p(game_buffer, rm, white);
+  PaintController p(&game_buffer, &hud_buffer, rm, white);
   return p;
 }
