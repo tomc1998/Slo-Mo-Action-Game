@@ -7,3 +7,4 @@ build.bat
 assets/sprites/
 assets/animations/
 assets/fonts/
+compile_commands.json
