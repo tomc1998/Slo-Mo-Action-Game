@@ -18,6 +18,7 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   EntityId entity_id = ecs->gen_entity_id();
   ecs->add_comp_player_controlled(CompPlayerControlled(entity_id, 600.0f));
   ecs->add_comp_game_entity(CompGameEntity(entity_id, 10.0f, 0.02f, true));
+  ecs->add_comp_circle_collider(CompCircleCollider(entity_id, 8.0f));
 
   TexHandle player = res_manager->load_texture("assets/sprites/player.png");
   TexHandle foot = res_manager->load_texture("assets/sprites/foot.png");
@@ -36,6 +37,7 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   ecs->add_comp_game_entity(CompGameEntity(enemy_id, 10.0f, 0.02f, true));
   ecs->add_comp_ai_enemy_basic(CompAIEnemyBasic(enemy_id));
   ecs->add_comp_player_killable(CompPlayerKillable(enemy_id));
+  ecs->add_comp_circle_collider(CompCircleCollider(enemy_id, 8.0f));
 
   // Add wall
   TexHandle wall_tex =
