@@ -8,17 +8,17 @@
 #include "comp/tilemap.hpp"
 #include "comp/player_killable.hpp"
 #include "comp/wall.hpp"
-#include "engine/camera.hpp"
+#include "comp/circle_collider.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
 
-// Forward declaration or else circular include happens
 class PaintSystem;
 class UpdateSystem;
 class InputState;
 class PaintController;
 class StandardTextures;
+class Camera;
 
 /************/
 /** MACROS **/
@@ -74,6 +74,7 @@ class ECS {
   friend class SystemAIEnemyBasic;
   friend class SystemBulletCollision;
   friend class SystemCheckDeath;
+  friend class SystemShadowRenderer;
 
   /* Auto generated component lists.. */
   ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
@@ -85,6 +86,7 @@ class ECS {
   ECS_DECLARE_COMPONENT(CompAIEnemyBasic, ai_enemy_basic)
   ECS_DECLARE_COMPONENT(CompBullet, bullet)
   ECS_DECLARE_COMPONENT(CompPlayerKillable, player_killable)
+  ECS_DECLARE_COMPONENT(CompCircleCollider, circle_collider)
 
 private:
   std::vector<UpdateSystem *> update_systems;

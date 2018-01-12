@@ -1,4 +1,5 @@
 #include "engine/renderer/vertex.hpp"
+#include "engine/color.hpp"
 
 Vertex::Vertex(Vec2 _pos, f32 _layer, Color *_color, Vec2 _uv) {
   this->pos[0] = _pos.x;

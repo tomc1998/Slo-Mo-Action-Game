@@ -6,6 +6,7 @@
 #include "comp/sprite.hpp"
 #include "comp/tilemap.hpp"
 #include "comp/wall.hpp"
+#include "comp/circle_collider.hpp"
 #include "ecs.hpp"
 #include "renderer/paint_controller.hpp"
 #include "system/ai_enemy_basic.cpp"
@@ -17,6 +18,7 @@
 #include "system/physics.cpp"
 #include "system/player_controlled.cpp"
 #include "system/player_effect_renderer.cpp"
+#include "system/shadow_renderer.cpp"
 #include "system/tilemap_renderer.cpp"
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
@@ -53,6 +55,7 @@ ECS_IMPL_COMPONENT(CompTilemap, tilemap)
 ECS_IMPL_COMPONENT(CompAIEnemyBasic, ai_enemy_basic)
 ECS_IMPL_COMPONENT(CompBullet, bullet)
 ECS_IMPL_COMPONENT(CompPlayerKillable, player_killable)
+ECS_IMPL_COMPONENT(CompCircleCollider, circle_collider)
 
 ECS::ECS() {
   this->current_entity_id = 0;
@@ -67,6 +70,7 @@ ECS::ECS() {
   this->paint_systems.push_back(new SystemTilemapRenderer);
   this->paint_systems.push_back(new SystemWallRenderer);
   this->paint_systems.push_back(new SystemGameEntityRenderer);
+  this->paint_systems.push_back(new SystemShadowRenderer);
   this->paint_systems.push_back(new SystemPlayerEffectRenderer);
 
   death_queue.reserve(64);
@@ -138,6 +142,7 @@ void ECS::kill_entities() {
     ERASE_COMP(ai_enemy_basic, id)
     ERASE_COMP(bullet, id)
     ERASE_COMP(player_killable, id)
+    ERASE_COMP(circle_collider, id)
   }
 
 #undef ERASE_COMP

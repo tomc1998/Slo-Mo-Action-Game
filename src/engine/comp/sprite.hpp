@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/entity_id.hpp"
-#include "engine/texture.hpp"
+#include "engine/resource_defs.hpp"
 
 /** A component for rendering a sprite at the position of a gameentity. */
 class CompSprite {

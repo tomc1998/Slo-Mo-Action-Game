@@ -24,14 +24,14 @@ public:
     for (u32 ii = 0; ii < ecs->comp_animation.size(); ii++) {
       CompAnimation &a = ecs->comp_animation[ii];
       CompGameEntity &entity = *ecs->find_comp_game_entity_with_id(a.entity_id);
-      paint_controller->draw_animation(a.anim, a.updates, entity.pos.x,
-                                       entity.pos.y, 16.0, 16.0, entity.rot,
+      paint_controller->draw_animation(a.anim, a.updates, entity.pos.x - 8.0,
+                                       entity.pos.y - 8.0, 16.0, 16.0, entity.rot,
                                        &white);
     }
     for (u32 ii = 0; ii < ecs->comp_sprite.size(); ii++) {
       CompSprite &s = ecs->comp_sprite[ii];
       CompGameEntity &entity = *ecs->find_comp_game_entity_with_id(s.entity_id);
-      paint_controller->draw_image(s.tex, entity.pos.x, entity.pos.y, 16.0f,
+      paint_controller->draw_image(s.tex, entity.pos.x - 8.0, entity.pos.y - 8.0, 16.0f,
                                    16.0f, entity.rot, &white);
     }
   }

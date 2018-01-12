@@ -1,8 +1,6 @@
 #pragma once
 
 #include "engine/renderer/batch.hpp"
-#include "engine/renderer/vertex.hpp"
-#include <cstddef>
 #include <vector>
 
 #include <GLFW/glfw3.h>
