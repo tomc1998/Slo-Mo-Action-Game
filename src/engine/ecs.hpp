@@ -2,14 +2,14 @@
 #include "comp/ai_enemy_basic.hpp"
 #include "comp/animation.hpp"
 #include "comp/bullet.hpp"
+#include "comp/circle_collider.hpp"
 #include "comp/game_entity.hpp"
+#include "comp/hud_entity.hpp"
 #include "comp/player_controlled.hpp"
+#include "comp/player_killable.hpp"
 #include "comp/sprite.hpp"
 #include "comp/tilemap.hpp"
-#include "comp/player_killable.hpp"
 #include "comp/wall.hpp"
-#include "comp/hud_entity.hpp"
-#include "comp/circle_collider.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
@@ -25,37 +25,24 @@ class Camera;
 /** MACROS **/
 /************/
 
-/** Defining a macro for quickly generating functions to add components
- * # Usage
- * Given a component called 'CompPlayerControlled' which we would like to
- * generate functions like `add_comp_player_controlled(CompPlayerControlled
- * comp)` for, simply use the declare macro like so:
- *
- * ```
- * ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
- * ```
- */
-#define ECS_DECLARE_COMPONENT(TYPE, NAME)                                      \
-private:                                                                       \
-  std::vector<TYPE> comp_##NAME;                                               \
-                                                                               \
-public:                                                                        \
-  void add_comp_##NAME(TYPE comp);                                             \
-  TYPE *find_comp_##NAME##_with_id(EntityId entity_id);
 
-/** Macro for generating implementations of functions to add components. When
- * declaring a component of type `CompPlayerControlled`, with the name
- * `player_controlled`, use this macro in the implementation (.cpp) file as so:
- *
- * ```
- * ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
- * ```
- */
-#define ECS_IMPL_COMPONENT(TYPE, NAME)                                         \
-  void ECS::add_comp_##NAME(TYPE comp) { this->comp_##NAME.push_back(comp); }  \
-  TYPE *ECS::find_comp_##NAME##_with_id(EntityId entity_id) {                       \
-    return ECS::find_id<TYPE>(&comp_##NAME[0], comp_##NAME.size(), entity_id);            \
-  }
+/** Runs the macro X(T, N) on all the components, where the T parameter is the
+ * type and N is the name of the component.
+ * The idea of this is to define X(T,N) before calling this macro and then
+ * un-defing the X() macro. This allows some code to be run on all the
+ * components. */
+#define RUN_X_MACRO_ON_ALL_COMPS                                               \
+  X(CompGameEntity, game_entity)                                               \
+  X(CompPlayerControlled, player_controlled)                                   \
+  X(CompWall, wall)                                                            \
+  X(CompAnimation, animation)                                                  \
+  X(CompSprite, sprite)                                                        \
+  X(CompTilemap, tilemap)                                                      \
+  X(CompAIEnemyBasic, ai_enemy_basic)                                          \
+  X(CompBullet, bullet)                                                        \
+  X(CompPlayerKillable, player_killable)                                       \
+  X(CompHudEntity, hud_entity)                                                 \
+  X(CompCircleCollider, circle_collider)
 
 /***********************/
 /** Class declaration **/
@@ -78,18 +65,17 @@ class ECS {
   friend class SystemHudRenderer;
   friend class SystemShadowRenderer;
 
-  /* Auto generated component lists.. */
-  ECS_DECLARE_COMPONENT(CompGameEntity, game_entity)
-  ECS_DECLARE_COMPONENT(CompPlayerControlled, player_controlled)
-  ECS_DECLARE_COMPONENT(CompWall, wall)
-  ECS_DECLARE_COMPONENT(CompAnimation, animation)
-  ECS_DECLARE_COMPONENT(CompSprite, sprite)
-  ECS_DECLARE_COMPONENT(CompTilemap, tilemap)
-  ECS_DECLARE_COMPONENT(CompAIEnemyBasic, ai_enemy_basic)
-  ECS_DECLARE_COMPONENT(CompBullet, bullet)
-  ECS_DECLARE_COMPONENT(CompPlayerKillable, player_killable)
-  ECS_DECLARE_COMPONENT(CompHudEntity, hud_entity)
-  ECS_DECLARE_COMPONENT(CompCircleCollider, circle_collider)
+
+/** Generate component list declarations */
+#define X(TYPE, NAME)                                      \
+private:                                                                       \
+  std::vector<TYPE> comp_##NAME;                                               \
+                                                                               \
+public:                                                                        \
+  void add_comp_##NAME(TYPE comp);                                             \
+  TYPE *find_comp_##NAME##_with_id(EntityId entity_id);
+RUN_X_MACRO_ON_ALL_COMPS
+#undef X
 
 private:
   std::vector<UpdateSystem *> update_systems;
@@ -116,5 +102,6 @@ public:
 
   /** Given a (sorted) list of components and an entity ID, find
    * the component with the given entity ID */
-  template <class T> static T *find_id(T *comp_list, u32 len, EntityId target_id);
+  template <class T>
+  static T *find_id(T *comp_list, u32 len, EntityId target_id);
 };
