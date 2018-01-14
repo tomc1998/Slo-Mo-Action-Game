@@ -10,6 +10,7 @@
 #include "comp/wall.hpp"
 #include "comp/hud_entity.hpp"
 #include "comp/circle_collider.hpp"
+#include "comp/waypoint_graph.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
@@ -90,6 +91,7 @@ class ECS {
   ECS_DECLARE_COMPONENT(CompPlayerKillable, player_killable)
   ECS_DECLARE_COMPONENT(CompHudEntity, hud_entity)
   ECS_DECLARE_COMPONENT(CompCircleCollider, circle_collider)
+  ECS_DECLARE_COMPONENT(CompWaypointGraph, waypoint_graph)
 
 private:
   std::vector<UpdateSystem *> update_systems;

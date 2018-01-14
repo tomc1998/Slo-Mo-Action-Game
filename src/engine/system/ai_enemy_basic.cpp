@@ -6,9 +6,11 @@
 #include "engine/input/input_state.hpp"
 #include "engine/system/globals.hpp"
 #include "engine/system/update_system.hpp"
+#include "engine/vec.hpp"
+#include <algorithm>
 #include <cmath>
 #include <iostream>
-#include <algorithm>
+#include <vector>
 
 class SystemAIEnemyBasic : public UpdateSystem {
 private:
@@ -135,10 +137,20 @@ public:
       auto &ai = ecs->comp_ai_enemy_basic[jj];
       auto &ge = *ecs->find_comp_game_entity_with_id(ai.entity_id);
 
+      // Check if there are waypoints to move to
+      if (ai.target_waypoints.size()) {
+        // If a waypoint is reached, remove that waypoint
+        if (ge.pos == ai.target_waypoints.back()) {
+          ai.target_waypoints.pop_back();
+        }
+        // Move towards the waypoint
+        ge.acc += (ai.target_waypoints.back() - ge.pos).nor() *
+                  (ai.force_to_apply / ge.mass);
+      }
+
       // Check if this enemy has vision...
-      bool has_vision = std::binary_search(enemies_with_vision.begin(), 
-          enemies_with_vision.end(), 
-          ai.entity_id);
+      bool has_vision = std::binary_search(
+          enemies_with_vision.begin(), enemies_with_vision.end(), ai.entity_id);
 
       if (ai.get_state() == ai.STATE_NORMAL) {
         if (has_vision) {
@@ -152,7 +164,12 @@ public:
         }
       } else if (ai.get_state() == ai.SPOTTED_PLAYER) {
         if (!has_vision) { // Player disappeared, go back to normal...
-          // here we'd put in some kind of chasing AI
+
+          ai.target_waypoints.clear();
+
+          ecs->comp_waypoint_graph[0].get_path(ge.pos, player_ge.pos,
+                                               ai.target_waypoints);
+
           ai.set_state(ai.STATE_NORMAL);
         } else {
           // Shoot

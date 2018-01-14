@@ -11,6 +11,7 @@
 #include "engine/texture.hpp"
 #include "engine/vec.hpp"
 #include "test_screen.hpp"
+#include <sparsepp/spp.h>
 #include <vector>
 
 void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
@@ -66,6 +67,25 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   vertices.push_back(Vec2(220.0f, 200.0f+200.0f));
   vertices.push_back(Vec2(80.0f,  200.0f+200.0f));
   ecs->add_comp_wall(CompWall(wall_id, vertices, wall_tex));
+
+  std::vector<Vec2> waypoints;
+  spp::sparse_hash_map<u32, std::vector<u32>> connections;
+
+  std::vector<u32> vert1conns = {1, 3};
+  std::vector<u32> vert2conns = {0, 2};
+  std::vector<u32> vert3conns = {1, 3};
+  std::vector<u32> vert4conns = {0, 2};
+
+  connections[0] = vert1conns;
+  connections[1] = vert2conns;
+  connections[2] = vert3conns;
+  connections[3] = vert4conns;
+  
+  waypoints.push_back(Vec2(100.0f, 90.0f));
+  waypoints.push_back(Vec2(220.0f, 90.0f));
+  waypoints.push_back(Vec2(240.0f, 220.0f));
+  waypoints.push_back(Vec2(60.0f, 220.0f));
+  ecs->add_comp_waypoint_graph(CompWaypointGraph(waypoints, connections));
 
   // Add tilemap
   TilesetHandle tileset = res_manager->load_tileset(

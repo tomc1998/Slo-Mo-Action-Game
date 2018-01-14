@@ -8,7 +8,7 @@
  * distances between them */
 class CompWaypointGraph {
 public:
-  EntityId entity_id;
+  EntityId entity_id = -1;
   /** vector of all the positions of waypoints */
   std::vector<Vec2> waypoints;
   /** Vector that represents a nxn matrix where n is the number of waypoints of
@@ -21,7 +21,8 @@ public:
    * waypoints (as array indices) and a vector of the waypoints that corresponds
    * to (also as array indices)
    * Non-direct connections will be represented with negative distances*/
-  void find_distances(spp::sparse_hash_map<u32, std::vector<Vec2>> &connections);
+  void
+  find_distances(spp::sparse_hash_map<u32, std::vector<u32>> &connections);
 
   /** Gets the shortest path between a start and end point that do not
    * necessarily have to be waypoints
@@ -29,8 +30,8 @@ public:
    * @param[out] path Vector of waypoints (as positions) to travel through
    *
    * */
-  void get_path(Vec2 start, Vec2 end, std::vector<u32> &path);
+  void get_path(Vec2 start, Vec2 end, std::vector<Vec2> &path);
 
-  CompWaypointGraph(EntityId entity_id, std::vector<Vec2> &waypoints,
+  CompWaypointGraph(std::vector<Vec2> &waypoints,
                     spp::sparse_hash_map<u32, std::vector<u32>> &connections);
 };

@@ -7,6 +7,7 @@
 #include "comp/sprite.hpp"
 #include "comp/tilemap.hpp"
 #include "comp/wall.hpp"
+#include "comp/waypoint_graph.hpp"
 #include "comp/circle_collider.hpp"
 #include "ecs.hpp"
 #include "renderer/paint_controller.hpp"
@@ -59,6 +60,7 @@ ECS_IMPL_COMPONENT(CompBullet, bullet)
 ECS_IMPL_COMPONENT(CompPlayerKillable, player_killable)
 ECS_IMPL_COMPONENT(CompHudEntity, hud_entity)
 ECS_IMPL_COMPONENT(CompCircleCollider, circle_collider)
+ECS_IMPL_COMPONENT(CompWaypointGraph, waypoint_graph)
 
 ECS::ECS() {
   this->current_entity_id = 0;
@@ -148,6 +150,7 @@ void ECS::kill_entities() {
     ERASE_COMP(player_killable, id)
     ERASE_COMP(hud_entity, id)
     ERASE_COMP(circle_collider, id)
+    ERASE_COMP(waypoint_graph, id)
   }
 
 #undef ERASE_COMP
