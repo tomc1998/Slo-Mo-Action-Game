@@ -10,6 +10,7 @@ InputManager::InputManager(GLFWwindow *window) {
   current_input_state.move_down_keycode = GLFW_KEY_S;
   current_input_state.move_left_keycode = GLFW_KEY_A;
   current_input_state.slomo_down_keycode = GLFW_KEY_SPACE;
+  current_input_state.editor_toggle_keycode = GLFW_KEY_TAB;
 
   current_input_state.move_up = 0.0f;
   current_input_state.move_right = 0.0f;
@@ -54,6 +55,10 @@ void InputManager::key_callback(GLFWwindow *window, int key, int scancode,
     if (key == input_state->slomo_down_keycode) {
       input_state->slomo_down = true;
     }
+
+    if (key == input_state->editor_toggle_keycode) {
+      input_state->editor_toggle_down = true;
+    }
   }
 
   // Key releases
@@ -76,6 +81,10 @@ void InputManager::key_callback(GLFWwindow *window, int key, int scancode,
 
     if (key == input_state->slomo_down_keycode) {
       input_state->slomo_down = false;
+    }
+
+    if (key == input_state->editor_toggle_keycode) {
+      input_state->editor_toggle_down = false;
     }
   }
 }
@@ -130,6 +139,7 @@ void InputManager::update_input() {
   current_input_state.slomo_down_prev = current_input_state.slomo_down;
   current_input_state.lmb_down_prev = current_input_state.lmb_down;
   current_input_state.rmb_down_prev = current_input_state.rmb_down;
+  current_input_state.editor_toggle_down_prev = current_input_state.editor_toggle_down;
   glfwPollEvents();
   if (current_input_state.lmb_down) {
     current_input_state.lmb_drag.push_back(current_input_state.mouse_pos);
