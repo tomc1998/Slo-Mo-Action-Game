@@ -1,6 +1,7 @@
 #pragma once
-
 #include "engine/entity_id.hpp"
+#include "engine/vec.hpp"
+#include <vector>
 
 /** An AI component for basic enemy behaviour. */
 class CompAIEnemyBasic {
@@ -12,7 +13,6 @@ private:
   u8 state = STATE_NORMAL;
 
 public:
-
   CompAIEnemyBasic(EntityId entity_id);
 
   const static u16 RELOAD_TIME = 300;
@@ -31,6 +31,12 @@ public:
 
   /** When this reaches RELOAD_TIME, this entity will shoot */
   u16 reload_timer = 0;
+
+  /** Vector of target waypoints to visit */
+  std::vector<Vec2> target_waypoints;
+
+  /** Force to apply when moving */
+  f32 force_to_apply = 400.0;
 
   /**
    * Set the state to a given value.
