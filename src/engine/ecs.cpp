@@ -1,9 +1,10 @@
 #include "comp/animation.hpp"
 #include "comp/bullet.hpp"
+#include "comp/circle_collider.hpp"
 #include "comp/game_entity.hpp"
+#include "comp/hud_entity.hpp"
 #include "comp/player_controlled.hpp"
 #include "comp/player_killable.hpp"
-#include "comp/hud_entity.hpp"
 #include "comp/sprite.hpp"
 #include "comp/tilemap.hpp"
 #include "comp/wall.hpp"
@@ -17,6 +18,7 @@
 #include "system/check_death.cpp"
 #include "system/game_entity_renderer.cpp"
 #include "system/globals.hpp"
+#include "system/hud_renderer.cpp"
 #include "system/physics.cpp"
 #include "system/player_controlled.cpp"
 #include "system/player_effect_renderer.cpp"
@@ -24,7 +26,6 @@
 #include "system/tilemap_renderer.cpp"
 #include "system/wall_collision.cpp"
 #include "system/wall_renderer.cpp"
-#include "system/hud_renderer.cpp"
 
 template <class T> T *ECS::find_id(T *comp_list, u32 len, EntityId target_id) {
   u32 min = 0;
@@ -49,18 +50,14 @@ template <class T> T *ECS::find_id(T *comp_list, u32 len, EntityId target_id) {
   return NULL;
 }
 
-ECS_IMPL_COMPONENT(CompGameEntity, game_entity)
-ECS_IMPL_COMPONENT(CompPlayerControlled, player_controlled)
-ECS_IMPL_COMPONENT(CompWall, wall)
-ECS_IMPL_COMPONENT(CompAnimation, animation)
-ECS_IMPL_COMPONENT(CompSprite, sprite)
-ECS_IMPL_COMPONENT(CompTilemap, tilemap)
-ECS_IMPL_COMPONENT(CompAIEnemyBasic, ai_enemy_basic)
-ECS_IMPL_COMPONENT(CompBullet, bullet)
-ECS_IMPL_COMPONENT(CompPlayerKillable, player_killable)
-ECS_IMPL_COMPONENT(CompHudEntity, hud_entity)
-ECS_IMPL_COMPONENT(CompCircleCollider, circle_collider)
-ECS_IMPL_COMPONENT(CompWaypointGraph, waypoint_graph)
+/** Generate component list implementations */
+#define X(TYPE, NAME)                                                          \
+  void ECS::add_comp_##NAME(TYPE comp) { this->comp_##NAME.push_back(comp); }  \
+  TYPE *ECS::find_comp_##NAME##_with_id(EntityId entity_id) {                  \
+    return ECS::find_id<TYPE>(&comp_##NAME[0], comp_##NAME.size(), entity_id); \
+  }
+RUN_X_MACRO_ON_ALL_COMPS
+#undef X
 
 ECS::ECS() {
   this->current_entity_id = 0;
@@ -129,30 +126,17 @@ void ECS::queue_entity_death(EntityId entity_id) {
 }
 
 void ECS::kill_entities() {
-#define ERASE_COMP(NAME, ID)                                                   \
+#define X(TYPE, NAME)                                                          \
   {                                                                            \
-    const auto loc = find_comp_##NAME##_with_id(ID);                           \
+    const auto loc = find_comp_##NAME##_with_id(id);                           \
     if (loc != NULL) {                                                         \
       const auto ix = (u32)(loc - &comp_##NAME[0]);                            \
       comp_##NAME.erase(comp_##NAME.begin() + ix);                             \
     }                                                                          \
   }
-
   for (const auto id : death_queue) {
-    ERASE_COMP(game_entity, id)
-    ERASE_COMP(player_controlled, id)
-    ERASE_COMP(wall, id)
-    ERASE_COMP(animation, id)
-    ERASE_COMP(sprite, id)
-    ERASE_COMP(tilemap, id)
-    ERASE_COMP(ai_enemy_basic, id)
-    ERASE_COMP(bullet, id)
-    ERASE_COMP(player_killable, id)
-    ERASE_COMP(hud_entity, id)
-    ERASE_COMP(circle_collider, id)
-    ERASE_COMP(waypoint_graph, id)
+    RUN_X_MACRO_ON_ALL_COMPS
   }
-
-#undef ERASE_COMP
+#undef X
   death_queue.clear();
 }
