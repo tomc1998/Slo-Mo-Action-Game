@@ -5,6 +5,8 @@
 #include <sparsepp/spp.h>
 #include <vector>
 
+/** This should only be called once when the waypoint graph is calculated
+ * (currently called in constructor) */
 void CompWaypointGraph::find_distances(
     spp::sparse_hash_map<u32, std::vector<u32>> &connections) {
 
