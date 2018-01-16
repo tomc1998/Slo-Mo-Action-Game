@@ -22,19 +22,23 @@ public:
   f32 move_left_prev;
   i32 move_left_keycode;
 
-  bool slomo_down;
-  bool slomo_down_prev;
+  bool editor_toggle_down = false;
+  bool editor_toggle_down_prev = false;
+  i32 editor_toggle_keycode;
+
+  bool slomo_down = false;
+  bool slomo_down_prev = false;
   i32 slomo_down_keycode;
 
   /** LMB = attack control */
-  bool lmb_down;
-  bool lmb_down_prev;
+  bool lmb_down = false;
+  bool lmb_down_prev = false;
   /** Vector of mouse positions throughout the drag */
   std::vector<Vec2> lmb_drag;
 
   /** RMB = teleport control */
-  bool rmb_down;
-  bool rmb_down_prev;
+  bool rmb_down = false;
+  bool rmb_down_prev = false;
   /** Vector of mouse positions throughout the drag */
   std::vector<Vec2> rmb_drag;
 

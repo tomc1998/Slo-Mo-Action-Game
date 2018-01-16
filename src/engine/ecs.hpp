@@ -23,6 +23,7 @@ class InputState;
 class PaintController;
 class StandardTextures;
 class Camera;
+class Globals;
 
 /************/
 /** MACROS **/
@@ -67,6 +68,8 @@ class ECS {
   friend class SystemCheckDeath;
   friend class SystemHudRenderer;
   friend class SystemShadowRenderer;
+  friend class Editor;
+
 
 /** Generate component list declarations */
 #define X(TYPE, NAME)                                                          \
@@ -84,7 +87,7 @@ private:
   std::vector<PaintSystem *> paint_systems;
   /** A buffer of entity IDs which need to be killed after an update. */
   std::vector<EntityId> death_queue;
-  int current_entity_id;
+  i32 current_entity_id;
 
   /** Kill all the entities in the queue. */
   void kill_entities();
@@ -94,10 +97,8 @@ public:
   ~ECS();
   EntityId gen_entity_id();
   /** Updates the ECS */
-  void update(InputState *input_state, Camera *camera,
-              StandardTextures *std_tex);
-  void paint(InputState *input_state, PaintController *paint_controller,
-             Camera *camera, StandardTextures *std_tex);
+  void update(Globals& globals);
+  void paint(Globals& globals);
   /** Kill an entity. Entity will be removed after all systems have finished
    * running. */
   void queue_entity_death(EntityId id);

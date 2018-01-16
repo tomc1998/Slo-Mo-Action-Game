@@ -94,28 +94,14 @@ EntityId ECS::gen_entity_id() {
   return this->current_entity_id;
 }
 
-void ECS::update(InputState *input_state, Camera *camera,
-                 StandardTextures *std_tex) {
-  Globals g;
-  g.ecs = this;
-  g.input_state = input_state;
-  g.paint_controller = NULL;
-  g.camera = camera;
-  g.std_tex = std_tex;
+void ECS::update(Globals& g) {
   for (u32 ii = 0; ii < this->update_systems.size(); ii++) {
     this->update_systems[ii]->handle_components(g);
   }
   kill_entities();
 }
 
-void ECS::paint(InputState *input_state, PaintController *paint_controller,
-                Camera *camera, StandardTextures *std_tex) {
-  Globals g;
-  g.ecs = this;
-  g.input_state = input_state;
-  g.paint_controller = paint_controller;
-  g.camera = camera;
-  g.std_tex = std_tex;
+void ECS::paint(Globals& g) {
   for (u32 ii = 0; ii < this->paint_systems.size(); ii++) {
     this->paint_systems[ii]->handle_components(g);
   }

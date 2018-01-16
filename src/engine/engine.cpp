@@ -2,8 +2,8 @@
 #include "engine/engine.hpp"
 #include "engine/input/input_manager.hpp"
 #include "engine/input/input_state.hpp"
-#include "engine/system/globals.hpp"
 #include "engine/screen.hpp"
+#include "engine/system/globals.hpp"
 #include <chrono>
 #include <iostream>
 #include <utility>
@@ -35,7 +35,8 @@ Engine::Engine() {
   this->resource_manager = new ResourceManager();
   this->input_manager = new InputManager(this->window);
 
-  std_tex.enemy_bullet = resource_manager->load_texture("assets/sprites/enemy_bullet.png");
+  std_tex.enemy_bullet =
+    resource_manager->load_texture("assets/sprites/enemy_bullet.png");
   std_tex.penumbra = resource_manager->load_texture("assets/penumbra.png");
 }
 
@@ -54,29 +55,59 @@ void Engine::pop_screen() {
 
 void Engine::engine_go() {
   while (true) {
+    auto controller = renderer->gen_paint_controller(
+        resource_manager, resource_manager->get_white());
+    Globals g;
+    ECS *current_ecs = this->screen_stack.back().first;
+    g.ecs = current_ecs;
+    g.input_state = this->input_manager->get_current_input_state();
+    g.paint_controller = &controller;
+    g.camera = camera;
+    g.std_tex = &std_tex;
+
+    this->input_manager->update_input();
+    g.input_state = this->input_manager->get_current_input_state();
+
+    if (g.input_state->editor_toggle_down &&
+        !g.input_state->editor_toggle_down_prev) {
+      editor_on = !editor_on;
+    }
 
     auto frame_time_start = std::chrono::high_resolution_clock::now();
 
-    for (i32 ii = 0; ii < (int)this->max_updates_per_render; ii++) {
-      if (ii % (i32)(this->max_updates_per_render / this->updates_per_render) ==
-          0) {
-        this->input_manager->update_input();
-
-        this->update();
-        this->camera->update_pos();
+    if (!editor_on) {
+      // Update game
+      for (i32 ii = 0; ii < (int)this->max_updates_per_render; ii++) {
+        if (ii % (i32)(this->max_updates_per_render / this->updates_per_render) ==
+            0) {
+          this->update(g);
+          this->camera->update_pos();
+          this->input_manager->update_input();
+          g.input_state = this->input_manager->get_current_input_state();
+        }
+        // If something is NOT affected by slomo, put it here
+        this->camera->update_width();
       }
-      // If something is NOT affected by slomo, put it here
-      this->camera->update_width();
+
+      // Render game
+      glClear(GL_COLOR_BUFFER_BIT);
+      this->paint(g);
+      renderer->render_game(resource_manager, camera);
+      renderer->render_hud(resource_manager);
+      renderer->clear_game_paint_buffer();
+      renderer->clear_hud_paint_buffer();
+      glfwSwapBuffers(this->window);
     }
-
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    this->paint();
-    renderer->render_game(resource_manager, camera);
-    renderer->render_hud(resource_manager);
-    renderer->clear_game_paint_buffer();
-    renderer->clear_hud_paint_buffer();
-    glfwSwapBuffers(this->window);
+    else {
+      // Update & render editor
+      editor.update_render(g);
+      glClear(GL_COLOR_BUFFER_BIT);
+      renderer->render_game(resource_manager, camera);
+      renderer->render_hud(resource_manager);
+      renderer->clear_game_paint_buffer();
+      renderer->clear_hud_paint_buffer();
+      glfwSwapBuffers(this->window);
+    }
 
     if (glfwWindowShouldClose(this->window)) {
       break;
@@ -86,7 +117,7 @@ void Engine::engine_go() {
         std::chrono::high_resolution_clock::now() - frame_time_start);
 
     auto time_to_sleep_ms =
-        1000.0 / (this->FPS) - ((f32)duration.count()) / 1000.0;
+      1000.0 / (this->FPS) - ((f32)duration.count()) / 1000.0;
 
     if (time_to_sleep_ms > 0) {
 #ifdef __linux__
@@ -100,8 +131,8 @@ void Engine::engine_go() {
   }
 }
 
-void Engine::update() {
-  InputState *input_state = this->input_manager->get_current_input_state();
+void Engine::update(Globals &g) {
+  InputState *input_state = g.input_state;
   if (input_state->slomo_down && !input_state->slomo_down_prev) {
     this->slomo = !this->slomo;
     if (this->slomo) {
@@ -122,15 +153,14 @@ void Engine::update() {
   }
 
   ECS *current_ecs = this->screen_stack.back().first;
-  current_ecs->update(input_state, camera, &std_tex);
+  current_ecs->update(g);
 }
 
-void Engine::paint() {
+void Engine::paint(Globals &g) {
   ECS *current_ecs = this->screen_stack.back().first;
-  auto controller = renderer->gen_paint_controller(
-      resource_manager, resource_manager->get_white());
-  current_ecs->paint(this->input_manager->get_current_input_state(),
-                     &controller, camera, &std_tex);
-  controller.flush(controller.curr_batch_game, controller.game_buffer);
-  controller.flush(controller.curr_batch_hud, controller.hud_buffer);
+  current_ecs->paint(g);
+  g.paint_controller->flush(g.paint_controller->curr_batch_game,
+      g.paint_controller->game_buffer);
+  g.paint_controller->flush(g.paint_controller->curr_batch_hud,
+      g.paint_controller->hud_buffer);
 }
