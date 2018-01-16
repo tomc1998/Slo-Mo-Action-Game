@@ -39,14 +39,18 @@ public:
   /**
    * Render the internal paint buffer
    *
-   * @param needs_rebuffer[in] - If true, the data from the internal paint
-   * buffer will be rebuffered to the VBO (with glbufferdata). If false, the
-   * vbo will simply be re-rendered.
+   * @param camera - The camera with which to render the game (used to generate
+   * view matrix)
+   * @param window_w - The width of the window in pixels. We use this to set
+   * the viewport. Aspect ratio from the camera will be used to generate black
+   * borders (i.e. letterboxing)
+   * @param window_h - The height of the window in pixels. See window_w.
    */
-  void render_game(ResourceManager *res_manager, Camera *camera);
+  void render_game(ResourceManager *res_manager, Camera *camera, i32 window_w,
+                   i32 window_h);
 
   /** Similar to render_game but renders the heads up display instead. */
-  void render_hud(ResourceManager *res_manager);
+  void render_hud(ResourceManager *res_manager, i32 window_w, i32 window_h);
 
   /** Clear the internal paint buffer */
   void clear_game_paint_buffer();

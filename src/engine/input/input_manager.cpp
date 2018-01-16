@@ -1,8 +1,13 @@
 #include "engine/vec.hpp"
 #include "input_manager.hpp"
 #include "input_state.hpp"
-#include <GLFW/glfw3.h>
+#include "engine/canvas_size.hpp"
 #include <iostream>
+
+#include <glad/glad.h>
+
+#include <GLFW/glfw3.h>
+
 
 InputManager::InputManager(GLFWwindow *window) {
   current_input_state.move_up_keycode = GLFW_KEY_W;
@@ -118,7 +123,17 @@ void InputManager::cursor_position_callback(GLFWwindow *window, double xpos,
                                             double ypos) {
   InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
 
-  input_state->mouse_pos = Vec2((f32)xpos, (f32)ypos);
+  // We need to transform this onto the viewport before anything else touches
+  // it - i.e. so that the point is inside our letterboxing
+  i32 viewport[4];
+  glGetIntegerv(GL_VIEWPORT, viewport);
+  Vec2 viewport_pos((f32)viewport[0], (f32)viewport[1]);
+  Vec2 mouse_pos((f32)xpos, (f32)ypos);
+  Vec2 transformed = mouse_pos - viewport_pos;
+  transformed.x *= ((f32)CANVAS_W/(f32)viewport[2]);
+  transformed.y *= ((f32)CANVAS_H/(f32)viewport[3]);
+
+  input_state->mouse_pos = transformed;
 }
 
 void InputManager::update_input() {

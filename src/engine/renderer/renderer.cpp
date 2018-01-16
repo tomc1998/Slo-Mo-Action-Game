@@ -6,8 +6,10 @@
 #include "engine/renderer/renderer.hpp"
 #include "engine/resource_manager.hpp"
 #include "shader.hpp"
+#include "engine/canvas_size.hpp"
 #include "engine/vec.hpp"
 #include <map>
+#include <iostream>
 
 Renderer::Renderer(f32 w, f32 h) : hud_camera(Vec2(0.0, 0.0), w, (w / h)) {
   glGenBuffers(1, &dyn_vbo);
@@ -36,8 +38,22 @@ Renderer::Renderer(f32 w, f32 h) : hud_camera(Vec2(0.0, 0.0), w, (w / h)) {
   glClearColor(0.4, 0.4, 0.4, 1.0);
 }
 
-void Renderer::render_game(ResourceManager *res_manager, Camera *camera) {
+void Renderer::render_game(ResourceManager *res_manager, Camera *camera, i32 window_w, i32 window_h) {
   f32 proj_mat[16];
+
+  // First off, set the viewport + letterbox
+  f32 window_aspect = (f32) window_w / (f32) window_h;
+  if (window_aspect < camera->get_aspect()) {
+    // Letterbox top / bottom
+    i32 spare_height = window_h - (i32)(1.0f/(camera->get_aspect()/(f32)window_w));
+    glViewport(0, spare_height/2, window_w, window_h - spare_height); 
+  }
+  else {
+    // Letterbox left / right
+    i32 spare_width = window_w - (i32)((window_h*camera->get_aspect()));
+    glViewport(spare_width/2, 0, window_w - spare_width, window_h); 
+  }
+
   glUseProgram(shader->program_id);
 
   // Generate the projection matrix based on camera pos and zoom
@@ -62,8 +78,26 @@ void Renderer::render_game(ResourceManager *res_manager, Camera *camera) {
   }
 }
 
-void Renderer::render_hud(ResourceManager *res_manager) {
+void Renderer::render_hud(ResourceManager *res_manager, i32 window_w, i32 window_h) {
   f32 proj_mat[16];
+
+  // First off, set the viewport + letterbox
+  f32 window_aspect = (f32) window_w / (f32) window_h;
+  if (window_aspect < hud_camera.get_aspect()) {
+    // Letterbox top / bottom
+    i32 spare_height = window_h - (i32)(1.0f/(hud_camera.get_aspect()/(f32)window_w));
+    glViewport(0, spare_height/2, window_w, window_h - spare_height); 
+  }
+  else {
+    // Letterbox left / right
+    i32 spare_width = window_w - (i32)((window_h*hud_camera.get_aspect()));
+    glViewport(spare_width/2, 0, window_w - spare_width, window_h); 
+  }
+
+  // First off, set the viewport + letterbox
+//  f32 window_aspect = (f32) window_h / (f32) window_w;
+//  glViewport(0, 0, window_w, window_w*window_aspect);
+
   glUseProgram(shader->program_id);
 
   // Generate the projection matrix based on camera pos and zoom

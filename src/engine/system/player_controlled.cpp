@@ -22,8 +22,7 @@ public:
         } else if (input_state->lmb_down && !input_state->lmb_down_prev) {
           p.set_state(p.STATE_ATTACKING);
           // Figure out the angle to attack
-          auto mouse_world_pos =
-              input_state->mouse_pos + camera->get_top_left();
+          auto mouse_world_pos = camera->screen_to_world(input_state->mouse_pos);
           auto player_world_pos = ge.pos;
           p.attack_angle = player_world_pos.angle_to(mouse_world_pos);
         }
