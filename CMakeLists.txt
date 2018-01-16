@@ -60,6 +60,7 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/comp/player_killable.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/hud_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/circle_collider.cpp  
+  ${PROJECT_SOURCE_DIR}/engine/comp/waypoint_graph.cpp  
   )
 
 
