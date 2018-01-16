@@ -31,10 +31,7 @@ public:
         // Render pre-teleport line from player to cursor
         if (p.get_state() == p.STATE_PRE_TELEPORT) {
           paint_controller->draw_line(ge.pos + Vec2(8.0, 8.0),
-                                      input_state->rmb_drag.back() *
-                                              camera->get_width() /
-                                              camera->default_w +
-                                          camera->get_top_left(),
+                                      camera->screen_to_world(input_state->rmb_drag.back()),
                                       2.0, &black, &white);
         }
 

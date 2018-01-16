@@ -8,6 +8,8 @@
 #include "comp/sprite.hpp"
 #include "comp/tilemap.hpp"
 #include "comp/wall.hpp"
+#include "comp/waypoint_graph.hpp"
+#include "comp/circle_collider.hpp"
 #include "ecs.hpp"
 #include "renderer/paint_controller.hpp"
 #include "system/ai_enemy_basic.cpp"

@@ -66,4 +66,8 @@ Vec2 Camera::get_top_left() {
   return Vec2(this->pos.x - this->w / 2, this->pos.y - h / 2);
 }
 
+Vec2 Camera::screen_to_world(Vec2 pos) {
+  return (pos * (this->w / this->default_w) + this->get_top_left());
+}
+
 f32 Camera::get_width() { return this->w; }

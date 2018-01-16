@@ -31,9 +31,7 @@ public:
         // Mouse button released? (teleport!)
         if (!input_state->rmb_down && input_state->rmb_down_prev) {
           p.set_state(p.STATE_TELEPORTING);
-          p.teleport_pos = input_state->mouse_pos *
-                               (camera->get_width() / camera->default_w) +
-                           camera->get_top_left();
+          p.teleport_pos = camera->screen_to_world(input_state->mouse_pos);
         }
 
         Vec2 *acc = &ge.acc;

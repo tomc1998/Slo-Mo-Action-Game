@@ -17,11 +17,14 @@ private:
   /** The view width the camera will zoom towards */
   f32 target_w;
 
-  /* Aspect ratio of width/height (e.g.16/9) */
+  /** Aspect ratio of width/height (e.g.16/9) */
   f32 aspect_ratio;
 
+  /** Default width of the camera */
+  f32 default_w;
+
 public:
-  /* fills 16 f32s based on the current x, y, width, and aspect ratio */
+  /** fills 16 f32s based on the current x, y, width, and aspect ratio */
   void gen_ortho_proj_mat(f32 *dest);
 
   /** Moves the camera a percentage of the distance to the target pos */
@@ -49,7 +52,9 @@ public:
   /** Sets the target width */
   void set_target_width(f32 w);
 
+  /** Converts screen coordinates to world coordinates */
+  Vec2 screen_to_world(Vec2 pos);
+
   f32 get_width();
 
-  f32 default_w;
 };

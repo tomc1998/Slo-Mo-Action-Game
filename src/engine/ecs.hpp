@@ -3,13 +3,16 @@
 #include "comp/animation.hpp"
 #include "comp/bullet.hpp"
 #include "comp/circle_collider.hpp"
+#include "comp/circle_collider.hpp"
 #include "comp/game_entity.hpp"
+#include "comp/hud_entity.hpp"
 #include "comp/hud_entity.hpp"
 #include "comp/player_controlled.hpp"
 #include "comp/player_killable.hpp"
 #include "comp/sprite.hpp"
 #include "comp/tilemap.hpp"
 #include "comp/wall.hpp"
+#include "comp/waypoint_graph.hpp"
 #include <chrono>
 #include <cstdint>
 #include <vector>
@@ -25,7 +28,6 @@ class Globals;
 /************/
 /** MACROS **/
 /************/
-
 
 /** Runs the macro X(T, N) on all the components, where the T parameter is the
  * type and N is the name of the component.
@@ -43,7 +45,8 @@ class Globals;
   X(CompBullet, bullet)                                                        \
   X(CompPlayerKillable, player_killable)                                       \
   X(CompHudEntity, hud_entity)                                                 \
-  X(CompCircleCollider, circle_collider)
+  X(CompCircleCollider, circle_collider)                                       \
+  X(CompWaypointGraph, waypoint_graph)
 
 /***********************/
 /** Class declaration **/
@@ -67,15 +70,16 @@ class ECS {
   friend class SystemShadowRenderer;
   friend class Editor;
 
+
 /** Generate component list declarations */
-#define X(TYPE, NAME)                                      \
+#define X(TYPE, NAME)                                                          \
 private:                                                                       \
   std::vector<TYPE> comp_##NAME;                                               \
                                                                                \
 public:                                                                        \
   void add_comp_##NAME(TYPE comp);                                             \
   TYPE *find_comp_##NAME##_with_id(EntityId entity_id);
-RUN_X_MACRO_ON_ALL_COMPS
+  RUN_X_MACRO_ON_ALL_COMPS
 #undef X
 
 private:
