@@ -3,6 +3,7 @@
 #include "engine/input/input_manager.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/screen.hpp"
+#include "engine/canvas_size.hpp"
 #include "engine/system/globals.hpp"
 #include <chrono>
 #include <iostream>
@@ -25,13 +26,13 @@
 
 Engine::Engine() {
   glfwInit();
-  this->window = glfwCreateWindow(1066, 600, "Slo-Mo Action Game", NULL, NULL);
+  this->window = glfwCreateWindow(CANVAS_W, CANVAS_H, "Slo-Mo Action Game", NULL, NULL);
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   glfwSwapInterval(0);
 
-  this->renderer = new Renderer(1066.0, 600.0);
-  this->camera = new Camera(Vec2(400.0, 300.0), 1066.0, 1066.0 / 600.0);
+  this->renderer = new Renderer(CANVAS_W, CANVAS_H);
+  this->camera = new Camera(Vec2(0.0, 0.0), (f32)CANVAS_W, (f32)CANVAS_W / (f32)CANVAS_H);
   this->resource_manager = new ResourceManager();
   this->input_manager = new InputManager(this->window);
 
@@ -73,6 +74,9 @@ void Engine::engine_go() {
       editor_on = !editor_on;
     }
 
+    i32 window_w, window_h;
+    glfwGetFramebufferSize(this->window, &window_w, &window_h);
+
     auto frame_time_start = std::chrono::high_resolution_clock::now();
 
     if (!editor_on) {
@@ -88,12 +92,11 @@ void Engine::engine_go() {
         // If something is NOT affected by slomo, put it here
         this->camera->update_width();
       }
-
       // Render game
       glClear(GL_COLOR_BUFFER_BIT);
       this->paint(g);
-      renderer->render_game(resource_manager, camera);
-      renderer->render_hud(resource_manager);
+      renderer->render_game(resource_manager, camera, window_w, window_h);
+      renderer->render_hud(resource_manager, window_w, window_h);
       renderer->clear_game_paint_buffer();
       renderer->clear_hud_paint_buffer();
       glfwSwapBuffers(this->window);
@@ -102,8 +105,8 @@ void Engine::engine_go() {
       // Update & render editor
       editor.update_render(g);
       glClear(GL_COLOR_BUFFER_BIT);
-      renderer->render_game(resource_manager, camera);
-      renderer->render_hud(resource_manager);
+      renderer->render_game(resource_manager, camera, window_w, window_h);
+      renderer->render_hud(resource_manager, window_w, window_h);
       renderer->clear_game_paint_buffer();
       renderer->clear_hud_paint_buffer();
       glfwSwapBuffers(this->window);

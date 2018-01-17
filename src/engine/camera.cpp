@@ -71,3 +71,5 @@ Vec2 Camera::screen_to_world(Vec2 pos) {
 }
 
 f32 Camera::get_width() { return this->w; }
+
+f32 Camera::get_aspect() { return this->aspect_ratio; }

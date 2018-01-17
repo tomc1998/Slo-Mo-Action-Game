@@ -34,6 +34,9 @@ public:
    * width */
   void update_width();
 
+  /** Get the current aspect ratio (width / height) */
+  f32 get_aspect();
+
   Vec2 get_top_left();
 
   /**
