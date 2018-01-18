@@ -55,19 +55,28 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
     }
   }
 
+  // Decide on the arrow colours (for enabled / disabled)
+  bool left_enabled = curr_page > 0;
+  bool right_enabled = (curr_page+1) * ENTITIES_PER_PAGE < entity_type_map.size();
+
+  Color disabled(0.2f, 0.2f, 0.2f, 1.0f);
+
+  Color* lcol = left_enabled?&ui_fg:&disabled;
+  Color* rcol = right_enabled?&ui_fg:&disabled;
+
   // Draw the backwards / forwards arrows
   Vertex tris[] = {
-      Vertex(Vec2(20.0f, CANVAS_H - PANEL_SIZE / 2.f), &ui_fg, Vec2(0.0, 0.0)),
-      Vertex(Vec2(28.0f, CANVAS_H - PANEL_SIZE / 2.f - 8.0f), &ui_fg,
+      Vertex(Vec2(20.0f, CANVAS_H - PANEL_SIZE / 2.f), lcol, Vec2(0.0, 0.0)),
+      Vertex(Vec2(28.0f, CANVAS_H - PANEL_SIZE / 2.f - 8.0f), lcol,
              Vec2(0.0, 0.0)),
-      Vertex(Vec2(28.0f, CANVAS_H - PANEL_SIZE / 2.f + 8.0f), &ui_fg,
+      Vertex(Vec2(28.0f, CANVAS_H - PANEL_SIZE / 2.f + 8.0f), lcol,
              Vec2(0.0, 0.0)),
 
-      Vertex(Vec2(CANVAS_W - 20.0f, CANVAS_H - PANEL_SIZE / 2.f), &ui_fg,
+      Vertex(Vec2(CANVAS_W - 20.0f, CANVAS_H - PANEL_SIZE / 2.f), rcol,
              Vec2(0.0, 0.0)),
-      Vertex(Vec2(CANVAS_W - 28.0f, CANVAS_H - PANEL_SIZE / 2.f - 8.0f), &ui_fg,
+      Vertex(Vec2(CANVAS_W - 28.0f, CANVAS_H - PANEL_SIZE / 2.f - 8.0f), rcol,
              Vec2(0.0, 0.0)),
-      Vertex(Vec2(CANVAS_W - 28.0f, CANVAS_H - PANEL_SIZE / 2.f + 8.0f), &ui_fg,
+      Vertex(Vec2(CANVAS_W - 28.0f, CANVAS_H - PANEL_SIZE / 2.f + 8.0f), rcol,
              Vec2(0.0, 0.0)),
   };
   pc->draw_tris_hud(tris, 2, pc->get_white_tex_handle());
