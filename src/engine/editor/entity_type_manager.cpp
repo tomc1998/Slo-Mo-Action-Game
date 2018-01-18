@@ -1,5 +1,6 @@
 #include "engine/canvas_size.hpp"
 #include "engine/color.hpp"
+#include "engine/input/input_state.hpp"
 #include "engine/renderer/paint_controller.hpp"
 #include "engine/renderer/vertex.hpp"
 #include "engine/resource_defs.hpp"
@@ -56,13 +57,33 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   }
 
   // Decide on the arrow colours (for enabled / disabled)
-  bool left_enabled = curr_page > 0;
-  bool right_enabled = (curr_page+1) * ENTITIES_PER_PAGE < entity_type_map.size();
+   bool left_enabled = curr_page > 0;
+   bool right_enabled =
+      (curr_page + 1) * ENTITIES_PER_PAGE < entity_type_map.size();
+  bool left_hovered = false;
+  bool right_hovered = false;
+
+  // Check mouse hover
+  if (left_enabled) {
+    auto diff = globals.input_state->mouse_pos -
+                Vec2(10.0f, CANVAS_H - PANEL_SIZE / 2.f - 16.f);
+    if (diff.x < 30.f && diff.y < 32.f) {
+      left_hovered = true;
+    }
+  }
+  if (right_enabled) {
+    auto diff = globals.input_state->mouse_pos -
+                Vec2(CANVAS_W - 40.0f, CANVAS_H - PANEL_SIZE / 2.f - 16.f);
+    if (diff.x > 0.0f && diff.x < 30.f && diff.y > 0.0f && diff.y < 32.f) {
+      right_hovered = true;
+    }
+  }
 
   Color disabled(0.2f, 0.2f, 0.2f, 1.0f);
+  Color hovered(2.2f, 2.2f, 0.0f, 1.0f);
 
-  Color* lcol = left_enabled?&ui_fg:&disabled;
-  Color* rcol = right_enabled?&ui_fg:&disabled;
+  Color *lcol = left_enabled ? (left_hovered ? &hovered : &ui_fg) : &disabled;
+  Color *rcol = right_enabled ? (right_hovered ? &hovered : &ui_fg) : &disabled;
 
   // Draw the backwards / forwards arrows
   Vertex tris[] = {
