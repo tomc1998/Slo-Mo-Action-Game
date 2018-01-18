@@ -34,6 +34,8 @@ private:
    * and creates a new batch with the given cache tex ix. */
   void flush_if_batch_tex_not(u64 cache_tex_ix, Batch &curr_batch, PaintBuffer *buffer);
 
+  void draw_rect_internal(f32 x, f32 y, f32 w, f32 h, f32 thickness, Color *color,
+                          Batch &curr_batch, PaintBuffer *buffer);
   void fill_rect_internal(f32 x, f32 y, f32 w, f32 h, Color *color,
                           Batch &curr_batch, PaintBuffer *buffer);
   void draw_line_internal(Vec2 start, Vec2 end, f32 stroke, Color *start_col,
@@ -72,6 +74,9 @@ public:
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
   void fill_rect_hud(f32 x, f32 y, f32 w, f32 h, Color *color);
+
+  void draw_rect(f32 x, f32 y, f32 w, f32 h, f32 thickness, Color *color);
+  void draw_rect_hud(f32 x, f32 y, f32 w, f32 h, f32 thickness, Color *color);
 
   void draw_line(Vec2 start, Vec2 end, f32 stroke, Color *start_col,
                  Color *end_col);

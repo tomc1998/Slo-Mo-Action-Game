@@ -57,6 +57,20 @@ void PaintController::fill_rect_internal(f32 x, f32 y, f32 w, f32 h,
   curr_batch.buffer(v, 6);
 }
 
+void PaintController::draw_rect_internal(f32 x, f32 y, f32 w, f32 h,
+                                         f32 thickness, Color *color,
+                                         Batch &curr_batch,
+                                         PaintBuffer *buffer) {
+  Vec2 p0 = Vec2(x, y);
+  Vec2 p1 = p0 + Vec2(w, 0);
+  Vec2 p2 = p0 + Vec2(w, h);
+  Vec2 p3 = p0 + Vec2(0, h);
+  draw_line_internal(p0, p1, thickness, color, color, curr_batch, buffer);
+  draw_line_internal(p1, p2, thickness, color, color, curr_batch, buffer);
+  draw_line_internal(p2, p3, thickness, color, color, curr_batch, buffer);
+  draw_line_internal(p3, p0, thickness, color, color, curr_batch, buffer);
+}
+
 void PaintController::draw_tilemap_internal(CompTilemap const &tilemap,
                                             Color *tint, Batch &curr_batch,
                                             PaintBuffer *buffer) {
@@ -113,7 +127,8 @@ void PaintController::draw_line_internal(Vec2 start, Vec2 end, f32 stroke,
 void PaintController::draw_quads_internal(Vertex *v_buf, size_t num_quads,
                                           TexHandle tex, Batch &curr_batch,
                                           PaintBuffer *buffer) {
-  flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix, curr_batch, buffer);
+  flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix, curr_batch,
+                         buffer);
   std::vector<Vertex> vertices;
   vertices.reserve(num_quads * 6);
   for (u32 ii = 0; ii < num_quads * 4; ii += 4) {
@@ -166,7 +181,7 @@ void PaintController::draw_text_internal(const char *text, f32 x, f32 y,
     break;
 
   case BOT_CENTRE:
-    cursor_pos = Vec2(x - f->get_width_for_text(text)*0.5, y - f->base);
+    cursor_pos = Vec2(x - f->get_width_for_text(text) * 0.5, y - f->base);
     break;
 
   case BOT_RIGHT:
@@ -234,15 +249,23 @@ void PaintController::fill_rect_hud(f32 x, f32 y, f32 w, f32 h, Color *color) {
   fill_rect_internal(x, y, w, h, color, curr_batch_hud, hud_buffer);
 }
 
+void PaintController::draw_rect(f32 x, f32 y, f32 w, f32 h, f32 thickness, Color *color) {
+  draw_rect_internal(x, y, w, h, thickness, color, curr_batch_game, game_buffer);
+}
+void PaintController::draw_rect_hud(f32 x, f32 y, f32 w, f32 h, f32 thickness, Color *color) {
+  draw_rect_internal(x, y, w, h, thickness, color, curr_batch_hud, hud_buffer);
+}
+
 void PaintController::draw_line(Vec2 start, Vec2 end, f32 stroke,
                                 Color *start_col, Color *end_col) {
   draw_line_internal(start, end, stroke, start_col, end_col, curr_batch_game,
-            game_buffer);
+                     game_buffer);
 }
 
 void PaintController::draw_line_hud(Vec2 start, Vec2 end, f32 stroke,
                                     Color *start_col, Color *end_col) {
-  draw_line_internal(start, end, stroke, start_col, end_col, curr_batch_hud, hud_buffer);
+  draw_line_internal(start, end, stroke, start_col, end_col, curr_batch_hud,
+                     hud_buffer);
 }
 
 void PaintController::draw_animation(AnimHandle anim, u32 updates, f32 x, f32 y,

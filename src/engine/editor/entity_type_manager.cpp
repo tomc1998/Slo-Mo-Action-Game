@@ -27,8 +27,8 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   const f32 PANEL_SIZE = 200.0f; // size of the bottom panel
   pc->fill_rect_hud(0.0, CANVAS_H - PANEL_SIZE, CANVAS_W, PANEL_SIZE, &ui_bg);
   // Split entities into pages
-  const static f32 HORI_PADDING = 25.0f;
-  const static f32 VERT_PADDING = 25.0f;
+  const static f32 HORI_PADDING = 10.0f;
+  const static f32 VERT_PADDING = 40.0f;
   const static f32 ENTITY_PADDING = 5.0f;
   const static f32 ENTITY_SIZE = 150.0f;
   const static u32 ENTITIES_PER_PAGE =
@@ -41,15 +41,10 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
                      ii + entity_start_ix < entity_type_map.size();
          ++ii) {
       auto &entity_type_pair = *begin;
-      pc->fill_rect_hud(HORI_PADDING + (ii)*ENTITY_SIZE + ENTITY_PADDING,
+      pc->draw_rect_hud(HORI_PADDING + (ii)*ENTITY_SIZE + ENTITY_PADDING,
                         CANVAS_H - VERT_PADDING - ENTITY_SIZE + ENTITY_PADDING,
                         ENTITY_SIZE - ENTITY_PADDING * 2.f,
-                        ENTITY_SIZE - ENTITY_PADDING * 2.f, &ui_fg);
-      pc->fill_rect_hud(HORI_PADDING + (ii)*ENTITY_SIZE + ENTITY_PADDING + 1.5f,
-                        CANVAS_H - VERT_PADDING + 1.5f - ENTITY_SIZE +
-                            ENTITY_PADDING,
-                        ENTITY_SIZE - 3.f - ENTITY_PADDING * 2.f,
-                        ENTITY_SIZE - 3.f - ENTITY_PADDING * 2.f, &ui_bg);
+                        ENTITY_SIZE - ENTITY_PADDING * 2.f, 2.0f, &ui_fg);
       pc->draw_text_hud(entity_type_pair.first.c_str(),
                         HORI_PADDING + (ii)*ENTITY_SIZE + ENTITY_SIZE / 2.f,
                         CANVAS_H - VERT_PADDING/2.f, TextAlign::BOT_CENTRE, font,
