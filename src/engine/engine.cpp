@@ -39,6 +39,9 @@ Engine::Engine() {
   std_tex.enemy_bullet =
     resource_manager->load_texture("assets/sprites/enemy_bullet.png");
   std_tex.penumbra = resource_manager->load_texture("assets/penumbra.png");
+
+  FontHandle editor_font = resource_manager->load_font("assets/fonts/fixedsys_excelsior.fnt");
+  editor = new Editor(editor_font);
 }
 
 void Engine::push_screen(Screen *screen) {
@@ -103,7 +106,11 @@ void Engine::engine_go() {
     }
     else {
       // Update & render editor
-      editor.update_render(g);
+      editor->update_render(g);
+      g.paint_controller->flush(g.paint_controller->curr_batch_game,
+          g.paint_controller->game_buffer);
+      g.paint_controller->flush(g.paint_controller->curr_batch_hud,
+          g.paint_controller->hud_buffer);
       glClear(GL_COLOR_BUFFER_BIT);
       renderer->render_game(resource_manager, camera, window_w, window_h);
       renderer->render_hud(resource_manager, window_w, window_h);

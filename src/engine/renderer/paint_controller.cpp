@@ -166,11 +166,11 @@ void PaintController::draw_text_internal(const char *text, f32 x, f32 y,
     break;
 
   case BOT_CENTRE:
-    cursor_pos = Vec2(x - f->get_width_for_text(text), y - f->base);
+    cursor_pos = Vec2(x - f->get_width_for_text(text)*0.5, y - f->base);
     break;
 
   case BOT_RIGHT:
-    cursor_pos = Vec2(x - f->get_width_for_text(text) * 0.5, y - f->base);
+    cursor_pos = Vec2(x - f->get_width_for_text(text), y - f->base);
     break;
   }
 

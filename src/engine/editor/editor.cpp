@@ -6,7 +6,9 @@
 void setup_entity_type_manager(EntityTypeManager &m) {
   EntityType e0;
   e0.game_entity = new CompGameEntity(0, Vec2(0.0, 0.0), 10.0, 0.2);
-  m.insert_entity_type("Test Entity", e0);
+  m.insert_entity_type("Test Entity 0", e0);
+  m.insert_entity_type("Test Entity 1", e0);
+  m.insert_entity_type("Test Entity 2", e0);
 }
 
 Editor::Editor(FontHandle font) : font(font) {

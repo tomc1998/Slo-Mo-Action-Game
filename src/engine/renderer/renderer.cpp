@@ -11,7 +11,7 @@
 #include <map>
 #include <iostream>
 
-Renderer::Renderer(f32 w, f32 h) : hud_camera(Vec2(0.0, 0.0), w, (w / h)) {
+Renderer::Renderer(f32 w, f32 h) : hud_camera(Vec2(w/2.0, h/2.0), w, (w / h)) {
   glGenBuffers(1, &dyn_vbo);
 
   // Compile the shader
