@@ -101,4 +101,14 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
              Vec2(0.0, 0.0)),
   };
   pc->draw_tris_hud(tris, 2, pc->get_white_tex_handle());
+
+  // Check if we've just clicked one of the arrows
+  if (!globals.input_state->lmb_down && globals.input_state->lmb_down_prev) {
+    if (left_hovered) {
+      curr_page --;
+    }
+    else if (right_hovered) {
+      curr_page ++;
+    }
+  }
 }
