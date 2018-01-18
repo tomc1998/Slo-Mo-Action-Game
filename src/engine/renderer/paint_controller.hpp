@@ -51,6 +51,11 @@ private:
   void draw_quads_internal(Vertex *v_buf, size_t num_quads, TexHandle tex,
                            Batch &curr_batch, PaintBuffer *buffer);
 
+  /** Draw some quads with the given vertices. This function will transform the
+   * quads into 2 tris each. */
+  void draw_tris_internal(Vertex *v_buf, size_t num_tris, TexHandle tex,
+                           Batch &curr_batch, PaintBuffer *buffer);
+
   void draw_tilemap_internal(CompTilemap const &tilemap, Color *tint,
                              Batch &curr_batch, PaintBuffer *buffer);
 
@@ -94,6 +99,9 @@ public:
                       Color *tint);
   void draw_quads(Vertex *v_buf, size_t num_quads, TexHandle tex);
   void draw_quads_hud(Vertex *v_buf, size_t num_quads, TexHandle tex);
+
+  void draw_tris(Vertex *v_buf, size_t num_quads, TexHandle tex);
+  void draw_tris_hud(Vertex *v_buf, size_t num_quads, TexHandle tex);
 
   void draw_tilemap(CompTilemap const &tilemap, Color *tint);
   void draw_tilemap_hud(CompTilemap const &tilemap, Color *tint);

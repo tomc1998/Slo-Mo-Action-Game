@@ -139,6 +139,14 @@ void PaintController::draw_quads_internal(Vertex *v_buf, size_t num_quads,
   curr_batch.buffer(&(vertices[0]), vertices.size());
 }
 
+void PaintController::draw_tris_internal(Vertex *v_buf, size_t num_tris,
+                                          TexHandle tex, Batch &curr_batch,
+                                          PaintBuffer *buffer) {
+  flush_if_batch_tex_not(get_tex_for_handle(tex)->cache_tex_ix, curr_batch,
+                         buffer);
+  curr_batch.buffer(v_buf, num_tris*3);
+}
+
 Texture *PaintController::get_tex_for_handle(TexHandle r) {
   return res_manager->lookup_tex(r);
 }
@@ -301,6 +309,15 @@ void PaintController::draw_quads(Vertex *v_buf, size_t num_quads,
 void PaintController::draw_quads_hud(Vertex *v_buf, size_t num_quads,
                                      TexHandle tex) {
   draw_quads_internal(v_buf, num_quads, tex, curr_batch_hud, hud_buffer);
+}
+
+void PaintController::draw_tris(Vertex *v_buf, size_t num_tris,
+                                 TexHandle tex) {
+  draw_tris_internal(v_buf, num_tris, tex, curr_batch_game, game_buffer);
+}
+void PaintController::draw_tris_hud(Vertex *v_buf, size_t num_tris,
+                                     TexHandle tex) {
+  draw_tris_internal(v_buf, num_tris, tex, curr_batch_hud, hud_buffer);
 }
 
 void PaintController::draw_tilemap(CompTilemap const &tilemap, Color *tint) {

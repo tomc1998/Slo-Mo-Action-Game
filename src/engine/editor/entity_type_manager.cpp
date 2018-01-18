@@ -1,6 +1,7 @@
 #include "engine/canvas_size.hpp"
 #include "engine/color.hpp"
 #include "engine/renderer/paint_controller.hpp"
+#include "engine/renderer/vertex.hpp"
 #include "engine/resource_defs.hpp"
 #include "engine/system/globals.hpp"
 #include "entity_type_manager.hpp"
@@ -26,8 +27,9 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   static Color ui_fg(1.0f, 1.0f, 1.0f, 1.0f);
   const f32 PANEL_SIZE = 200.0f; // size of the bottom panel
   pc->fill_rect_hud(0.0, CANVAS_H - PANEL_SIZE, CANVAS_W, PANEL_SIZE, &ui_bg);
-  // Split entities into pages
-  const static f32 HORI_PADDING = 10.0f;
+
+  // Split entities into pages, then render the current page
+  const static f32 HORI_PADDING = 60.0f;
   const static f32 VERT_PADDING = 40.0f;
   const static f32 ENTITY_PADDING = 5.0f;
   const static f32 ENTITY_SIZE = 150.0f;
@@ -47,9 +49,26 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
                         ENTITY_SIZE - ENTITY_PADDING * 2.f, 2.0f, &ui_fg);
       pc->draw_text_hud(entity_type_pair.first.c_str(),
                         HORI_PADDING + (ii)*ENTITY_SIZE + ENTITY_SIZE / 2.f,
-                        CANVAS_H - VERT_PADDING/2.f, TextAlign::BOT_CENTRE, font,
-                        &ui_fg);
-      begin ++;
+                        CANVAS_H - VERT_PADDING / 2.f, TextAlign::BOT_CENTRE,
+                        font, &ui_fg);
+      begin++;
     }
   }
+
+  // Draw the backwards / forwards arrows
+  Vertex tris[] = {
+      Vertex(Vec2(20.0f, CANVAS_H - PANEL_SIZE / 2.f), &ui_fg, Vec2(0.0, 0.0)),
+      Vertex(Vec2(28.0f, CANVAS_H - PANEL_SIZE / 2.f - 8.0f), &ui_fg,
+             Vec2(0.0, 0.0)),
+      Vertex(Vec2(28.0f, CANVAS_H - PANEL_SIZE / 2.f + 8.0f), &ui_fg,
+             Vec2(0.0, 0.0)),
+
+      Vertex(Vec2(CANVAS_W - 20.0f, CANVAS_H - PANEL_SIZE / 2.f), &ui_fg,
+             Vec2(0.0, 0.0)),
+      Vertex(Vec2(CANVAS_W - 28.0f, CANVAS_H - PANEL_SIZE / 2.f - 8.0f), &ui_fg,
+             Vec2(0.0, 0.0)),
+      Vertex(Vec2(CANVAS_W - 28.0f, CANVAS_H - PANEL_SIZE / 2.f + 8.0f), &ui_fg,
+             Vec2(0.0, 0.0)),
+  };
+  pc->draw_tris_hud(tris, 2, pc->get_white_tex_handle());
 }

@@ -9,6 +9,14 @@ void setup_entity_type_manager(EntityTypeManager &m) {
   m.insert_entity_type(std::string("0"), e0);
   m.insert_entity_type(std::string("1"), e0);
   m.insert_entity_type(std::string("2"), e0);
+  m.insert_entity_type(std::string("3"), e0);
+  m.insert_entity_type(std::string("4"), e0);
+  m.insert_entity_type(std::string("5"), e0);
+  m.insert_entity_type(std::string("6"), e0);
+  m.insert_entity_type(std::string("7"), e0);
+  m.insert_entity_type(std::string("8"), e0);
+  m.insert_entity_type(std::string("9"), e0);
+  m.insert_entity_type(std::string("10"), e0);
 }
 
 Editor::Editor(FontHandle font) : font(font) {
