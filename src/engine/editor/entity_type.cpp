@@ -13,7 +13,7 @@ EntityType::~EntityType() {
 }
 
 EntityType::EntityType(const EntityType &t) {
-#define X(TYPE, NAME) *NAME = *t.NAME;
+#define X(TYPE, NAME) if (NAME != NULL && t.NAME != NULL) { *NAME = *t.NAME; }
   RUN_X_MACRO_ON_ALL_COMPS
 #undef X
 }

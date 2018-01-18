@@ -1,8 +1,17 @@
 #include "editor.hpp"
 #include "engine/level/level.hpp"
+#include "engine/vec.hpp"
+#include <string>
 
-Editor::Editor() {
+void setup_entity_type_manager(EntityTypeManager &m) {
+  EntityType e0;
+  e0.game_entity = new CompGameEntity(0, Vec2(0.0, 0.0), 10.0, 0.2);
+  m.insert_entity_type("Test Entity", e0);
+}
+
+Editor::Editor(FontHandle font) : font(font) {
   curr_level = new Level();
+  setup_entity_type_manager(entity_type_manager);
 }
 
 Editor::~Editor() {
@@ -28,4 +37,7 @@ void Editor::load_curr_level_into_ecs(ECS& ecs) const {
 
 void Editor::update_render(Globals& globals) {
   curr_level->ecs.paint(globals);
+
+  // Render editor GUI
+  entity_type_manager.paint(globals, font);
 }

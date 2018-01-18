@@ -1,4 +1,5 @@
 #pragma once
+#include "entity_type_manager.hpp"
 
 class ECS;
 class Globals;
@@ -11,8 +12,12 @@ class Level;
 class Editor {
   /** The level we're editing currently. */
   Level* curr_level;
+  EntityTypeManager entity_type_manager;
+
+  /** The font to render the editor GUI with */
+  FontHandle font;
   public:
-    Editor();
+    Editor(FontHandle font);
     ~Editor();
     /** Create a new level to edit. The previous level data will be destroyed. */
     void new_level();
