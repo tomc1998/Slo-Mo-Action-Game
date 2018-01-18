@@ -35,7 +35,6 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
       (CANVAS_W - HORI_PADDING * 2.f) / ENTITY_SIZE;
   const u32 entity_start_ix = curr_page * ENTITIES_PER_PAGE;
   auto begin = entity_type_map.begin();
-  auto end = entity_type_map.end();
   if (entity_start_ix < entity_type_map.size()) {
     std::advance(begin, entity_start_ix);
     for (u32 ii = 0; ii < ENTITIES_PER_PAGE &&
@@ -55,7 +54,7 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
                         HORI_PADDING + (ii)*ENTITY_SIZE + ENTITY_SIZE / 2.f,
                         CANVAS_H - VERT_PADDING/2.f, TextAlign::BOT_CENTRE, font,
                         &ui_fg);
-      std::next(begin);
+      begin ++;
     }
   }
 }
