@@ -2,6 +2,17 @@
 
 Top down action game, can slow the game down & replay the level at full speed
 
+***
+
+## Building dependencies
+
+Most dependencies are built automatically, but some need to be installed on
+your system before building the game.
+
+### CEGUI
+Follow the instructions [here](http://cegui.org.uk/). libCEGUIBase-0 should be
+on your gcc library path.
+
 ## Building
 
 When building on linux:
