@@ -4,3 +4,6 @@
 [submodule "deps/sparsepp"]
 	path = deps/sparsepp
 	url = https://github.com/greg7mdp/sparsepp.git
+[submodule "deps/cegui"]
+	path = deps/cegui
+	url = https://github.com/OpenTechEngine/CEGUI.git
