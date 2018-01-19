@@ -108,8 +108,10 @@ target_include_directories(game PUBLIC ${GLAD_ROOT_DIR}/include)
 ####################################################
 
 # CEGUI #############################################
-target_link_libraries(game CEGUIBase-0)
-target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/cegui)
+target_link_libraries(game ${PROJECT_DEP_DIR}/cegui/build/lib/libCEGUIBase-0.so)
+target_link_libraries(game ${PROJECT_DEP_DIR}/cegui/build/lib/libCEGUIOpenGLRenderer-0.so)
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/cegui/cegui/include)
+target_include_directories(game PUBLIC ${PROJECT_DEP_DIR}/cegui/build/cegui/include)
 ####################################################
 
 # SparsePP #############################################

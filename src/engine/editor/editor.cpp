@@ -3,6 +3,9 @@
 #include "engine/vec.hpp"
 #include <string>
 
+#define CEGUI_USE_GLEW
+#include <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
+
 void setup_entity_type_manager(EntityTypeManager &m) {
   EntityType e0;
   e0.game_entity = new CompGameEntity(0, Vec2(0.0, 0.0), 10.0, 0.2);
@@ -22,6 +25,8 @@ void setup_entity_type_manager(EntityTypeManager &m) {
 Editor::Editor(FontHandle font) : font(font) {
   curr_level = new Level();
   setup_entity_type_manager(entity_type_manager);
+  CEGUI::OpenGL3Renderer& myRenderer =
+      CEGUI::OpenGL3Renderer::bootstrapSystem();
 }
 
 Editor::~Editor() {
