@@ -76,6 +76,13 @@ void Renderer::render_game(ResourceManager *res_manager, Camera *camera, i32 win
     glDrawArrays(GL_TRIANGLES, curr_ix, b.size());
     curr_ix += b.size();
   }
+  glDisableVertexAttribArray(Renderer::V_ATTR_POS_LOC);
+  glDisableVertexAttribArray(Renderer::V_ATTR_COL_LOC);
+  glDisableVertexAttribArray(Renderer::V_ATTR_UV_LOC);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glUseProgram(0);
 }
 
 void Renderer::render_hud(ResourceManager *res_manager, i32 window_w, i32 window_h) {
@@ -120,6 +127,12 @@ void Renderer::render_hud(ResourceManager *res_manager, i32 window_w, i32 window
     glDrawArrays(GL_TRIANGLES, curr_ix, b.size());
     curr_ix += b.size();
   }
+  glDisableVertexAttribArray(Renderer::V_ATTR_POS_LOC);
+  glDisableVertexAttribArray(Renderer::V_ATTR_COL_LOC);
+  glDisableVertexAttribArray(Renderer::V_ATTR_UV_LOC);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glUseProgram(0);
 }
 
 void Renderer::clear_game_paint_buffer() { game_buffer.clear(); }

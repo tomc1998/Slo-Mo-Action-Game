@@ -20,12 +20,16 @@
 
 #include <GLFW/glfw3.h>
 
+#include <CEGUI/System.h>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #undef STB_IMAGE_IMPLEMENTATION
 
 Engine::Engine() {
   glfwInit();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
   this->window = glfwCreateWindow(CANVAS_W, CANVAS_H, "Slo-Mo Action Game", NULL, NULL);
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -102,6 +106,8 @@ void Engine::engine_go() {
       renderer->render_hud(resource_manager, window_w, window_h);
       renderer->clear_game_paint_buffer();
       renderer->clear_hud_paint_buffer();
+      // Render GUI
+      CEGUI::System::getSingleton().renderAllGUIContexts();
       glfwSwapBuffers(this->window);
     }
     else {
@@ -116,6 +122,10 @@ void Engine::engine_go() {
       renderer->render_hud(resource_manager, window_w, window_h);
       renderer->clear_game_paint_buffer();
       renderer->clear_hud_paint_buffer();
+      glBindTexture(GL_TEXTURE_2D, 0);
+      glUseProgram(0);
+      glActiveTexture(GL_TEXTURE0);
+      CEGUI::System::getSingleton().renderAllGUIContexts();
       glfwSwapBuffers(this->window);
     }
 

@@ -1,12 +1,12 @@
 #pragma once
 
+#include "engine/editor/editor.hpp"
 #include "engine/camera.hpp"
 #include "engine/input/input_manager.hpp"
 #include "engine/renderer/renderer.hpp"
 #include "engine/resource_manager.hpp"
 #include "engine/screen.hpp"
 #include "engine/system/globals.hpp"
-#include "engine/editor/editor.hpp"
 #include <utility>
 #include <vector>
 
