@@ -1,13 +1,14 @@
+#include "engine/canvas_size.hpp"
 #include "engine/vec.hpp"
 #include "input_manager.hpp"
 #include "input_state.hpp"
-#include "engine/canvas_size.hpp"
 #include <iostream>
+
+#include <CEGUI/CEGUI.h>
 
 #include <glad/glad.h>
 
 #include <GLFW/glfw3.h>
-
 
 InputManager::InputManager(GLFWwindow *window) {
   current_input_state.move_up_keycode = GLFW_KEY_W;
@@ -37,6 +38,15 @@ InputState *InputManager::get_current_input_state() {
 
 void InputManager::key_callback(GLFWwindow *window, int key, int scancode,
                                 int action, int mods) {
+  // Inject into CEGUI
+  CEGUI::GUIContext &context =
+      CEGUI::System::getSingleton().getDefaultGUIContext();
+  if (action == GLFW_PRESS) {
+    context.injectKeyDown((CEGUI::Key::Scan)scancode);
+  } else if (action == GLFW_RELEASE) {
+    context.injectKeyUp((CEGUI::Key::Scan)scancode);
+  }
+
   InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
 
   // Key presses
@@ -68,34 +78,58 @@ void InputManager::key_callback(GLFWwindow *window, int key, int scancode,
 
   // Key releases
   if (action == GLFW_RELEASE) {
-    if (key == input_state->move_up_keycode) {
-      input_state->move_up = 0.0f;
-    }
+    if (action == GLFW_RELEASE) {
+      if (key == input_state->move_up_keycode) {
+        input_state->move_up = 0.0f;
+      }
 
-    if (key == input_state->move_right_keycode) {
-      input_state->move_right = 0.0f;
-    }
+      if (key == input_state->move_right_keycode) {
+        input_state->move_right = 0.0f;
+      }
 
-    if (key == input_state->move_down_keycode) {
-      input_state->move_down = 0.0f;
-    }
+      if (key == input_state->move_down_keycode) {
+        input_state->move_down = 0.0f;
+      }
 
-    if (key == input_state->move_left_keycode) {
-      input_state->move_left = 0.0f;
-    }
+      if (key == input_state->move_left_keycode) {
+        input_state->move_left = 0.0f;
+      }
 
-    if (key == input_state->slomo_down_keycode) {
-      input_state->slomo_down = false;
-    }
+      if (key == input_state->slomo_down_keycode) {
+        input_state->slomo_down = false;
+      }
 
-    if (key == input_state->editor_toggle_keycode) {
-      input_state->editor_toggle_down = false;
+      if (key == input_state->editor_toggle_keycode) {
+        input_state->editor_toggle_down = false;
+      }
     }
   }
 }
 
 void InputManager::mouse_callback(GLFWwindow *window, int button, int action,
                                   int mods) {
+  // Inject into CEGUI
+  CEGUI::GUIContext &context =
+      CEGUI::System::getSingleton().getDefaultGUIContext();
+  // We need to get the GLFW button value as a CEGUI::MouseButton value
+  CEGUI::MouseButton cegui_button;
+  switch (button) {
+  case GLFW_MOUSE_BUTTON_LEFT:
+    cegui_button = CEGUI::MouseButton::LeftButton;
+    break;
+  case GLFW_MOUSE_BUTTON_RIGHT:
+    cegui_button = CEGUI::MouseButton::LeftButton;
+    break;
+  case GLFW_MOUSE_BUTTON_MIDDLE:
+    cegui_button = CEGUI::MouseButton::MiddleButton;
+    break;
+  }
+  if (action == GLFW_PRESS) {
+    context.injectMouseButtonDown(cegui_button);
+  } else if (action == GLFW_RELEASE) {
+    context.injectMouseButtonUp(cegui_button);
+  }
+
   InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
   double xpos, ypos;
 
@@ -130,6 +164,7 @@ void InputManager::mouse_callback(GLFWwindow *window, int button, int action,
 
 void InputManager::cursor_position_callback(GLFWwindow *window, double xpos,
                                             double ypos) {
+
   InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
 
   // We need to transform this onto the viewport before anything else touches
@@ -139,9 +174,14 @@ void InputManager::cursor_position_callback(GLFWwindow *window, double xpos,
   Vec2 viewport_pos((f32)viewport[0], (f32)viewport[1]);
   Vec2 mouse_pos((f32)xpos, (f32)ypos);
   Vec2 transformed = mouse_pos - viewport_pos;
-  transformed.x *= ((f32)CANVAS_W/(f32)viewport[2]);
-  transformed.y *= ((f32)CANVAS_H/(f32)viewport[3]);
 
+  // Inject into CEGUI
+  CEGUI::GUIContext &context =
+      CEGUI::System::getSingleton().getDefaultGUIContext();
+  context.injectMousePosition(xpos, ypos);
+
+  transformed.x *= ((f32)CANVAS_W / (f32)viewport[2]);
+  transformed.y *= ((f32)CANVAS_H / (f32)viewport[3]);
   input_state->mouse_pos = transformed;
 }
 
@@ -154,7 +194,8 @@ void InputManager::update_input() {
   current_input_state.slomo_down_prev = current_input_state.slomo_down;
   current_input_state.lmb_down_prev = current_input_state.lmb_down;
   current_input_state.rmb_down_prev = current_input_state.rmb_down;
-  current_input_state.editor_toggle_down_prev = current_input_state.editor_toggle_down;
+  current_input_state.editor_toggle_down_prev =
+      current_input_state.editor_toggle_down;
   glfwPollEvents();
   if (current_input_state.lmb_down) {
     current_input_state.lmb_drag.push_back(current_input_state.mouse_pos);
