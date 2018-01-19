@@ -8,5 +8,7 @@ assets/sprites/
 assets/animations/
 assets/fonts/
 assets/penumbra.png
+assets/gui/
 deps/cegui
 compile_commands.json
+CEGUI.log

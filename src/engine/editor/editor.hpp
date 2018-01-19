@@ -1,5 +1,11 @@
 #pragma once
+
 #include "entity_type_manager.hpp"
+
+namespace CEGUI {
+  class OpenGLRenderer;
+  class Window;
+}
 
 class ECS;
 class Globals;
@@ -10,12 +16,15 @@ class Level;
  * This level can then be saved and loaded. 
  */
 class Editor {
-  /** The level we're editing currently. */
-  Level* curr_level;
-  EntityTypeManager entity_type_manager;
-
   /** The font to render the editor GUI with */
   FontHandle font;
+
+  /** The level we're editing currently. */
+  Level* curr_level;
+  CEGUI::Window* root;
+  CEGUI::OpenGLRenderer& gui_renderer;
+  EntityTypeManager entity_type_manager;
+
   public:
     Editor(FontHandle font);
     ~Editor();
