@@ -9,6 +9,11 @@ Top down action game, can slow the game down & replay the level at full speed
 Most dependencies are built automatically, but some need to be installed on
 your system before building the game.
 
+Before building any of these, you need to initialise the git submodules:
+```
+git submodule update --init --recursive
+```
+
 ### CEGUI
 Download the CEGUI source [here](http://cegui.org.uk/). Build with the following:
 ```
@@ -22,7 +27,6 @@ or the equivalent on your platform. Then copy the cegui directory into deps/cegu
 
 When building on linux:
 ```
-git submodule update --init --recursive
 mkdir bin
 cd bin
 cmake ..
