@@ -62,8 +62,6 @@ void Engine::engine_go() {
     auto controller = renderer->gen_paint_controller(
         resource_manager, resource_manager->get_white());
     Globals g;
-    ECS *current_ecs = this->screen_stack.back().first;
-    g.ecs = current_ecs;
     g.input_state = this->input_manager->get_current_input_state();
     g.paint_controller = &controller;
     g.camera = camera;

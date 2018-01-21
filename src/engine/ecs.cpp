@@ -95,6 +95,7 @@ EntityId ECS::gen_entity_id() {
 }
 
 void ECS::update(Globals& g) {
+  g.ecs = this;
   for (u32 ii = 0; ii < this->update_systems.size(); ii++) {
     this->update_systems[ii]->handle_components(g);
   }
@@ -102,6 +103,7 @@ void ECS::update(Globals& g) {
 }
 
 void ECS::paint(Globals& g) {
+  g.ecs = this;
   for (u32 ii = 0; ii < this->paint_systems.size(); ii++) {
     this->paint_systems[ii]->handle_components(g);
   }
