@@ -106,8 +106,6 @@ void Engine::engine_go() {
       renderer->render_hud(resource_manager, window_w, window_h);
       renderer->clear_game_paint_buffer();
       renderer->clear_hud_paint_buffer();
-      // Render GUI
-      CEGUI::System::getSingleton().renderAllGUIContexts();
       glfwSwapBuffers(this->window);
     }
     else {
@@ -122,9 +120,6 @@ void Engine::engine_go() {
       renderer->render_hud(resource_manager, window_w, window_h);
       renderer->clear_game_paint_buffer();
       renderer->clear_hud_paint_buffer();
-      glBindTexture(GL_TEXTURE_2D, 0);
-      glUseProgram(0);
-      glActiveTexture(GL_TEXTURE0);
       CEGUI::System::getSingleton().renderAllGUIContexts();
       glfwSwapBuffers(this->window);
     }

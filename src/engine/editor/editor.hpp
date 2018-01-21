@@ -34,6 +34,11 @@ class Editor {
     Editor& operator=(Editor& other) const;
     /** Call from the engine when you want to display the editor. Will process
      * inputs & render the editor of the current level (using the given
-     * paintcontroller). */
+     * paintcontroller). 
+     *
+     * Since we're using CEGUI which just renders on top of the game, this
+     * update render stage is for updating & painting anything below the editor
+     * (such as the current game state)
+     * */
     void update_render(Globals& globals);
 };

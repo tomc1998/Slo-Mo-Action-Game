@@ -6,6 +6,7 @@
 #include "engine/resource_defs.hpp"
 #include "engine/system/globals.hpp"
 #include "entity_type_manager.hpp"
+#include <CEGUI/CEGUI.h>
 #include <iostream>
 #include <iterator>
 #include <utility>
@@ -57,8 +58,8 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   }
 
   // Decide on the arrow colours (for enabled / disabled)
-   bool left_enabled = curr_page > 0;
-   bool right_enabled =
+  bool left_enabled = curr_page > 0;
+  bool right_enabled =
       (curr_page + 1) * ENTITIES_PER_PAGE < entity_type_map.size();
   bool left_hovered = false;
   bool right_hovered = false;
@@ -105,10 +106,25 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   // Check if we've just clicked one of the arrows
   if (!globals.input_state->lmb_down && globals.input_state->lmb_down_prev) {
     if (left_hovered) {
-      curr_page --;
-    }
-    else if (right_hovered) {
-      curr_page ++;
+      curr_page--;
+    } else if (right_hovered) {
+      curr_page++;
     }
   }
+}
+
+CEGUI::Window *EntityTypeManager::create_library_window() {
+  using namespace CEGUI;
+  WindowManager &wmgr = WindowManager::getSingleton();
+
+  FrameWindow *wnd = (FrameWindow *)wmgr.createWindow("TaharezLook/FrameWindow",
+                                                      "Entity Library");
+
+  wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim(0.25f)));
+  wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim(0.5f)));
+  wnd->setMaxSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+  wnd->setMinSize(USize(cegui_reldim(0.1f), cegui_reldim(0.1f)));
+  wnd->setText("Entity Library");
+
+  return wnd;
 }

@@ -5,6 +5,10 @@
 
 class Globals;
 
+namespace CEGUI {
+  class Window;
+}
+
 class EntityTypeManager {
 private:
   spp::sparse_hash_map<std::string, EntityType> entity_type_map;
@@ -18,4 +22,5 @@ public:
   EntityType get_entity_type(std::string name);
   /** Paint this entity type library to the screen */
   void paint(Globals &globals, FontHandle font);
+  CEGUI::Window* create_library_window();
 };

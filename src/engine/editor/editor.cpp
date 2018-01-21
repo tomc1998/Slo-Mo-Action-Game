@@ -41,6 +41,10 @@ void setup_entity_type_manager(EntityTypeManager &m) {
 
 Editor::Editor(FontHandle font) : font(font), 
   gui_renderer(CEGUI::OpenGLRenderer::bootstrapSystem()) {
+    curr_level = new Level();
+    setup_entity_type_manager(entity_type_manager);
+
+    // Setup editor gui
     using namespace CEGUI;
     setup_cegui_res();
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
@@ -48,19 +52,10 @@ Editor::Editor(FontHandle font) : font(font),
     WindowManager& wmgr = WindowManager::getSingleton();
     root = wmgr.createWindow( "DefaultWindow", "root" );
 
-    FrameWindow* wnd = (FrameWindow*)wmgr.createWindow("TaharezLook/FrameWindow", "Demo Window");
-    root->addChild(wnd);
-
-    wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
-    wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
-    wnd->setMaxSize(USize(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
-    wnd->setMinSize(USize(cegui_reldim(0.1f), cegui_reldim( 0.1f)));
-    wnd->setText("Hello World!");
+    Window* entity_lib_win = entity_type_manager.create_library_window();
+    root->addChild(entity_lib_win);
 
     System::getSingleton().getDefaultGUIContext().setRootWindow( root );
-
-    curr_level = new Level();
-    setup_entity_type_manager(entity_type_manager);
   }
 
 Editor::~Editor() {
@@ -86,7 +81,4 @@ void Editor::load_curr_level_into_ecs(ECS& ecs) const {
 
 void Editor::update_render(Globals& globals) {
   curr_level->ecs.paint(globals);
-
-  // Render editor GUI
-  entity_type_manager.paint(globals, font);
 }
