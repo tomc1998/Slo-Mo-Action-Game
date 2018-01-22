@@ -1,6 +1,12 @@
 {
   "name": "My Example Level",
   "resources": {
+    "test_wall_tex": {
+      "type": "sprite",
+      "data": {
+        "path": "assets/sprites/test_wall.png"
+      }
+    },
     "grass_tileset": {
       "type": "tileset",
       "data": {
@@ -36,12 +42,23 @@
         "acc": [0.0, 0.0],
         "rot": 0.0,
         "mass": 10.0,
-        "damping": 0.2
+        "damping": 0.02
       },
       "comp_animation": {
         "animation": "player_anim"
       },
       "comp_player_controlled": {}
+    },
+    {
+      "comp_wall": {
+        "edge_tex": "test_wall_tex",
+        "vertices": [
+          [0.0,   0.0],
+          [100.0, 0.0],
+          [100.0, 100.0],
+          [0.0,   100.0]
+        ]
+      }
     },
     {
       "comp_tilemap": {

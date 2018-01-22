@@ -8,6 +8,7 @@
 #include "parse_comp_game_entity.cpp"
 #include "parse_comp_player_controlled.cpp"
 #include "parse_comp_tilemap.cpp"
+#include "parse_comp_wall.cpp"
 #include "parse_resources.cpp"
 
 Level::Level() {}
@@ -52,6 +53,12 @@ Level::Level(std::string path, ResourceManager &res_man) {
         component.entity_id = e_id;
         component.tileset = res_map[c["tileset"]];
         ecs.add_comp_tilemap(component);
+      }
+      else if (comp_name == "comp_wall") {
+        CompWall component = c.get<CompWall>();
+        component.entity_id = e_id;
+        component.edge_tex = res_map[c["edge_tex"]];
+        ecs.add_comp_wall(component);
       }
       else {
         if (comp_name == "comp_game_entity") {

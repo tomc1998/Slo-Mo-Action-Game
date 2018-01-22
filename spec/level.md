@@ -194,3 +194,22 @@ The `animation` key is a string referencing an item in the preceding
 * Data example:
 This component contains no data, and should be denoted as `{}`.
 
+### Wall component
+* Name: `comp_wall`
+
+* Data example:
+```json
+"comp_wall": {
+  "edge_tex": "test_wall_tex",
+  "vertices": [
+    [0.0,   0.0],
+    [100.0, 0.0],
+    [100.0, 100.0],
+    [0.0,   100.0]
+  ]
+}
+```
+
+* Notes
+The `animation` key is a string referencing an item in the preceding
+`resources` section.
