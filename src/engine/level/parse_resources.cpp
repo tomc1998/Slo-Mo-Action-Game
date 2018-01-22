@@ -40,6 +40,13 @@ parse_resources(json &resources, ResourceManager &res_man) {
       std::string path = d["path"];
       res_map[res_name] = res_man.load_texture(path.c_str());
     }
+    else if (res_type == "tileset") {
+      json d = r["data"];
+      std::string path = d["path"].get<std::string>();
+      u32 rows = d["rows"].get<u32>();
+      u32 columns = d["columns"].get<u32>();
+      res_map[res_name] = res_man.load_tileset(path.c_str(), rows, columns);
+    }
   }
   return res_map;
 }

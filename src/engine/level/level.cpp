@@ -7,6 +7,7 @@
 #include "engine/entity_id.hpp"
 #include "parse_comp_game_entity.cpp"
 #include "parse_comp_player_controlled.cpp"
+#include "parse_comp_tilemap.cpp"
 #include "parse_resources.cpp"
 
 Level::Level() {}
@@ -46,13 +47,19 @@ Level::Level(std::string path, ResourceManager &res_man) {
       } else if (comp_name == "comp_animation") {
         ecs.add_comp_animation(CompAnimation(e_id, res_map[c["animation"]], 400));
       }
+      else if (comp_name == "comp_tilemap") {
+        CompTilemap component = c.get<CompTilemap>();
+        component.entity_id = e_id;
+        component.tileset = res_map[c["tileset"]];
+        ecs.add_comp_tilemap(component);
+      }
       else {
         if (comp_name == "comp_game_entity") {
           CompGameEntity component = c.get<CompGameEntity>();
           component.entity_id = e_id;
           ecs.add_comp_game_entity(component);
         }
-        if (comp_name == "comp_player_controlled") {
+        else if (comp_name == "comp_player_controlled") {
           CompPlayerControlled component = c.get<CompPlayerControlled>();
           component.entity_id = e_id;
           ecs.add_comp_player_controlled(component);

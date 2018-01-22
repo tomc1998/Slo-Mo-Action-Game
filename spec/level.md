@@ -83,6 +83,19 @@ is some type dependent attached data - these are also all defined below.
 }
 ```
 
+### Tileset resource
+
+* Type name: `tileset`
+
+* Data:
+```json
+{
+  "path": "assets/sprites/tilesets/grass_test.png",
+  "rows": 4,
+  "columns": 4
+}
+```
+
 ### Animation resource
 
 * Type name: `animation`
@@ -149,6 +162,25 @@ section.
 ```json
 "comp_animation": {
   "animation": "player_anim"
+}
+```
+
+* Notes
+The `animation` key is a string referencing an item in the preceding
+`resources` section.
+
+### Tilemap component
+* Name: `comp_tilemap`
+
+* Data example:
+```json
+"comp_tilemap": {
+  "tileset": "grass_tileset",
+  "pos": [0.0, 0.0],
+  "tile_size": [16.0, 16.0],
+  "w": 4,
+  "h": 4,
+  "tiles": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ]
 }
 ```
 

@@ -56,7 +56,8 @@ TilesetHandle ResourceManager::load_tileset(const char *path, u32 num_rows,
   Texture t;
   TilesetHandle th = next_res_handle++;
   load_texture_internal(path, &t, th);
-  tileset_handle_map.insert({th, Tileset(t, num_rows, num_columns)});
+  auto tileset = Tileset(t, num_rows, num_columns);
+  tileset_handle_map.insert({th, tileset});
   tex_handle_map[th] = t;
   return th;
 }
