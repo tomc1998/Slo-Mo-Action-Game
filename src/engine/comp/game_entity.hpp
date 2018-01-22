@@ -8,6 +8,7 @@
  */
 class CompGameEntity {
 public:
+  CompGameEntity();
   /** Damping between 0 and 1 */
   CompGameEntity(EntityId entity_id, f32 mass, f32 damping);
   /** Damping between 0 and 1 */

@@ -9,6 +9,7 @@ class Animation;
 
 class CompAnimation {
 public:
+  CompAnimation();
   CompAnimation(EntityId entity_id, AnimHandle anim, u32 length);
 
   EntityId entity_id;

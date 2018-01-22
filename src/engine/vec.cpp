@@ -68,3 +68,12 @@ bool Vec2::operator==(Vec2 other) const {
 bool Vec2::operator!=(Vec2 other) const { 
   return (this->x != other.x || this->y != other.y);
 }
+
+void to_json(nlohmann::json& j, const Vec2& v) {
+  j = {v.x, v.y};
+}
+
+void from_json(const nlohmann::json& j, Vec2& v) {
+  v.x = j[0];
+  v.y = j[1];
+}
