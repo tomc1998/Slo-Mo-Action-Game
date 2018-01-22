@@ -12,6 +12,7 @@
 #include "parse_comp_circle_collider.cpp"
 #include "parse_comp_player_killable.cpp"
 #include "parse_comp_ai_enemy_basic.cpp"
+#include "parse_comp_waypoint_graph.cpp"
 #include "parse_resources.cpp"
 
 Level::Level() {}
@@ -88,6 +89,11 @@ Level::Level(std::string path, ResourceManager &res_man) {
           CompPlayerControlled component = c.get<CompPlayerControlled>();
           component.entity_id = e_id;
           ecs.add_comp_player_controlled(component);
+        }
+        else if (comp_name == "comp_waypoint_graph") {
+          CompWaypointGraph component = c.get<CompWaypointGraph>();
+          component.entity_id = e_id;
+          ecs.add_comp_waypoint_graph(component);
         }
         else {
           throw std::runtime_error("Unrecognised comp type");

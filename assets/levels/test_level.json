@@ -75,6 +75,28 @@
       }
     },
     {
+      "comp_waypoint_graph": {
+        "waypoints": [
+          {
+            "pos": [-100.0, -100.0],
+            "connections": [1, 3]
+          },
+          {
+            "pos": [200.0, -100.0],
+            "connections": [0, 2]
+          },
+          {
+            "pos": [200.0, 200.0],
+            "connections": [1, 3]
+          },
+          {
+            "pos": [-100.0, 200.0],
+            "connections": [0, 2]
+          }
+        ]
+      }
+    },
+    {
       "comp_wall": {
         "edge_tex": "test_wall_tex",
         "vertices": [

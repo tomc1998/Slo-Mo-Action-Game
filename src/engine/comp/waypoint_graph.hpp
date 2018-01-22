@@ -32,6 +32,13 @@ public:
    * */
   void get_path(Vec2 start, Vec2 end, std::vector<Vec2> &path);
 
+  /** Used by the level parser - we need to initialise the waypoint graph after
+   * construction, rather than during.
+   */
+  void init(std::vector<Vec2> &waypoints,
+                    spp::sparse_hash_map<u32, std::vector<u32>> &connections);
+
+  CompWaypointGraph();
   CompWaypointGraph(std::vector<Vec2> &waypoints,
                     spp::sparse_hash_map<u32, std::vector<u32>> &connections);
 };

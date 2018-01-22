@@ -240,3 +240,30 @@ The `edge_tex` key is a string referencing an item in the preceding
   "life": 3
 }
 ```
+
+### Player killable component
+* Name: `comp_waypoint_graph`
+
+* Data example:
+```json
+"comp_waypoint_graph": {
+  "waypoints": [
+    {
+      "pos": [-100.0, -100.0],
+      "connections": [1, 3]
+    },
+    {
+      "pos": [200.0, -100.0],
+      "connections": [0, 2]
+    },
+    {
+      "pos": [200.0, 200.0],
+      "connections": [1, 3]
+    },
+    {
+      "pos": [-100.0, 200.0],
+      "connections": [0, 2]
+    }
+  ]
+}
+```
