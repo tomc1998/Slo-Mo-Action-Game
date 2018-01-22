@@ -32,7 +32,8 @@
       },
       "comp_animation": {
         "animation": "player_anim"
-      }
+      },
+      "comp_player_controlled": {}
     }
   ]
 }
