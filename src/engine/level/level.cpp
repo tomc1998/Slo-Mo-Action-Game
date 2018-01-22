@@ -9,6 +9,8 @@
 #include "parse_comp_player_controlled.cpp"
 #include "parse_comp_tilemap.cpp"
 #include "parse_comp_wall.cpp"
+#include "parse_comp_animation.cpp"
+#include "parse_comp_sprite.cpp"
 #include "parse_comp_circle_collider.cpp"
 #include "parse_comp_player_killable.cpp"
 #include "parse_comp_ai_enemy_basic.cpp"
@@ -16,6 +18,16 @@
 #include "parse_resources.cpp"
 
 Level::Level() {}
+
+// Doesn't include the components which need extra resource linkage, like
+// 'sprite' or 'animation'.
+#define RUN_X_MACRO_ON_ALL_PARSEABLE_COMPS                                     \
+  X(CompGameEntity, game_entity)                                               \
+  X(CompPlayerControlled, player_controlled)                                   \
+  X(CompAIEnemyBasic, ai_enemy_basic)                                          \
+  X(CompPlayerKillable, player_killable)                                       \
+  X(CompCircleCollider, circle_collider)                                       \
+  X(CompWaypointGraph, waypoint_graph)
 
 void Level::load_into_ecs(ECS& _ecs) {
 #define X(TYPE, NAME) \
@@ -47,6 +59,17 @@ Level::Level(std::string path, ResourceManager &res_man) {
     for (auto it = e.cbegin(); it != e.cend(); ++it) {
       std::string comp_name = it.key();
       json c = it.value();
+
+#define X(TYPE, NAME)                                                          \
+  if (comp_name == "comp_"#NAME) {                                            \
+    TYPE component = c.get<TYPE>();                                            \
+    component.entity_id = e_id;                                                \
+    ecs.add_comp_##NAME(component);                                            \
+  }
+        RUN_X_MACRO_ON_ALL_PARSEABLE_COMPS
+#undef X
+
+      // Perform linking up of resources which can't be generated
       if (comp_name == "comp_sprite") {
         ecs.add_comp_sprite(CompSprite(e_id, res_map[c["sprite"]]));
       } else if (comp_name == "comp_animation") {
@@ -64,55 +87,6 @@ Level::Level(std::string path, ResourceManager &res_man) {
         component.edge_tex = res_map[c["edge_tex"]];
         ecs.add_comp_wall(component);
       }
-      else {
-        if (comp_name == "comp_game_entity") {
-          CompGameEntity component = c.get<CompGameEntity>();
-          component.entity_id = e_id;
-          ecs.add_comp_game_entity(component);
-        }
-        else if (comp_name == "comp_circle_collider") {
-          CompCircleCollider component = c.get<CompCircleCollider>();
-          component.entity_id = e_id;
-          ecs.add_comp_circle_collider(component);
-        }
-        else if (comp_name == "comp_player_killable") {
-          CompPlayerKillable component = c.get<CompPlayerKillable>();
-          component.entity_id = e_id;
-          ecs.add_comp_player_killable(component);
-        }
-        else if (comp_name == "comp_ai_enemy_basic") {
-          CompAIEnemyBasic component = c.get<CompAIEnemyBasic>();
-          component.entity_id = e_id;
-          ecs.add_comp_ai_enemy_basic(component);
-        }
-        else if (comp_name == "comp_player_controlled") {
-          CompPlayerControlled component = c.get<CompPlayerControlled>();
-          component.entity_id = e_id;
-          ecs.add_comp_player_controlled(component);
-        }
-        else if (comp_name == "comp_waypoint_graph") {
-          CompWaypointGraph component = c.get<CompWaypointGraph>();
-          component.entity_id = e_id;
-          ecs.add_comp_waypoint_graph(component);
-        }
-        else {
-          throw std::runtime_error("Unrecognised comp type");
-        }
-      }
-// Full macro for parsing all components. Currently commented out b/c we don't
-// have parsing for all the components.
-#if 0
-      else {
-#define X(TYPE, NAME)                                                          \
-  if (comp_name == "comp_##NAME") {                                            \
-    TYPE component = c.get<TYPE>();                                            \
-    component.entity_id = e_id;                                                \
-    ecs.add_comp_##NAME(component);                                            \
-  }
-        RUN_X_MACRO_ON_ALL_COMPS
-#undef X
-      }
-#endif
     }
   }
 }
