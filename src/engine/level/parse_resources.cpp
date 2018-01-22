@@ -35,7 +35,7 @@ parse_resources(json &resources, ResourceManager &res_man) {
       res_map[res_name] =
           res_man.load_animation(anim_file.c_str(), part_textures);
     }
-    if (res_type == "sprite") {
+    else if (res_type == "sprite") {
       json d = r["data"];
       std::string path = d["path"];
       res_map[res_name] = res_man.load_texture(path.c_str());

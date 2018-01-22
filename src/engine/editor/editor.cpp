@@ -34,15 +34,7 @@ void Editor::new_level() {
 }
 
 void Editor::load_curr_level_into_ecs(ECS& ecs) const {
-#define X(TYPE, NAME) \
-  ecs.comp_##NAME.clear(); \
-  ecs.comp_##NAME.insert(ecs.comp_##NAME.begin(), \
-      curr_level->ecs.comp_##NAME.begin(),\
-      curr_level->ecs.comp_##NAME.end());
-  RUN_X_MACRO_ON_ALL_COMPS
-#undef X
-  ecs.death_queue.clear();
-  ecs.current_entity_id = 0;
+  curr_level->load_into_ecs(ecs);
 }
 
 void Editor::update_render(Globals& globals) {

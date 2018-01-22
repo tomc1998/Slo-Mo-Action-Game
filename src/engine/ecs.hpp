@@ -68,7 +68,7 @@ class ECS {
   friend class SystemCheckDeath;
   friend class SystemHudRenderer;
   friend class SystemShadowRenderer;
-  friend class Editor;
+  friend class Level;
 
 
 /** Generate component list declarations */

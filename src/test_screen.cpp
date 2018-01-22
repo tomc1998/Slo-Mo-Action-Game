@@ -16,15 +16,11 @@
 #include <iostream>
 #include <vector>
 
-Level load_test_level(ResourceManager& res_manager) {
-  Level level("assets/levels/test_level.json", res_manager);
-  std::cout << level.name << std::endl;
-  return level;
-}
-
 void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
-  load_test_level(*res_manager);
+  Level level("assets/levels/test_level.json", *res_manager);
+  level.load_into_ecs(*ecs);
 
+  /*
   // Add player
   EntityId entity_id = ecs->gen_entity_id();
   ecs->add_comp_player_controlled(CompPlayerControlled(entity_id, 600.0f));
@@ -105,6 +101,7 @@ void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
   CompTilemap tilemap(ecs->gen_entity_id(), tileset, Vec2(-100.0, -100.0), 4, 4,
                       Vec2(16.0, 16.0), tiles);
   ecs->add_comp_tilemap(tilemap);
+  */
 }
 
 TestScreen::~TestScreen() {}

@@ -148,7 +148,7 @@ section.
 * Data example:
 ```json
 "comp_animation": {
-  "animation": "bullet_sprite"
+  "animation": "player_anim"
 }
 ```
 
