@@ -7,6 +7,7 @@ class CompPlayerKillable {
 public:
   CompPlayerKillable(EntityId entity_id, u32 life_left);
   CompPlayerKillable(EntityId entity_id);
+  CompPlayerKillable();
 
   EntityId entity_id;
 

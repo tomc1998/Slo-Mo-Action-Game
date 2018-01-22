@@ -228,3 +228,17 @@ The `animation` key is a string referencing an item in the preceding
 * Notes
 The `animation` key is a string referencing an item in the preceding
 `resources` section.
+
+### Player killable component
+* Name: `comp_player_killable`
+
+* Data example:
+```json
+"comp_player_killable": {
+  "life": 3
+}
+```
+
+* Notes
+The `animation` key is a string referencing an item in the preceding
+`resources` section.

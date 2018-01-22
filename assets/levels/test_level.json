@@ -37,6 +37,26 @@
   "entities": [
     {
       "comp_game_entity": {
+        "pos": [200.0, 200.0],
+        "vel": [0.0, 0.0],
+        "acc": [0.0, 0.0],
+        "rot": 0.0,
+        "mass": 10.0,
+        "damping": 0.02
+      },
+      "comp_animation": {
+        "animation": "player_anim"
+      },
+      "comp_player_killable": {
+        "life": 3
+      },
+      "comp_circle_collider": {
+        "rad": 8.0,
+        "collides_with_walls": true
+      }
+    },
+    {
+      "comp_game_entity": {
         "pos": [100.0, 200.0],
         "vel": [0.0, 0.0],
         "acc": [0.0, 0.0],
