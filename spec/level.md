@@ -34,7 +34,7 @@ JSON, and contain lists of all the initial component values.
         "animation": "player_anim"
       }
     }
-  }
+  ]
 }
 ```
 

@@ -1,0 +1,33 @@
+{
+  "name": "My Example Level",
+  "resources": {
+    "player_anim": {
+      "type": "animation",
+      "data": {
+        "path": "assets/animations/walk.json",
+        "length": 400,
+        "parts": [
+          "assets/sprites/foot.png",
+          "assets/sprites/foot.png",
+          "assets/sprites/player.png"
+        ]
+      }
+    }
+  },
+  "entities": [
+    {
+      "comp_game_entity": {
+        "pos": [0.0, 0.0],
+        "vel": [0.0, 0.0],
+        "acc": [0.0, 0.0],
+        "rot": 0.0,
+        "mass": 10.0,
+        "damping": 0.2
+      },
+      "comp_animation": {
+        "animation": "player_anim"
+      }
+    }
+  ]
+}
+

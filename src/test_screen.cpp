@@ -11,10 +11,20 @@
 #include "engine/texture.hpp"
 #include "engine/vec.hpp"
 #include "test_screen.hpp"
+#include "engine/level/level.hpp"
 #include <sparsepp/spp.h>
+#include <iostream>
 #include <vector>
 
+Level load_test_level() {
+  Level level("assets/levels/test_level.json");
+  std::cout << level.name << std::endl;
+  return level;
+}
+
 void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
+  load_test_level();
+
   // Add player
   EntityId entity_id = ecs->gen_entity_id();
   ecs->add_comp_player_controlled(CompPlayerControlled(entity_id, 600.0f));
