@@ -47,7 +47,11 @@
       "comp_animation": {
         "animation": "player_anim"
       },
-      "comp_player_controlled": {}
+      "comp_player_controlled": {},
+      "comp_circle_collider": {
+        "rad": 8.0,
+        "collides_with_walls": true
+      }
     },
     {
       "comp_wall": {

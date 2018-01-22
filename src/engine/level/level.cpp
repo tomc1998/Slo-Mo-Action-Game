@@ -9,6 +9,7 @@
 #include "parse_comp_player_controlled.cpp"
 #include "parse_comp_tilemap.cpp"
 #include "parse_comp_wall.cpp"
+#include "parse_comp_circle_collider.cpp"
 #include "parse_resources.cpp"
 
 Level::Level() {}
@@ -65,6 +66,11 @@ Level::Level(std::string path, ResourceManager &res_man) {
           CompGameEntity component = c.get<CompGameEntity>();
           component.entity_id = e_id;
           ecs.add_comp_game_entity(component);
+        }
+        else if (comp_name == "comp_circle_collider") {
+          CompCircleCollider component = c.get<CompCircleCollider>();
+          component.entity_id = e_id;
+          ecs.add_comp_circle_collider(component);
         }
         else if (comp_name == "comp_player_controlled") {
           CompPlayerControlled component = c.get<CompPlayerControlled>();

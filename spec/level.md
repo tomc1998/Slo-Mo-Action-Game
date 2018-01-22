@@ -213,3 +213,18 @@ This component contains no data, and should be denoted as `{}`.
 * Notes
 The `animation` key is a string referencing an item in the preceding
 `resources` section.
+
+### Circle collider component
+* Name: `comp_circle_collider`
+
+* Data example:
+```json
+"comp_circle_collider": {
+  "rad": 8.0,
+  "collides_with_walls": true
+}
+```
+
+* Notes
+The `animation` key is a string referencing an item in the preceding
+`resources` section.
