@@ -22,7 +22,6 @@ parse_resources(json &resources, ResourceManager &res_man) {
     if (res_type == "animation") {
       json d = r["data"];
       std::string anim_file = d["path"];
-      u32 anim_len = d["length"];
       std::vector<std::string> parts = d["parts"];
       // First load all the parts
       std::vector<TexHandle> part_textures;
