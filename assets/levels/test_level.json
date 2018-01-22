@@ -1,0 +1,116 @@
+{
+  "name": "My Example Level",
+  "resources": {
+    "test_wall_tex": {
+      "type": "sprite",
+      "data": {
+        "path": "assets/sprites/test_wall.png"
+      }
+    },
+    "grass_tileset": {
+      "type": "tileset",
+      "data": {
+        "path": "assets/sprites/tilesets/grass_test.png",
+        "rows": 4,
+        "columns": 4
+      }
+    },
+    "player_anim": {
+      "type": "animation",
+      "data": {
+        "path": "assets/animations/walk.json",
+        "length": 400,
+        "parts": [
+          "assets/sprites/foot.png",
+          "assets/sprites/foot.png",
+          "assets/sprites/player.png"
+        ]
+      }
+    }
+  },
+  "entities": [
+    {
+      "comp_game_entity": {
+        "pos": [210.0, 210.0],
+        "vel": [0.0, 0.0],
+        "acc": [0.0, 0.0],
+        "rot": 0.0,
+        "mass": 10.0,
+        "damping": 0.02
+      },
+      "comp_animation": {
+        "animation": "player_anim"
+      },
+      "comp_ai_enemy_basic": {},
+      "comp_player_killable": {
+        "life": 3
+      },
+      "comp_circle_collider": {
+        "rad": 8.0,
+        "collides_with_walls": true
+      }
+    },
+    {
+      "comp_game_entity": {
+        "pos": [120.0, 220.0],
+        "vel": [0.0, 0.0],
+        "acc": [0.0, 0.0],
+        "rot": 0.0,
+        "mass": 10.0,
+        "damping": 0.02
+      },
+      "comp_animation": {
+        "animation": "player_anim"
+      },
+      "comp_player_controlled": {},
+      "comp_circle_collider": {
+        "rad": 8.0,
+        "collides_with_walls": true
+      }
+    },
+    {
+      "comp_waypoint_graph": {
+        "waypoints": [
+          {
+            "pos": [-100.0, -100.0],
+            "connections": [1, 3]
+          },
+          {
+            "pos": [200.0, -100.0],
+            "connections": [0, 2]
+          },
+          {
+            "pos": [200.0, 200.0],
+            "connections": [1, 3]
+          },
+          {
+            "pos": [-100.0, 200.0],
+            "connections": [0, 2]
+          }
+        ]
+      }
+    },
+    {
+      "comp_wall": {
+        "edge_tex": "test_wall_tex",
+        "vertices": [
+          [0.0,   0.0],
+          [100.0, 0.0],
+          [100.0, 100.0],
+          [0.0,   100.0]
+        ]
+      }
+    },
+    {
+      "comp_tilemap": {
+        "tileset": "grass_tileset",
+        "pos": [0.0, 0.0],
+        "tile_size": [16.0, 16.0],
+        "w": 4,
+        "h": 4,
+        "tiles": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ]
+      }
+    }
+  ]
+}
+

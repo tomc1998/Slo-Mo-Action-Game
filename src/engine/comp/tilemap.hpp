@@ -13,6 +13,8 @@ public:
   CompTilemap(EntityId entity_id, TilesetHandle tileset, Vec2 pos,
               u32 w, u32 h, Vec2 tile_size, u32 *tiles);
 
+  CompTilemap();
+
   EntityId entity_id;
 
   /** The tileset to use */

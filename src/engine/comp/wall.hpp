@@ -11,6 +11,7 @@
 class CompWall {
 public:
   CompWall(EntityId entity_id, std::vector<Vec2> vertices, TexHandle edge_tex);
+  CompWall();
 
   EntityId entity_id;
   /** List of vertices in the wall. Vertices MUST have the inside of the wall

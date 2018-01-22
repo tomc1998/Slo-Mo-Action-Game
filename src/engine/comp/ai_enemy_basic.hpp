@@ -13,6 +13,7 @@ private:
   u8 state = STATE_NORMAL;
 
 public:
+  CompAIEnemyBasic();
   CompAIEnemyBasic(EntityId entity_id);
 
   const static u16 RELOAD_TIME = 300;
