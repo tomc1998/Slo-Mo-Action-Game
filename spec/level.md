@@ -185,11 +185,17 @@ The `animation` key is a string referencing an item in the preceding
 ```
 
 * Notes
-The `animation` key is a string referencing an item in the preceding
+The `tileset` key is a string referencing an item in the preceding
 `resources` section.
 
 # Player controller component
 * Name: `comp_player_controlled`
+
+* Data example:
+This component contains no data, and should be denoted as `{}`.
+
+# Basic enemy AI component
+* Name: `comp_ai_enemy_basic`
 
 * Data example:
 This component contains no data, and should be denoted as `{}`.
@@ -211,7 +217,7 @@ This component contains no data, and should be denoted as `{}`.
 ```
 
 * Notes
-The `animation` key is a string referencing an item in the preceding
+The `edge_tex` key is a string referencing an item in the preceding
 `resources` section.
 
 ### Circle collider component
@@ -225,10 +231,6 @@ The `animation` key is a string referencing an item in the preceding
 }
 ```
 
-* Notes
-The `animation` key is a string referencing an item in the preceding
-`resources` section.
-
 ### Player killable component
 * Name: `comp_player_killable`
 
@@ -238,7 +240,3 @@ The `animation` key is a string referencing an item in the preceding
   "life": 3
 }
 ```
-
-* Notes
-The `animation` key is a string referencing an item in the preceding
-`resources` section.

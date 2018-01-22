@@ -11,6 +11,7 @@
 #include "parse_comp_wall.cpp"
 #include "parse_comp_circle_collider.cpp"
 #include "parse_comp_player_killable.cpp"
+#include "parse_comp_ai_enemy_basic.cpp"
 #include "parse_resources.cpp"
 
 Level::Level() {}
@@ -78,10 +79,18 @@ Level::Level(std::string path, ResourceManager &res_man) {
           component.entity_id = e_id;
           ecs.add_comp_player_killable(component);
         }
+        else if (comp_name == "comp_ai_enemy_basic") {
+          CompAIEnemyBasic component = c.get<CompAIEnemyBasic>();
+          component.entity_id = e_id;
+          ecs.add_comp_ai_enemy_basic(component);
+        }
         else if (comp_name == "comp_player_controlled") {
           CompPlayerControlled component = c.get<CompPlayerControlled>();
           component.entity_id = e_id;
           ecs.add_comp_player_controlled(component);
+        }
+        else {
+          throw std::runtime_error("Unrecognised comp type");
         }
       }
 // Full macro for parsing all components. Currently commented out b/c we don't

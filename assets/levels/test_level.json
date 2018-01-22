@@ -47,6 +47,7 @@
       "comp_animation": {
         "animation": "player_anim"
       },
+      "comp_ai_enemy_basic": {},
       "comp_player_killable": {
         "life": 3
       },
