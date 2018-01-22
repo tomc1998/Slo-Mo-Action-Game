@@ -26,7 +26,7 @@ void Level::load_into_ecs(ECS& _ecs) {
   RUN_X_MACRO_ON_ALL_COMPS
 #undef X
   _ecs.death_queue.clear();
-  _ecs.current_entity_id = 0;
+  _ecs.current_entity_id = ecs.current_entity_id;
 }
 
 Level::Level(std::string path, ResourceManager &res_man) {

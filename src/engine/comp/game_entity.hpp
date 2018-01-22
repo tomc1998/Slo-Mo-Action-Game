@@ -18,7 +18,7 @@ public:
   Vec2 pos = Vec2(0.0, 0.0);
   Vec2 vel = Vec2(0.0, 0.0);
   Vec2 acc = Vec2(0.0, 0.0);
-  f32 rot;
+  f32 rot = 0.0f;
   f32 mass;
   f32 damping;
 };
