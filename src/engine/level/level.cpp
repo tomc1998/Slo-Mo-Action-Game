@@ -4,18 +4,17 @@
 #include <json.hpp>
 
 #include "parse_comp_game_entity.cpp"
+#include "parse_resources.cpp"
 
 Level::Level() : ecs() {}
 
-Level::Level(std::string path) {
+Level::Level(std::string path, ResourceManager &res_man) {
   using namespace nlohmann;
   std::ifstream i(path);
   json j;
   i >> j;
 
-  name = j["name"].get<std::string>();
-  std::cout << j.dump(4) << std::endl;
+  this->name = j["name"].get<std::string>();
 
-  CompGameEntity e = j["entities"][0]["comp_game_entity"];
-  std::cout << e.pos.x << " " << e.pos.y << std::endl;
+  auto res_map = parse_resources(j["resources"], res_man);
 }

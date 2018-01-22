@@ -3,6 +3,8 @@
 #include "engine/ecs.hpp"
 #include <string>
 
+class ResourceManager;
+
 class Level {
   friend class Editor;
 
@@ -14,5 +16,5 @@ private:
 public:
   /** Load a level from a given file */
   std::string name;
-  Level(std::string path);
+  Level(std::string path, ResourceManager& res_man);
 };

@@ -16,14 +16,14 @@
 #include <iostream>
 #include <vector>
 
-Level load_test_level() {
-  Level level("assets/levels/test_level.json");
+Level load_test_level(ResourceManager& res_manager) {
+  Level level("assets/levels/test_level.json", res_manager);
   std::cout << level.name << std::endl;
   return level;
 }
 
 void TestScreen::init(ECS *ecs, ResourceManager *res_manager) {
-  load_test_level();
+  load_test_level(*res_manager);
 
   // Add player
   EntityId entity_id = ecs->gen_entity_id();
