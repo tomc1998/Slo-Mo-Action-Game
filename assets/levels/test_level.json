@@ -1,6 +1,12 @@
 {
   "name": "My Example Level",
   "resources": {
+    "bullet_sprite": {
+      "type": "sprite",
+      "data": {
+        "path": "assets/sprites/enemy_bullet.png"
+      }
+    },
     "player_anim": {
       "type": "animation",
       "data": {
