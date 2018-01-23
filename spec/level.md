@@ -22,6 +22,7 @@ JSON, and contain lists of all the initial component values.
   },
   "entities": [
     {
+      "name": "player",
       "comp_game_entity": {
         "pos": [0.0, 0.0],
         "vel": [0.0, 0.0],
@@ -127,6 +128,9 @@ that component's key - for example, a game entity component would be present in
 the entity component under the key `comp_game_entity`. The definitions of
 components follow. For the meaning of each child in the component, refer to the
 header file definitions of all these components (found in `src/engine/comp`).
+
+The entity object also contains a `name` key, which is a name for the entity,
+unique to all other entities in the level.
 
 ### Game entity component
 * Name: `comp_game_entity`

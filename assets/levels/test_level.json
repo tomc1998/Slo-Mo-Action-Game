@@ -30,6 +30,7 @@
   },
   "entities": [
     {
+      "name": "enemy0",
       "comp_game_entity": {
         "pos": [210.0, 210.0],
         "vel": [0.0, 0.0],
@@ -51,6 +52,7 @@
       }
     },
     {
+      "name": "player",
       "comp_game_entity": {
         "pos": [120.0, 220.0],
         "vel": [0.0, 0.0],
@@ -69,6 +71,7 @@
       }
     },
     {
+      "name": "waypoints",
       "comp_waypoint_graph": {
         "waypoints": [
           {
@@ -91,6 +94,7 @@
       }
     },
     {
+      "name": "wall0",
       "comp_wall": {
         "edge_tex": "test_wall_tex",
         "vertices": [
@@ -102,6 +106,7 @@
       }
     },
     {
+      "name": "tile_layer_0",
       "comp_tilemap": {
         "tileset": "grass_tileset",
         "pos": [0.0, 0.0],

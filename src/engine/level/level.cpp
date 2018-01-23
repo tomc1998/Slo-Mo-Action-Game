@@ -56,6 +56,8 @@ Level::Level(std::string path, ResourceManager &res_man) {
   const json &entities = j["entities"];
   for (const auto &e : entities) {
     EntityId e_id = ecs.gen_entity_id();
+    std::string name = e["name"];
+    entity_name_id_map[name] = e_id;
     for (auto it = e.cbegin(); it != e.cend(); ++it) {
       std::string comp_name = it.key();
       json c = it.value();

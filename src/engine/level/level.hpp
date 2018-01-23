@@ -1,6 +1,7 @@
 #pragma once
 
 #include "engine/ecs.hpp"
+#include "engine/entity_id.hpp"
 #include <string>
 
 class ResourceManager;
@@ -11,6 +12,10 @@ class Level {
 private:
   /** An ECS for loading into the engine. */
   ECS ecs;
+  /** A map of names to entities, useful for editing. Never actually loaded
+   * into the game when calling load_into_ecs, so no major in-game performance
+   * impact. */
+  spp::sparse_hash_map<std::string, EntityId> entity_name_id_map;
   Level();
 
 public:
