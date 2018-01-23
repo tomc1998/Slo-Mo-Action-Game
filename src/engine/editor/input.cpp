@@ -8,18 +8,18 @@
 
 EditorInput *EditorInput::instance = new EditorInput();
 
-EditorInput::EditorInput() {}
+EditorInput::EditorInput() { codepoint_buf.reserve(16); }
 
 void EditorInput::key_input(int key, int scancode, int action, int mods) {
   switch (key) {
-    case GLFW_KEY_A:
-      if (mods & GLFW_MOD_SHIFT) {
-        add_entity_handle_glfw_action(action);
-      }
-      break;
-    case GLFW_KEY_F1:
-      toggle_library_handle_glfw_action(action);
-      break;
+  case GLFW_KEY_A:
+    if (mods & GLFW_MOD_SHIFT) {
+      add_entity_handle_glfw_action(action);
+    }
+    break;
+  case GLFW_KEY_F1:
+    toggle_library_handle_glfw_action(action);
+    break;
   }
 }
 
@@ -27,13 +27,22 @@ void EditorInput::cursor_pos_input(double xpos, double ypos) {}
 
 void EditorInput::mouse_input(int button, int action, int mods) {
   switch (button) {
-    case GLFW_MOUSE_BUTTON_LEFT:
-      lmb_handle_glfw_action(action);
-      break;
-    case GLFW_MOUSE_BUTTON_RIGHT:
-      rmb_handle_glfw_action(action);
-      break;
+  case GLFW_MOUSE_BUTTON_LEFT:
+    lmb_handle_glfw_action(action);
+    break;
+  case GLFW_MOUSE_BUTTON_RIGHT:
+    rmb_handle_glfw_action(action);
+    break;
   }
+}
+
+void EditorInput::char_input(unsigned int codepoint) {
+  codepoint_buf.push_back(codepoint);
+
+  for (const auto& c : codepoint_buf) {
+    std::cout << c << " ";
+  }
+  std::cout << std::endl;
 }
 
 #define X(INPUT)                                                               \
@@ -54,8 +63,8 @@ RUN_X_MACRO_ON_ALL_EDITOR_INPUTS
 #undef X
 
 void EditorInput::update_input() {
-#define X(INPUT)                                                               \
-  INPUT##_down_prev = INPUT##_down;
+#define X(INPUT) INPUT##_down_prev = INPUT##_down;
   RUN_X_MACRO_ON_ALL_EDITOR_INPUTS
 #undef X
+  codepoint_buf.clear();
 }

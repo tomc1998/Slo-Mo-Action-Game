@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #define RUN_X_MACRO_ON_ALL_EDITOR_INPUTS                                       \
   X(add_entity)     /* shift + a */                                            \
   X(toggle_library) /* f1 */                                                   \
@@ -20,8 +22,12 @@ class EditorInput {
 private:
   EditorInput();
 
+
 public:
   static EditorInput *instance;
+
+  /** A buffer of codepoints input by the user in this frame. */
+  std::vector<unsigned int> codepoint_buf;
 
 #define X(INPUT)                                                               \
   bool INPUT##_down = false;                                                   \
@@ -41,6 +47,9 @@ public:
 
   /** This should be called from the glfw input callback function. */
   void mouse_input(int button, int action, int mods);
+
+  /** This should be called from the glfw unicode key input callback function. */
+  void char_input(unsigned int codepoint);
 
   /** Should be called each frame, resets prev inputs */
   void update_input();

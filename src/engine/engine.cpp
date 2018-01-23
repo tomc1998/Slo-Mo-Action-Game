@@ -5,6 +5,7 @@
 #include "engine/screen.hpp"
 #include "engine/canvas_size.hpp"
 #include "engine/system/globals.hpp"
+#include "engine/editor/input.hpp"
 #include <chrono>
 #include <iostream>
 #include <utility>
@@ -116,6 +117,11 @@ void Engine::engine_go() {
       renderer->clear_hud_paint_buffer();
       glfwSwapBuffers(this->window);
     }
+
+    // Reset editor inputs - we need to do this every frame to make sure we
+    // clear the codepoint buffer, which tracks the characters the user enters
+    // each frame.
+    EditorInput::instance->update_input();
 
     if (glfwWindowShouldClose(this->window)) {
       break;

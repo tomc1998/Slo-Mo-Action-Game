@@ -21,6 +21,8 @@ public:
                              int mods);
   static void cursor_position_callback(GLFWwindow *window, double xpos,
                                        double ypos);
+  static void char_callback(GLFWwindow *window, unsigned int codepoint);
+
   /** Polls events and changes the current_input_state */
   void update_input();
 };

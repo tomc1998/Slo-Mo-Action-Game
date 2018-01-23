@@ -29,6 +29,7 @@ InputManager::InputManager(GLFWwindow *window) {
   glfwSetMouseButtonCallback(window, InputManager::mouse_callback);
   glfwSetCursorPosCallback(window, InputManager::cursor_position_callback);
   glfwSetWindowUserPointer(window, &this->current_input_state);
+  glfwSetCharCallback(window, &this->char_callback);
 }
 
 InputState *InputManager::get_current_input_state() {
@@ -152,6 +153,11 @@ void InputManager::cursor_position_callback(GLFWwindow *window, double xpos,
 
   // Feed input to editor
   EditorInput::instance->cursor_pos_input(transformed.x, transformed.y);
+}
+
+void InputManager::char_callback(GLFWwindow *window, unsigned int codepoint) {
+  // Feed input to editor
+  EditorInput::instance->char_input(codepoint);
 }
 
 void InputManager::update_input() {

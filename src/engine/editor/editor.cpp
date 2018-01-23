@@ -51,8 +51,5 @@ void Editor::update_render(Globals& globals) {
   if (library_visible) { 
     entity_type_manager.paint(globals, font);
   }
-
-  // Reset inputs
-  EditorInput::instance->update_input();
 }
 
