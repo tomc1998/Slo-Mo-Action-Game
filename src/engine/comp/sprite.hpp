@@ -9,5 +9,6 @@ class CompSprite {
     EntityId entity_id;
     TexHandle tex;
     CompSprite(EntityId entity_id, TexHandle tex);
+    CompSprite();
 };
 

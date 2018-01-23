@@ -24,6 +24,7 @@ public:
   constexpr static f32 ATTACK_ARC_MAX_DIS = 30.0;
 
   CompPlayerControlled(EntityId entity_id, f32 force_to_apply);
+  CompPlayerControlled();
 
   EntityId entity_id;
 

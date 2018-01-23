@@ -56,10 +56,8 @@ void CompWaypointGraph::find_distances(
   }
 }
 
-CompWaypointGraph::CompWaypointGraph(
-    std::vector<Vec2> &waypoints,
+void CompWaypointGraph::init(std::vector<Vec2> &waypoints,
     spp::sparse_hash_map<u32, std::vector<u32>> &connections) {
-
   // Copy the waypoint data
   this->waypoints.reserve(waypoints.size());
   for (u32 ii = 0; ii < waypoints.size(); ii++) {
@@ -67,6 +65,14 @@ CompWaypointGraph::CompWaypointGraph(
   }
 
   find_distances(connections);
+}
+
+CompWaypointGraph::CompWaypointGraph() {} 
+
+CompWaypointGraph::CompWaypointGraph(
+    std::vector<Vec2> &waypoints,
+    spp::sparse_hash_map<u32, std::vector<u32>> &connections) {
+  init(waypoints, connections);
 }
 
 void CompWaypointGraph::get_path(Vec2 start, Vec2 end,

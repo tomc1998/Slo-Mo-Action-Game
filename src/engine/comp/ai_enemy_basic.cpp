@@ -1,5 +1,7 @@
 #include "ai_enemy_basic.hpp"
 
+CompAIEnemyBasic::CompAIEnemyBasic() {}
+
 CompAIEnemyBasic::CompAIEnemyBasic(EntityId entity_id) {
   this->entity_id = entity_id;
 }

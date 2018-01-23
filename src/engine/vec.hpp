@@ -1,5 +1,7 @@
 #pragma once
 
+#include <json.hpp>
+
 /** Templated vector class. */
 class Vec2 {
 public:
@@ -32,3 +34,6 @@ public:
   bool operator==(Vec2 other) const;
   bool operator!=(Vec2 other) const;
 };
+
+void to_json(nlohmann::json& j, const Vec2& v);
+void from_json(const nlohmann::json& j, Vec2& v);
