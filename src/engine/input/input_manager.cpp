@@ -1,13 +1,13 @@
+#include "engine/canvas_size.hpp"
+#include "engine/editor/input.hpp"
 #include "engine/vec.hpp"
 #include "input_manager.hpp"
 #include "input_state.hpp"
-#include "engine/canvas_size.hpp"
 #include <iostream>
 
 #include <glad/glad.h>
 
 #include <GLFW/glfw3.h>
-
 
 InputManager::InputManager(GLFWwindow *window) {
   current_input_state.move_up_keycode = GLFW_KEY_W;
@@ -38,6 +38,9 @@ InputState *InputManager::get_current_input_state() {
 void InputManager::key_callback(GLFWwindow *window, int key, int scancode,
                                 int action, int mods) {
   InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
+
+  // Feed input to editor
+  EditorInput::instance->key_input(key, scancode, action, mods);
 
   // Key presses
   if (action == GLFW_PRESS) {
@@ -99,6 +102,9 @@ void InputManager::mouse_callback(GLFWwindow *window, int button, int action,
   InputState *input_state = (InputState *)glfwGetWindowUserPointer(window);
   double xpos, ypos;
 
+  // Feed input to editor
+  EditorInput::instance->mouse_input(button, action, mods);
+
   if (action == GLFW_PRESS) {
     if (button == GLFW_MOUSE_BUTTON_LEFT) {
       input_state->lmb_down = true;
@@ -139,10 +145,13 @@ void InputManager::cursor_position_callback(GLFWwindow *window, double xpos,
   Vec2 viewport_pos((f32)viewport[0], (f32)viewport[1]);
   Vec2 mouse_pos((f32)xpos, (f32)ypos);
   Vec2 transformed = mouse_pos - viewport_pos;
-  transformed.x *= ((f32)CANVAS_W/(f32)viewport[2]);
-  transformed.y *= ((f32)CANVAS_H/(f32)viewport[3]);
+  transformed.x *= ((f32)CANVAS_W / (f32)viewport[2]);
+  transformed.y *= ((f32)CANVAS_H / (f32)viewport[3]);
 
   input_state->mouse_pos = transformed;
+
+  // Feed input to editor
+  EditorInput::instance->cursor_pos_input(transformed.x, transformed.y);
 }
 
 void InputManager::update_input() {
@@ -154,7 +163,8 @@ void InputManager::update_input() {
   current_input_state.slomo_down_prev = current_input_state.slomo_down;
   current_input_state.lmb_down_prev = current_input_state.lmb_down;
   current_input_state.rmb_down_prev = current_input_state.rmb_down;
-  current_input_state.editor_toggle_down_prev = current_input_state.editor_toggle_down;
+  current_input_state.editor_toggle_down_prev =
+      current_input_state.editor_toggle_down;
   glfwPollEvents();
   if (current_input_state.lmb_down) {
     current_input_state.lmb_drag.push_back(current_input_state.mouse_pos);

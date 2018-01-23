@@ -16,6 +16,7 @@ class Editor {
 
   /** The font to render the editor GUI with */
   FontHandle font;
+
   public:
     Editor(FontHandle font);
     ~Editor();

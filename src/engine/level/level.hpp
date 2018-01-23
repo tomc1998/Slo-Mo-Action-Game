@@ -21,8 +21,8 @@ private:
 public:
   /** Load a level from a given file */
   std::string name;
-  Level(std::string path, ResourceManager& res_man);
+  Level(std::string path, ResourceManager &res_man);
 
   /** Given an ECS, load this level into it */
-  void load_into_ecs(ECS& ecs);
+  void load_into_ecs(ECS &ecs);
 };
