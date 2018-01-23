@@ -1,6 +1,7 @@
 #include "editor.hpp"
 #include "engine/level/level.hpp"
 #include "engine/vec.hpp"
+#include "input.hpp"
 #include <string>
 
 void setup_entity_type_manager(EntityTypeManager &m) {
@@ -38,8 +39,20 @@ void Editor::load_curr_level_into_ecs(ECS& ecs) const {
 }
 
 void Editor::update_render(Globals& globals) {
+  // Draw the level
   curr_level->ecs.paint(globals);
 
+  // Handle input
+  if (EditorInput::instance->toggle_library_just_pressed()) {
+    library_visible = !library_visible;
+  }
+
   // Render editor GUI
-  entity_type_manager.paint(globals, font);
+  if (library_visible) { 
+    entity_type_manager.paint(globals, font);
+  }
+
+  // Reset inputs
+  EditorInput::instance->update_input();
 }
+

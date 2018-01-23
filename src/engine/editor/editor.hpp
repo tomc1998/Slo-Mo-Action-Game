@@ -17,6 +17,9 @@ class Editor {
   /** The font to render the editor GUI with */
   FontHandle font;
 
+  /** Whether or not to draw the entity library */
+  bool library_visible = false;
+
   public:
     Editor(FontHandle font);
     ~Editor();
