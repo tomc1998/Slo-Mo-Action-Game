@@ -9,6 +9,8 @@
 #include <cmath>
 #include <cstring>
 #include <vector>
+#include <cstdlib>
+#include <algorithm>
 
 PaintController::PaintController(PaintBuffer *_game_buffer,
                                  PaintBuffer *_hud_buffer,
@@ -42,6 +44,48 @@ void PaintController::flush(Batch &curr_batch, PaintBuffer *buffer) {
 Texture *PaintController::get_white_tex() { return white_cache_tex; }
 TexHandle PaintController::get_white_tex_handle() { return white; }
 
+void PaintController::clip_v_buf_rect(Vertex *v) {
+  // This is pretty fucking messy I'm ngl, maybe we should add some methods to Vertex?
+  if (!using_clip) { return; }
+  // Check if we should just clip v out of existence
+  if (v[1].pos[0] < curr_clip.pos.x ||
+      v[0].pos[0] > curr_clip.pos.x + curr_clip.size.x ||
+      v[2].pos[1] < curr_clip.pos.y ||
+      v[0].pos[1] > curr_clip.pos.y + curr_clip.size.y) {
+    v[0].pos[0] = 0.0;
+    v[0].pos[1] = 0.0;
+    v[1].pos[0] = 0.0;
+    v[1].pos[1] = 0.0;
+    v[2].pos[0] = 0.0;
+    v[2].pos[1] = 0.0;
+    v[3].pos[0] = 0.0;
+    v[3].pos[1] = 0.0;
+    v[4].pos[0] = 0.0;
+    v[4].pos[1] = 0.0;
+    v[5].pos[0] = 0.0;
+    v[5].pos[1] = 0.0;
+    return;
+  }
+  // Actually perform the clipping
+  v[0].pos[0] = std::max(v[0].pos[0], curr_clip.pos.x);
+  v[0].pos[1] = std::max(v[0].pos[1], curr_clip.pos.y);
+
+  v[1].pos[0] = std::min(v[1].pos[0], curr_clip.pos.x+curr_clip.size.x);
+  v[1].pos[1] = v[0].pos[1];
+
+  v[2].pos[0] = v[1].pos[0];
+  v[2].pos[1] = std::min(v[2].pos[1], curr_clip.pos.y+curr_clip.size.y);
+
+  v[3].pos[0] = v[0].pos[0];
+  v[3].pos[1] = v[0].pos[1];
+
+  v[4].pos[0] = v[0].pos[0];
+  v[4].pos[1] = v[2].pos[1];
+
+  v[5].pos[0] = v[2].pos[0];
+  v[5].pos[1] = v[2].pos[1];
+}
+
 void PaintController::fill_rect_internal(f32 x, f32 y, f32 w, f32 h,
                                          Color *color, Batch &curr_batch,
                                          PaintBuffer *buffer) {
@@ -54,6 +98,7 @@ void PaintController::fill_rect_internal(f32 x, f32 y, f32 w, f32 h,
                 Vertex(Vec2(x, y), color, Vec2(uvs[0], uvs[1])),
                 Vertex(Vec2(x, y + h), color, Vec2(uvs[0], uvs[3])),
                 Vertex(Vec2(x + w, y + h), color, Vec2(uvs[2], uvs[3]))};
+  clip_v_buf_rect(v);
   curr_batch.buffer(v, 6);
 }
 
@@ -247,6 +292,24 @@ void PaintController::draw_image_internal(TexHandle tex, f32 x, f32 y, f32 w,
                 Vertex(newPoints[2], tint, Vec2(uvs[0], uvs[3])),
                 Vertex(newPoints[3], tint, Vec2(uvs[2], uvs[3]))};
   curr_batch.buffer(v, 6);
+}
+
+void PaintController::set_clip(Rect r) {
+  using_clip = true;
+  curr_clip = r;
+}
+
+void PaintController::clear_clip() {
+  using_clip = false;
+}
+
+Rect* PaintController::get_clip() {
+  if (using_clip) {
+    return &curr_clip;
+  }
+  else {
+    return NULL;
+  }
 }
 
 void PaintController::fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color) {

@@ -30,6 +30,10 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   const f32 PANEL_SIZE = 200.0f; // size of the bottom panel
   paint_panel(*pc, Rect(0.0, CANVAS_H - PANEL_SIZE, CANVAS_W, PANEL_SIZE));
 
+  pc->set_clip(Rect(20.0, 20.0, 100.0, 50.0));
+  pc->fill_rect_hud(0.0, 0.0, 200.0, 200.0, &ui_bg);
+  pc->clear_clip();
+
   // Split entities into pages, then render the current page
   const static f32 HORI_PADDING = 60.0f;
   const static f32 VERT_PADDING = 40.0f;

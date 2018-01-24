@@ -2,6 +2,7 @@
 
 #include "engine/renderer/batch.hpp"
 #include "engine/resource_defs.hpp"
+#include "engine/editor/gui/common.hpp"
 
 class ResourceManager;
 class PaintBuffer;
@@ -28,6 +29,16 @@ private:
   Texture *white_cache_tex;
   Batch curr_batch_game;
   Batch curr_batch_hud;
+
+  bool using_clip = false;
+  Rect curr_clip = Rect(0.0, 0.0, 0.0, 0.0);
+
+  /** Clip the given vertex list rect by the curr_clip, if using_clip is set. 
+   * @param v Should be of length 6, with 2 triangles making up a rectangle.
+   *          The rectangle should be split from top left to bottom right. (see
+   *          how fill_rect_internal splits the rect for more details)
+   */
+  void clip_v_buf_rect(Vertex *v);
 
   /** Checks the current batch. If the texture currently loaded is equal to
    * cache_tex_ix, does nothing. Otherwise, flushes the batch to the renderer
@@ -76,6 +87,10 @@ public:
    * the renderer. */
   PaintController(PaintBuffer *_game_buffer, PaintBuffer *_hud_buffer,
                   ResourceManager *r, TexHandle _white);
+
+  void set_clip(Rect r);
+  void clear_clip();
+  Rect* get_clip();
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
   void fill_rect_hud(f32 x, f32 y, f32 w, f32 h, Color *color);
