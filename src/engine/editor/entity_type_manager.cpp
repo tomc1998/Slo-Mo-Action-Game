@@ -6,6 +6,7 @@
 #include "engine/resource_defs.hpp"
 #include "engine/system/globals.hpp"
 #include "entity_type_manager.hpp"
+#include "gui/std/std.hpp"
 #include <iostream>
 #include <iterator>
 #include <utility>
@@ -27,7 +28,7 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   static Color ui_bg(0.0f, 0.0f, 0.0f, 1.0f);
   static Color ui_fg(1.0f, 1.0f, 1.0f, 1.0f);
   const f32 PANEL_SIZE = 200.0f; // size of the bottom panel
-  pc->fill_rect_hud(0.0, CANVAS_H - PANEL_SIZE, CANVAS_W, PANEL_SIZE, &ui_bg);
+  paint_panel(*pc, Rect(0.0, CANVAS_H - PANEL_SIZE, CANVAS_W, PANEL_SIZE));
 
   // Split entities into pages, then render the current page
   const static f32 HORI_PADDING = 60.0f;

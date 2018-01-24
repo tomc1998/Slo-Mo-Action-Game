@@ -38,11 +38,6 @@ void EditorInput::mouse_input(int button, int action, int mods) {
 
 void EditorInput::char_input(unsigned int codepoint) {
   codepoint_buf.push_back(codepoint);
-
-  for (const auto& c : codepoint_buf) {
-    std::cout << c << " ";
-  }
-  std::cout << std::endl;
 }
 
 #define X(INPUT)                                                               \
