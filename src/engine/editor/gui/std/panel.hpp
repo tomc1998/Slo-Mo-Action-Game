@@ -1,8 +1,7 @@
 #pragma once
 
-#include "engine/editor/gui/common.hpp"
-
 class PaintController;
+class Rect;
 
 /** Paint a panel at the given position */
-void paint_panel(PaintController& p, Rect rect);
+void paint_panel(PaintController& p, const Rect& rect);

@@ -2,12 +2,14 @@
 
 #include <sparsepp/spp.h>
 #include "entity_type.hpp"
+#include "gui/gui.hpp"
 
 class Globals;
 
 class EntityTypeManager {
 private:
   spp::sparse_hash_map<std::string, EntityType> entity_type_map;
+  std::vector<EntityWidget> entity_widget_list;
 
   /** UI detail - what page is the player currently viewing */
   u32 curr_page = 0;

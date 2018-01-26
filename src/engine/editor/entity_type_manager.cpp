@@ -6,17 +6,24 @@
 #include "engine/resource_defs.hpp"
 #include "engine/system/globals.hpp"
 #include "entity_type_manager.hpp"
-#include "gui/std/std.hpp"
+#include "input.hpp"
 #include <iostream>
 #include <iterator>
 #include <utility>
 
 void EntityTypeManager::insert_entity_type(std::string name, EntityType type) {
   entity_type_map[name] = type;
+  entity_widget_list.push_back(EntityWidget(&entity_type_map[name], &name));
 }
 
 void EntityTypeManager::delete_entity_type(std::string name) {
   entity_type_map.erase(name);
+  for (u32 ii = 0; ii < entity_widget_list.size(); ++ii) {
+    if (*entity_widget_list[ii].entity_name == name) {
+      entity_widget_list.erase(entity_widget_list.begin() + ii);
+      break;
+    }
+  }
 }
 
 EntityType EntityTypeManager::get_entity_type(std::string name) {
@@ -30,10 +37,6 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   const f32 PANEL_SIZE = 200.0f; // size of the bottom panel
   paint_panel(*pc, Rect(0.0, CANVAS_H - PANEL_SIZE, CANVAS_W, PANEL_SIZE));
 
-  pc->set_clip(Rect(20.0, 20.0, 100.0, 50.0));
-  pc->fill_rect_hud(0.0, 0.0, 200.0, 200.0, &ui_bg);
-  pc->clear_clip();
-
   // Split entities into pages, then render the current page
   const static f32 HORI_PADDING = 60.0f;
   const static f32 VERT_PADDING = 40.0f;
@@ -42,28 +45,20 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   const static u32 ENTITIES_PER_PAGE =
       (CANVAS_W - HORI_PADDING * 2.f) / ENTITY_SIZE;
   const u32 entity_start_ix = curr_page * ENTITIES_PER_PAGE;
-  auto begin = entity_type_map.begin();
-  if (entity_start_ix < entity_type_map.size()) {
-    std::advance(begin, entity_start_ix);
-    for (u32 ii = 0; ii < ENTITIES_PER_PAGE &&
-                     ii + entity_start_ix < entity_type_map.size();
-         ++ii) {
-      auto &entity_type_pair = *begin;
-      pc->draw_rect_hud(HORI_PADDING + (ii)*ENTITY_SIZE + ENTITY_PADDING,
-                        CANVAS_H - VERT_PADDING - ENTITY_SIZE + ENTITY_PADDING,
-                        ENTITY_SIZE - ENTITY_PADDING * 2.f,
-                        ENTITY_SIZE - ENTITY_PADDING * 2.f, 2.0f, &ui_fg);
-      pc->draw_text_hud(entity_type_pair.first.c_str(),
-                        HORI_PADDING + (ii)*ENTITY_SIZE + ENTITY_SIZE / 2.f,
-                        CANVAS_H - VERT_PADDING / 2.f, TextAlign::BOT_CENTRE,
-                        font, &ui_fg);
-      begin++;
-    }
+  for (u32 ii = entity_start_ix; ii < entity_start_ix + ENTITIES_PER_PAGE &&
+                                 ii < entity_widget_list.size();
+       ++ii) {
+    entity_widget_list[ii].update_paint(
+        *pc, Rect(HORI_PADDING + (ii-entity_start_ix)*ENTITY_SIZE + ENTITY_PADDING,
+                  CANVAS_H - VERT_PADDING - ENTITY_SIZE + ENTITY_PADDING,
+                  ENTITY_SIZE - ENTITY_PADDING * 2.f,
+                  ENTITY_SIZE - ENTITY_PADDING * 2.f),
+        *EditorInput::instance);
   }
 
   // Decide on the arrow colours (for enabled / disabled)
-   bool left_enabled = curr_page > 0;
-   bool right_enabled =
+  bool left_enabled = curr_page > 0;
+  bool right_enabled =
       (curr_page + 1) * ENTITIES_PER_PAGE < entity_type_map.size();
   bool left_hovered = false;
   bool right_hovered = false;
@@ -110,10 +105,9 @@ void EntityTypeManager::paint(Globals &globals, FontHandle font) {
   // Check if we've just clicked one of the arrows
   if (!globals.input_state->lmb_down && globals.input_state->lmb_down_prev) {
     if (left_hovered) {
-      curr_page --;
-    }
-    else if (right_hovered) {
-      curr_page ++;
+      curr_page--;
+    } else if (right_hovered) {
+      curr_page++;
     }
   }
 }

@@ -5,8 +5,12 @@
  * an entity library window would go inside the gui folder (parent to this). */
 
 // Convenience includes
-#include "engine/editor/gui/common.hpp"
+#include "common.hpp"
 
 // Std components
-#include "panel.hpp"
+#include "std/panel.hpp"
+
+// Game components
+#include "entity_widget.hpp"
+
 
