@@ -23,7 +23,10 @@ void EditorInput::key_input(int key, int scancode, int action, int mods) {
   }
 }
 
-void EditorInput::cursor_pos_input(double xpos, double ypos) {}
+void EditorInput::cursor_pos_input(double xpos, double ypos) {
+  mouse_pos.x = xpos;
+  mouse_pos.y = ypos;
+}
 
 void EditorInput::mouse_input(int button, int action, int mods) {
   switch (button) {

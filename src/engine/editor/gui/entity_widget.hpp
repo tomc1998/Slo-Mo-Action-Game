@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-class PaintController;
+class GuiContext;
 class EditorInput;
 class Rect;
 class EntityType;
@@ -15,5 +15,5 @@ public:
   std::string* entity_name;
 
   EntityWidget(EntityType* entity_type, std::string* entity_name);
-  void update_paint(PaintController &p, const Rect &rect, const EditorInput &input);
+  void update_paint(GuiContext &c, const Rect &rect, const EditorInput &input);
 };

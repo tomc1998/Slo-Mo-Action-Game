@@ -1,7 +1,9 @@
 #include "editor.hpp"
+#include "engine/canvas_size.hpp"
 #include "engine/level/level.hpp"
 #include "engine/vec.hpp"
 #include "input.hpp"
+#include "engine/system/globals.hpp"
 #include <string>
 
 void setup_entity_type_manager(EntityTypeManager &m) {
@@ -47,9 +49,14 @@ void Editor::update_render(Globals& globals) {
     library_visible = !library_visible;
   }
 
+  // Create a gui context for rendering GUI widgets
+  GuiContext c(font, globals.paint_controller);
+
   // Render editor GUI
   if (library_visible) { 
-    entity_type_manager.paint(globals, font);
+    entity_type_manager.paint(c, 
+        Rect(0.0, CANVAS_H - 200.0f, CANVAS_W, 200.0f), 
+        *EditorInput::instance);
   }
 }
 

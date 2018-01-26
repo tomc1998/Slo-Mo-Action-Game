@@ -1,10 +1,10 @@
 #pragma once
 
-#include <sparsepp/spp.h>
 #include "entity_type.hpp"
 #include "gui/gui.hpp"
+#include <sparsepp/spp.h>
 
-class Globals;
+class EditorInput;
 
 class EntityTypeManager {
 private:
@@ -19,5 +19,5 @@ public:
   void delete_entity_type(std::string name);
   EntityType get_entity_type(std::string name);
   /** Paint this entity type library to the screen */
-  void paint(Globals &globals, FontHandle font);
+  void paint(GuiContext &c, const Rect &rect, const EditorInput &input);
 };

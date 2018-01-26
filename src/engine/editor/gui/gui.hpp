@@ -6,6 +6,7 @@
 
 // Convenience includes
 #include "common.hpp"
+#include "context.hpp"
 
 // Std components
 #include "std/panel.hpp"

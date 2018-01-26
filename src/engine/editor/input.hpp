@@ -1,5 +1,7 @@
 #pragma once
 
+#include "engine/vec.hpp"
+
 #include <vector>
 
 #define RUN_X_MACRO_ON_ALL_EDITOR_INPUTS                                       \
@@ -25,6 +27,8 @@ private:
 
 public:
   static EditorInput *instance;
+
+  Vec2 mouse_pos = Vec2(0.0, 0.0);
 
   /** A buffer of codepoints input by the user in this frame. */
   std::vector<unsigned int> codepoint_buf;

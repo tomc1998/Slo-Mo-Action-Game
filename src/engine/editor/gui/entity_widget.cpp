@@ -7,8 +7,9 @@
 EntityWidget::EntityWidget(EntityType *entity_type, std::string *entity_name)
     : entity_type(entity_type), entity_name(entity_name) {}
 
-void EntityWidget::update_paint(PaintController &p, const Rect &rect,
+void EntityWidget::update_paint(GuiContext &c, const Rect &rect,
                                 const EditorInput &input) {
-  static Color ui_bg(1.0f, 0.0f, 0.0f, 1.0f);
-  p.fill_rect_hud(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y, &ui_bg);
+  static Color border(1.0f, 1.0f, 1.0f, 1.0f);
+  static Color text(0.8f, 0.8f, 0.8f, 1.0f);
+  c.p->draw_rect_hud(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y, 1.5, &border);
 }
