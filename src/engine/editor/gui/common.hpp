@@ -19,7 +19,8 @@ public:
 
   /** Generate a new rectangle with the given. Minimum rectangle size will
    * always be (0,0). */
-  Rect inset(EdgeInsets &insets);
+  Rect inset(EdgeInsets &insets) const;
+  bool contains(Vec2 pos) const;
 
   Vec2 pos = Vec2(0.0, 0.0);
   Vec2 size = Vec2(0.0, 0.0);
