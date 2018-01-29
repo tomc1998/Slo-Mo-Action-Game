@@ -1,11 +1,11 @@
+#include "engine/canvas_size.hpp"
 #include "engine/ecs.hpp"
+#include "engine/editor/input.hpp"
 #include "engine/engine.hpp"
 #include "engine/input/input_manager.hpp"
 #include "engine/input/input_state.hpp"
 #include "engine/screen.hpp"
-#include "engine/canvas_size.hpp"
 #include "engine/system/globals.hpp"
-#include "engine/editor/input.hpp"
 #include <chrono>
 #include <iostream>
 #include <utility>
@@ -27,22 +27,25 @@
 
 Engine::Engine() {
   glfwInit();
-  this->window = glfwCreateWindow(CANVAS_W, CANVAS_H, "Slo-Mo Action Game", NULL, NULL);
+  this->window =
+      glfwCreateWindow(CANVAS_W, CANVAS_H, "Slo-Mo Action Game", NULL, NULL);
   glfwMakeContextCurrent(window);
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   glfwSwapInterval(0);
 
   this->renderer = new Renderer(CANVAS_W, CANVAS_H);
-  this->camera = new Camera(Vec2(0.0, 0.0), (f32)CANVAS_W, (f32)CANVAS_W / (f32)CANVAS_H);
+  this->camera =
+      new Camera(Vec2(0.0, 0.0), (f32)CANVAS_W, (f32)CANVAS_W / (f32)CANVAS_H);
   this->resource_manager = new ResourceManager();
   this->input_manager = new InputManager(this->window);
 
   std_tex.enemy_bullet =
-    resource_manager->load_texture("assets/sprites/enemy_bullet.png");
+      resource_manager->load_texture("assets/sprites/enemy_bullet.png");
   std_tex.penumbra = resource_manager->load_texture("assets/penumbra.png");
 
-  FontHandle editor_font = resource_manager->load_font("assets/fonts/fixedsys_excelsior.fnt");
-  editor = new Editor(editor_font);
+  FontHandle editor_font =
+      resource_manager->load_font("assets/fonts/fixedsys_excelsior.fnt");
+  editor = new Editor(resource_manager, editor_font);
 }
 
 void Engine::push_screen(Screen *screen) {
@@ -84,7 +87,8 @@ void Engine::engine_go() {
     if (!editor_on) {
       // Update game
       for (i32 ii = 0; ii < (int)this->max_updates_per_render; ii++) {
-        if (ii % (i32)(this->max_updates_per_render / this->updates_per_render) ==
+        if (ii % (i32)(this->max_updates_per_render /
+                       this->updates_per_render) ==
             0) {
           this->update(g);
           this->camera->update_pos();
@@ -102,14 +106,13 @@ void Engine::engine_go() {
       renderer->clear_game_paint_buffer();
       renderer->clear_hud_paint_buffer();
       glfwSwapBuffers(this->window);
-    }
-    else {
+    } else {
       // Update & render editor
       editor->update_render(g);
       g.paint_controller->flush(g.paint_controller->curr_batch_game,
-          g.paint_controller->game_buffer);
+                                g.paint_controller->game_buffer);
       g.paint_controller->flush(g.paint_controller->curr_batch_hud,
-          g.paint_controller->hud_buffer);
+                                g.paint_controller->hud_buffer);
       glClear(GL_COLOR_BUFFER_BIT);
       renderer->render_game(resource_manager, camera, window_w, window_h);
       renderer->render_hud(resource_manager, window_w, window_h);
@@ -131,7 +134,7 @@ void Engine::engine_go() {
         std::chrono::high_resolution_clock::now() - frame_time_start);
 
     auto time_to_sleep_ms =
-      1000.0 / (this->FPS) - ((f32)duration.count()) / 1000.0;
+        1000.0 / (this->FPS) - ((f32)duration.count()) / 1000.0;
 
     if (time_to_sleep_ms > 0) {
 #ifdef __linux__
@@ -174,7 +177,7 @@ void Engine::paint(Globals &g) {
   ECS *current_ecs = this->screen_stack.back().first;
   current_ecs->paint(g);
   g.paint_controller->flush(g.paint_controller->curr_batch_game,
-      g.paint_controller->game_buffer);
+                            g.paint_controller->game_buffer);
   g.paint_controller->flush(g.paint_controller->curr_batch_hud,
-      g.paint_controller->hud_buffer);
+                            g.paint_controller->hud_buffer);
 }

@@ -10,9 +10,9 @@
 #include <iterator>
 #include <utility>
 
-void EntityTypeManager::insert_entity_type(std::string name, EntityType type) {
+void EntityTypeManager::insert_entity_type(std::string name, EntityType* type) {
   entity_type_map[name] = type;
-  entity_widget_list.push_back(EntityWidget(&entity_type_map[name], name.c_str()));
+  entity_widget_list.push_back(EntityWidget(type, name.c_str()));
 }
 
 void EntityTypeManager::delete_entity_type(std::string name) {
@@ -25,7 +25,7 @@ void EntityTypeManager::delete_entity_type(std::string name) {
   }
 }
 
-EntityType EntityTypeManager::get_entity_type(std::string name) {
+EntityType* EntityTypeManager::get_entity_type(std::string name) {
   return entity_type_map[name];
 }
 

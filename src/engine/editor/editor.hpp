@@ -4,6 +4,7 @@
 class ECS;
 class Globals;
 class Level;
+class ResourceManager;
 
 /** An object with logic for rendering the game with editor overlay, and
  * editing the level. The level is stored internally (see the Level class).
@@ -17,11 +18,13 @@ class Editor {
   /** The font to render the editor GUI with */
   FontHandle font;
 
+  ResourceManager* resource_manager;
+
   /** Whether or not to draw the entity library */
   bool library_visible = false;
 
   public:
-    Editor(FontHandle font);
+    Editor(ResourceManager* resource_manager, FontHandle font);
     ~Editor();
     /** Create a new level to edit. The previous level data will be destroyed. */
     void new_level();

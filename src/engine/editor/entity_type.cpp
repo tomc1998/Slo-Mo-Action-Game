@@ -1,5 +1,6 @@
 #include "engine/ecs.hpp"
 #include "entity_type.hpp"
+#include <cstdlib>
 
 EntityType::EntityType() {}
 
@@ -13,7 +14,10 @@ EntityType::~EntityType() {
 }
 
 EntityType::EntityType(const EntityType &t) {
-#define X(TYPE, NAME) if (NAME != NULL && t.NAME != NULL) { *NAME = *t.NAME; }
+#define X(TYPE, NAME) if (t.NAME != NULL) { \
+  NAME = (TYPE*) malloc(sizeof(TYPE)); \
+  *NAME = *t.NAME; \
+}
   RUN_X_MACRO_ON_ALL_COMPS
 #undef X
 }
