@@ -21,6 +21,17 @@ public:
    * always be (0,0). */
   Rect inset(EdgeInsets &insets) const;
   bool contains(Vec2 pos) const;
+  f32 centre_x() const;
+  f32 centre_y() const;
+  Vec2 centre() const;
+  /** y coord of rect top */
+  f32 top() const;
+  /** y coord of rect bottom */
+  f32 bottom() const;
+  /** x coord of rect left */
+  f32 left() const;
+  /** x coord of rect right */
+  f32 right() const;
 
   Vec2 pos = Vec2(0.0, 0.0);
   Vec2 size = Vec2(0.0, 0.0);

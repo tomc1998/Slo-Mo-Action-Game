@@ -19,3 +19,31 @@ bool Rect::contains(Vec2 pos) const {
   Vec2 diff = pos - this->pos;
   return diff.x > 0.0 && diff.x < size.x && diff.y > 0.0 && diff.y < size.y;
 }
+
+f32 Rect::centre_x() const {
+  return pos.x + size.y / 2.f;
+}
+
+f32 Rect::centre_y() const {
+  return pos.y + size.y / 2.f;
+}
+
+Vec2 Rect::centre() const {
+  return Vec2(centre_x(), centre_y());
+}
+
+f32 Rect::top() const {
+  return pos.y;
+}
+
+f32 Rect::bottom() const {
+  return pos.y + size.y;
+}
+
+f32 Rect::left() const {
+  return pos.x;
+}
+
+f32 Rect::right() const {
+  return pos.x + size.x;
+}

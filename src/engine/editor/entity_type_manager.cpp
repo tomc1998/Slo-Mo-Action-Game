@@ -12,13 +12,13 @@
 
 void EntityTypeManager::insert_entity_type(std::string name, EntityType type) {
   entity_type_map[name] = type;
-  entity_widget_list.push_back(EntityWidget(&entity_type_map[name], &name));
+  entity_widget_list.push_back(EntityWidget(&entity_type_map[name], name.c_str()));
 }
 
 void EntityTypeManager::delete_entity_type(std::string name) {
   entity_type_map.erase(name);
   for (u32 ii = 0; ii < entity_widget_list.size(); ++ii) {
-    if (*entity_widget_list[ii].entity_name == name) {
+    if (entity_widget_list[ii].entity_name == name) {
       entity_widget_list.erase(entity_widget_list.begin() + ii);
       break;
     }
