@@ -46,8 +46,10 @@ TexHandle PaintController::get_white_tex_handle() { return white; }
 
 void PaintController::clip_v_buf_rect(Vertex *v) {
   // This is pretty fucking messy I'm ngl, maybe we should add some methods to Vertex?
-  if (clip_stack.empty()) { return; }
-  Rect& curr_clip = clip_stack.back();
+  const Rect* p_curr_clip = get_clip();
+  if (!p_curr_clip) { return; }
+  const Rect& curr_clip = *p_curr_clip;
+
   // Check if we should just clip v out of existence
   if (v[1].pos[0] < curr_clip.pos.x ||
       v[0].pos[0] > curr_clip.pos.x + curr_clip.size.x ||
@@ -302,8 +304,17 @@ void PaintController::draw_image_internal(TexHandle tex, f32 x, f32 y, f32 w,
   curr_batch.buffer(v, 6);
 }
 
+void PaintController::calc_clip_stack_sum() {
+  if (clip_stack.empty()) { return; }
+  curr_clip_stack_sum = clip_stack[0];
+  for (u32 ii = 1; ii < clip_stack.size(); ++ii) {
+    curr_clip_stack_sum = curr_clip_stack_sum.intersect(clip_stack[ii]);
+  }
+}
+
 void PaintController::push_clip(Rect r) {
   clip_stack.push_back(r);
+  calc_clip_stack_sum();
 }
 
 bool PaintController::pop_clip(Rect* r) {
@@ -311,13 +322,14 @@ bool PaintController::pop_clip(Rect* r) {
   else {
     memcpy(r, &clip_stack.back(), sizeof(Rect));
     clip_stack.pop_back();
+    calc_clip_stack_sum();
     return true;
   }
 }
 
 Rect* PaintController::get_clip() {
   if (!clip_stack.empty()) {
-    return &clip_stack.back();
+    return &curr_clip_stack_sum;
   }
   else {
     return NULL;

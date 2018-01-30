@@ -15,6 +15,17 @@ Rect Rect::inset(EdgeInsets &insets) const {
       std::max(0.0f, size.y - insets.bottom - insets.top));
 }
 
+Rect Rect::intersect(Rect &r) const {
+  f32 left = std::max(r.left(), this->left());
+  f32 top = std::max(r.top(), this->top());
+  f32 right = std::min(r.right(), this->right());
+  f32 bottom = std::min(r.bottom(), this->bottom());
+  return Rect(
+      left, top, 
+      std::max(0.0f, right - left),
+      std::max(0.0f, bottom - top));
+}
+
 bool Rect::contains(Vec2 pos) const {
   Vec2 diff = pos - this->pos;
   return diff.x > 0.0 && diff.x < size.x && diff.y > 0.0 && diff.y < size.y;

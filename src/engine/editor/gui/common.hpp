@@ -20,6 +20,7 @@ public:
   /** Generate a new rectangle with the given. Minimum rectangle size will
    * always be (0,0). */
   Rect inset(EdgeInsets &insets) const;
+  Rect intersect(Rect& r) const;
   bool contains(Vec2 pos) const;
   f32 centre_x() const;
   f32 centre_y() const;
