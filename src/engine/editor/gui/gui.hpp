@@ -10,6 +10,7 @@
 
 // Std components
 #include "std/panel.hpp"
+#include "std/scrollable.hpp"
 
 // Game components
 #include "entity_widget.hpp"

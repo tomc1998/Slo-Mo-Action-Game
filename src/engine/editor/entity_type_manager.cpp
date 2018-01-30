@@ -34,7 +34,7 @@ void EntityTypeManager::paint(GuiContext &c, const Rect &rect,
   const auto pc = c.p;
   static Color ui_bg(0.0f, 0.0f, 0.0f, 1.0f);
   static Color ui_fg(1.0f, 1.0f, 1.0f, 1.0f);
-  paint_panel(*pc, rect);
+  paint_panel(c, rect);
 
   // Split entities into pages, then render the current page
   const static f32 HORI_PADDING = 60.0f;

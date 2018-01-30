@@ -36,3 +36,8 @@ public:
   Vec2 pos = Vec2(0.0, 0.0);
   Vec2 size = Vec2(0.0, 0.0);
 };
+
+/** Box constraints are essentially rectangles with the convention that a width
+ * of -1 or height of -1 means the rectangle is unconstrained in that direction.
+ */
+typedef Rect BoxConstraints;
