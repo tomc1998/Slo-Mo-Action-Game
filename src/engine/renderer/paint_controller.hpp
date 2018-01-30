@@ -3,6 +3,7 @@
 #include "engine/renderer/batch.hpp"
 #include "engine/resource_defs.hpp"
 #include "engine/editor/gui/common.hpp"
+#include <vector>
 
 class ResourceManager;
 class PaintBuffer;
@@ -30,8 +31,7 @@ private:
   Batch curr_batch_game;
   Batch curr_batch_hud;
 
-  bool using_clip = false;
-  Rect curr_clip = Rect(0.0, 0.0, 0.0, 0.0);
+  std::vector<Rect> clip_stack;
 
   /** Clip the given vertex list rect by the curr_clip, if using_clip is set. 
    * @param v Should be of length 6, with 2 triangles making up a rectangle.
@@ -88,8 +88,9 @@ public:
   PaintController(PaintBuffer *_game_buffer, PaintBuffer *_hud_buffer,
                   ResourceManager *r, TexHandle _white);
 
-  void set_clip(Rect r);
-  void clear_clip();
+  void push_clip(Rect r);
+  /** Returns true if we could pop something */
+  bool pop_clip(Rect* r);
   Rect* get_clip();
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
