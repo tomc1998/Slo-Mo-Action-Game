@@ -10,7 +10,7 @@
 #include <iterator>
 #include <utility>
 
-void EntityTypeManager::insert_entity_type(std::string name, EntityType* type) {
+void EntityTypeManager::insert_entity_type(std::string name, EntityType *type) {
   entity_type_map[name] = type;
   entity_widget_list.push_back(EntityWidget(type, name.c_str()));
 }
@@ -25,7 +25,7 @@ void EntityTypeManager::delete_entity_type(std::string name) {
   }
 }
 
-EntityType* EntityTypeManager::get_entity_type(std::string name) {
+EntityType *EntityTypeManager::get_entity_type(std::string name) {
   return entity_type_map[name];
 }
 
@@ -47,13 +47,14 @@ void EntityTypeManager::paint(GuiContext &c, const Rect &rect,
   for (u32 ii = entity_start_ix; ii < entity_start_ix + ENTITIES_PER_PAGE &&
                                  ii < entity_widget_list.size();
        ++ii) {
-    entity_widget_list[ii].update_paint(
-        c, Rect(rect.pos.x + HORI_PADDING + (ii - entity_start_ix) * ENTITY_SIZE +
-                          ENTITY_PADDING,
-                      rect.pos.y + VERT_PADDING + ENTITY_PADDING,
-                      ENTITY_SIZE - ENTITY_PADDING * 2.f,
-                      ENTITY_SIZE - ENTITY_PADDING * 2.f),
-        *EditorInput::instance);
+    Scrollable<Sized<EntityWidget> >(Sized<EntityWidget>(entity_widget_list[ii],
+                                          ENTITY_SIZE - ENTITY_PADDING * 2.f,
+                                          ENTITY_SIZE - ENTITY_PADDING * 2.f))
+        .update_paint(
+            c, Rect(rect.pos.x + HORI_PADDING +
+                        (ii - entity_start_ix) * ENTITY_SIZE + ENTITY_PADDING,
+                    rect.pos.y + VERT_PADDING + ENTITY_PADDING, 20.f, 20.f),
+            *EditorInput::instance);
   }
 
   // Decide on the arrow colours (for enabled / disabled)
@@ -64,10 +65,10 @@ void EntityTypeManager::paint(GuiContext &c, const Rect &rect,
   bool right_hovered = false;
 
   // Get left arrow / right arrow boxes
-  Rect left_arrow_rect(rect.pos.x + 10.0, 
-      rect.pos.y + rect.size.y / 2.f - 16.f, 30.f, 32.f);
-  Rect right_arrow_rect(rect.pos.x + rect.size.x - 40.0, 
-      rect.pos.y + rect.size.y / 2.f - 16.f, 30.f, 32.f);
+  Rect left_arrow_rect(rect.pos.x + 10.0, rect.pos.y + rect.size.y / 2.f - 16.f,
+                       30.f, 32.f);
+  Rect right_arrow_rect(rect.pos.x + rect.size.x - 40.0,
+                        rect.pos.y + rect.size.y / 2.f - 16.f, 30.f, 32.f);
 
   // Check mouse hover
   if (left_enabled) {
@@ -89,25 +90,24 @@ void EntityTypeManager::paint(GuiContext &c, const Rect &rect,
 
   // Draw the backwards / forwards arrows
   Vertex tris[] = {
-      Vertex(Vec2(left_arrow_rect.pos.x, 
-            left_arrow_rect.pos.y + left_arrow_rect.size.y / 2.f), 
-          lcol, Vec2(0.0, 0.0)),
-      Vertex(Vec2(left_arrow_rect.pos.x + left_arrow_rect.size.x, 
-            left_arrow_rect.pos.y), 
-          lcol, Vec2(0.0, 0.0)),
-      Vertex(Vec2(left_arrow_rect.pos.x + left_arrow_rect.size.x, 
-            left_arrow_rect.pos.y + left_arrow_rect.size.y), 
-          lcol, Vec2(0.0, 0.0)),
+      Vertex(Vec2(left_arrow_rect.pos.x,
+                  left_arrow_rect.pos.y + left_arrow_rect.size.y / 2.f),
+             lcol, Vec2(0.0, 0.0)),
+      Vertex(Vec2(left_arrow_rect.pos.x + left_arrow_rect.size.x,
+                  left_arrow_rect.pos.y),
+             lcol, Vec2(0.0, 0.0)),
+      Vertex(Vec2(left_arrow_rect.pos.x + left_arrow_rect.size.x,
+                  left_arrow_rect.pos.y + left_arrow_rect.size.y),
+             lcol, Vec2(0.0, 0.0)),
 
-      Vertex(Vec2(right_arrow_rect.pos.x + right_arrow_rect.size.x, 
-            right_arrow_rect.pos.y + right_arrow_rect.size.y / 2.f), 
-          rcol, Vec2(0.0, 0.0)),
-      Vertex(Vec2(right_arrow_rect.pos.x, 
-            right_arrow_rect.pos.y), 
-          rcol, Vec2(0.0, 0.0)),
-      Vertex(Vec2(right_arrow_rect.pos.x, 
-            right_arrow_rect.pos.y + right_arrow_rect.size.y), 
-          rcol, Vec2(0.0, 0.0)),
+      Vertex(Vec2(right_arrow_rect.pos.x + right_arrow_rect.size.x,
+                  right_arrow_rect.pos.y + right_arrow_rect.size.y / 2.f),
+             rcol, Vec2(0.0, 0.0)),
+      Vertex(Vec2(right_arrow_rect.pos.x, right_arrow_rect.pos.y), rcol,
+             Vec2(0.0, 0.0)),
+      Vertex(Vec2(right_arrow_rect.pos.x,
+                  right_arrow_rect.pos.y + right_arrow_rect.size.y),
+             rcol, Vec2(0.0, 0.0)),
   };
   pc->draw_tris_hud(tris, 2, pc->get_white_tex_handle());
 

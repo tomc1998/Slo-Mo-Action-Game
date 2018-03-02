@@ -61,15 +61,14 @@ set (game_SRCS
   ${PROJECT_SOURCE_DIR}/engine/comp/hud_entity.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/circle_collider.cpp  
   ${PROJECT_SOURCE_DIR}/engine/level/level.cpp
-  ${PROJECT_SOURCE_DIR}/engine/editor/entity_type.cpp
-  ${PROJECT_SOURCE_DIR}/engine/editor/entity_type_manager.cpp
-  ${PROJECT_SOURCE_DIR}/engine/editor/editor.cpp
-  ${PROJECT_SOURCE_DIR}/engine/editor/input.cpp
   ${PROJECT_SOURCE_DIR}/engine/editor/gui/common.cpp
   ${PROJECT_SOURCE_DIR}/engine/editor/gui/context.cpp
   ${PROJECT_SOURCE_DIR}/engine/editor/gui/entity_widget.cpp
   ${PROJECT_SOURCE_DIR}/engine/editor/gui/std/panel.cpp
-  ${PROJECT_SOURCE_DIR}/engine/editor/gui/std/scrollable.cpp
+  ${PROJECT_SOURCE_DIR}/engine/editor/entity_type.cpp
+  ${PROJECT_SOURCE_DIR}/engine/editor/entity_type_manager.cpp
+  ${PROJECT_SOURCE_DIR}/engine/editor/editor.cpp
+  ${PROJECT_SOURCE_DIR}/engine/editor/input.cpp
   ${PROJECT_SOURCE_DIR}/engine/comp/waypoint_graph.cpp  
   )
 

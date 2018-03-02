@@ -1,10 +1,12 @@
 #pragma once
-#include <string>
+
 #include "engine/editor/entity_type.hpp"
+#include <string>
 
 class GuiContext;
 class EditorInput;
 class Rect;
+typedef Rect BoxConstraints;
 
 /** A widget which renders an entity in a little box, with its name below. */
 class EntityWidget {
@@ -16,6 +18,7 @@ public:
    * containers, this is more efficient and simpler. */
   char entity_name[32];
 
-  EntityWidget(const EntityType *entity_type, const char* entity_name);
-  void update_paint(GuiContext &c, const Rect &rect, const EditorInput &input);
+  EntityWidget(const EntityType *entity_type, const char *entity_name);
+  void update_paint(GuiContext &c, const BoxConstraints &rect,
+                    const EditorInput &input);
 };

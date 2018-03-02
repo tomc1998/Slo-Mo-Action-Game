@@ -1,7 +1,7 @@
+#include "entity_widget.hpp"
 #include "engine/color.hpp"
 #include "engine/editor/entity_type.hpp"
 #include "engine/renderer/paint_controller.hpp"
-#include "entity_widget.hpp"
 #include "gui.hpp"
 #include <cassert>
 #include <cstring>
@@ -13,7 +13,7 @@ EntityWidget::EntityWidget(const EntityType *entity_type,
   strcpy(this->entity_name, entity_name);
 }
 
-void EntityWidget::update_paint(GuiContext &c, const Rect &rect,
+void EntityWidget::update_paint(GuiContext &c, const BoxConstraints &rect,
                                 const EditorInput &input) {
   static Color border(1.0f, 1.0f, 1.0f, 1.0f);
   static Color text(0.8f, 0.8f, 0.8f, 1.0f);

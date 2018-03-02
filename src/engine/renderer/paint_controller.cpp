@@ -109,7 +109,6 @@ void PaintController::draw_rect_internal(f32 x, f32 y, f32 w, f32 h,
                                          f32 thickness, Color *color,
                                          Batch &curr_batch,
                                          PaintBuffer *buffer) {
-  assert(clip_stack.empty() && "Clipping for draw_rect not implemented");
   Vec2 p0 = Vec2(x, y);
   Vec2 p1 = p0 + Vec2(w, 0);
   Vec2 p2 = p0 + Vec2(w, h);
@@ -156,7 +155,16 @@ void PaintController::draw_line_internal(Vec2 start, Vec2 end, f32 stroke,
                                          Color *start_col, Color *end_col,
                                          Batch &curr_batch,
                                          PaintBuffer *buffer) {
-  assert(clip_stack.empty() && "Clipping for draw_line not implemented");
+  if (!clip_stack.empty()) {
+    start.x = std::min(std::max(start.x, curr_clip_stack_sum.left()), 
+        curr_clip_stack_sum.right());
+    start.y = std::min(std::max(start.y, curr_clip_stack_sum.top()), 
+        curr_clip_stack_sum.bottom());
+    end.x = std::min(std::max(end.x, curr_clip_stack_sum.left()), 
+        curr_clip_stack_sum.right());
+    end.y = std::min(std::max(end.y, curr_clip_stack_sum.top()), 
+        curr_clip_stack_sum.bottom());
+  }
   flush_if_batch_tex_not(white_cache_tex->cache_tex_ix, curr_batch, buffer);
   f32 *uvs = white_cache_tex->uvs;
 
@@ -230,7 +238,7 @@ void PaintController::draw_text_internal(const char *text, f32 x, f32 y,
                                          TextAlign align, FontHandle font,
                                          Color *color, Batch &curr_batch,
                                          PaintBuffer *buffer) {
-  assert(clip_stack.empty() && "Clipping for draw_text not implemented");
+  //assert(clip_stack.empty() && "Clipping for draw_text not implemented");
   assert(font != -1);
   Font *f = this->res_manager->lookup_font(font);
   std::vector<Vertex> v_buf;
@@ -276,7 +284,7 @@ void PaintController::draw_image_internal(TexHandle tex, f32 x, f32 y, f32 w,
                                           f32 h, f32 rotation, Color *tint,
                                           Batch &curr_batch,
                                           PaintBuffer *buffer) {
-  assert(clip_stack.empty() && "Clipping for draw_image not implemented");
+  //assert(clip_stack.empty() && "Clipping for draw_image not implemented");
   // We don't want a null resource handle
   assert(tex != -1);
 
@@ -312,7 +320,7 @@ void PaintController::calc_clip_stack_sum() {
   }
 }
 
-void PaintController::push_clip(Rect r) {
+void PaintController::push_clip(const Rect& r) {
   clip_stack.push_back(r);
   calc_clip_stack_sum();
 }
@@ -320,14 +328,16 @@ void PaintController::push_clip(Rect r) {
 bool PaintController::pop_clip(Rect* r) {
   if (clip_stack.empty()) { return false; }
   else {
-    memcpy(r, &clip_stack.back(), sizeof(Rect));
+    if (r) {
+      memcpy(r, &clip_stack.back(), sizeof(Rect));
+    }
     clip_stack.pop_back();
     calc_clip_stack_sum();
     return true;
   }
 }
 
-Rect* PaintController::get_clip() {
+const Rect* PaintController::get_clip() {
   if (!clip_stack.empty()) {
     return &curr_clip_stack_sum;
   }

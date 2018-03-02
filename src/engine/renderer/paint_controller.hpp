@@ -103,10 +103,11 @@ public:
 
   /** Push a clip to the clip stack. All clips are summed together to the final
    * clip. */
-  void push_clip(Rect r);
-  /** Returns true if we could pop something */
+  void push_clip(const Rect& r);
+  /** Returns true if we could pop something. Pass NULL if you don't care about
+   * the result of the pop operation. */
   bool pop_clip(Rect *r);
-  Rect *get_clip();
+  const Rect *get_clip();
 
   void fill_rect(f32 x, f32 y, f32 w, f32 h, Color *color);
   void fill_rect_hud(f32 x, f32 y, f32 w, f32 h, Color *color);

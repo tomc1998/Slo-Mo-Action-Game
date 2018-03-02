@@ -21,7 +21,15 @@ public:
    * always be (0,0). */
   Rect inset(EdgeInsets &insets) const;
   Rect intersect(Rect& r) const;
+  Rect translate(f32 x, f32 y) const;
+  Rect translate(Vec2 v) const;
+  /** Return this rect but unconstrained (i.e. w / h -1 / -1) */
+  Rect unconstrained() const;
   bool contains(Vec2 pos) const;
+  /** Given a line segment, 'clip' the line segment such that the entire line
+   * segment is contained within this rectangle. The input vectors will be
+   * mutated. */
+  void clip_line_segment(Vec2 &p0, Vec2 &p1) const;
   f32 centre_x() const;
   f32 centre_y() const;
   Vec2 centre() const;
